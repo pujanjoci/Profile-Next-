@@ -1,5 +1,16 @@
 import Image from 'next/image';
 import { motion, Variants } from 'framer-motion';
+import { 
+  Sparkles, 
+  Cpu, 
+  Database, 
+  Palette, 
+  Briefcase, 
+  Layers, 
+  CheckCircle2,
+  Trophy,
+  Code2
+} from 'lucide-react';
 
 export interface AboutProps {
   name: string;
@@ -15,179 +26,218 @@ export interface AboutProps {
 export default function About({
   name = "Pujan",
   bio = "I'm a passionate full‑stack developer with over 5 years of experience building beautiful, functional web applications. I love turning complex problems into simple, elegant solutions. When I'm not coding, you'll find me reading sci‑fi, or experimenting with new technologies.",
-  skills = ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Node.js', 'Figma'],
+  skills = ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'HTML', 'CSS', 'JS', 'MySQL', 'Supabase', 'Figma', 'Git/GitHub', 'Canva', 'Photoshop'],
   profileImage = "/Pujan(ghandruk-sitting).png",
   themeColors = {
-    primary: "from-blue-600 to-purple-600",
-    secondary: "from-amber-400/20 to-pink-400/20"
+    primary: "from-orange-500 to-amber-400",
+    secondary: "from-cyan-500/10 to-blue-500/10"
   }
 }: AboutProps) {
+
+  // Dynamically categorize skills to present a highly structured and professional layout
+  const categorizedSkills = (() => {
+    const frontend = skills.filter(s => 
+      ['react', 'next.js', 'typescript', 'tailwind css', 'framer motion', 'three.js', 'html', 'css', 'javascript', 'js', 'vite', 'ui/ux'].includes(s.toLowerCase())
+    );
+    const backend = skills.filter(s => 
+      ['node.js', 'express', 'socket.io', 'postgresql', 'mysql', 'supabase', 'prisma', 'mongodb', 'rest apis', 'json api', 'stripe api', 'algorithms', 'database'].includes(s.toLowerCase())
+    );
+    const tools = skills.filter(s => 
+      !['react', 'next.js', 'typescript', 'tailwind css', 'framer motion', 'three.js', 'html', 'css', 'javascript', 'js', 'vite', 'ui/ux',
+        'node.js', 'express', 'socket.io', 'postgresql', 'mysql', 'supabase', 'prisma', 'mongodb', 'rest apis', 'json api', 'stripe api', 'algorithms', 'database'].includes(s.toLowerCase())
+    );
+
+    return [
+      {
+        title: 'Frontend Architecture',
+        icon: <Cpu className="w-5 h-5 text-orange-400" />,
+        list: frontend.length > 0 ? frontend : ['React', 'Next.js', 'TypeScript', 'Tailwind CSS']
+      },
+      {
+        title: 'Backend & Database',
+        icon: <Database className="w-5 h-5 text-amber-400" />,
+        list: backend.length > 0 ? backend : ['Node.js', 'PostgreSQL', 'Prisma', 'Socket.io']
+      },
+      {
+        title: 'Creative & Tools',
+        icon: <Palette className="w-5 h-5 text-pink-400" />,
+        list: tools.length > 0 ? tools : ['Figma', 'Git/GitHub', 'Web Performance', 'SEO']
+      }
+    ];
+  })();
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
+        staggerChildren: 0.15,
       },
     },
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 25 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
   };
 
   const shapeVariants: Variants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: { opacity: 1, scale: 1, transition: { duration: 1, ease: "easeOut" } },
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 1.2, ease: "easeOut" } },
   };
 
   return (
     <section
       id="about"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-slate-50 dark:bg-neutral-950 transition-colors duration-300"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-neutral-950 text-white py-24 sm:py-32"
     >
-      {/* CSS-based Geometric Background Shapes */}
+      {/* Background Glowing Ambient Orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Top Right Shape */}
         <motion.div 
-          className="absolute -top-[10%] -right-[10%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] rounded-bl-full bg-gradient-to-br from-blue-400/10 to-purple-400/10 dark:from-blue-900/20 dark:to-purple-900/20 blur-3xl transform rotate-12"
+          className="absolute -top-[10%] -right-[5%] w-[45vw] h-[45vw] rounded-full bg-orange-500/5 blur-[120px]"
           variants={shapeVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
         />
-        {/* Bottom Left Shape */}
         <motion.div 
-          className={`absolute -bottom-[10%] -left-[10%] w-[60vw] h-[60vw] max-w-[700px] max-h-[700px] rounded-tr-full bg-gradient-to-tr ${themeColors.secondary} dark:from-amber-900/20 dark:to-pink-900/20 blur-3xl transform -rotate-12`}
-           variants={shapeVariants}
+          className="absolute -bottom-[10%] -left-[5%] w-[50vw] h-[50vw] rounded-full bg-cyan-500/5 blur-[140px]"
+          variants={shapeVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
         />
-         {/* Center subtle grid */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[url('/grid.svg')] opacity-[0.03] dark:opacity-[0.05]" />
+        {/* Subtle dot grid mesh */}
+        <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.015)_1px,transparent_1px)] [background-size:24px_24px] opacity-70" />
       </div>
 
-      <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-        
+      <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div 
-          className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20"
+          className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-80px" }}
         >
-          {/* Profile Image - Mobile First: Stacked at top */}
+          {/* Profile Image & Stats Card Column (Left Side) */}
           <motion.div 
-            className="w-full max-w-sm md:max-w-md lg:w-1/2 lg:max-w-none flex justify-center order-2 lg:order-1"
+            className="w-full max-w-md lg:w-5/12 flex flex-col items-center gap-8 order-2 lg:order-1"
             variants={itemVariants}
           >
-            <div className="relative group w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-[28rem] lg:h-[28rem] xl:w-[32rem] xl:h-[32rem]">
-               {/* Decorative border/glow */}
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-600/20 dark:from-blue-500/10 dark:to-purple-600/10 rounded-3xl transform rotate-3 scale-105 group-hover:rotate-6 transition-transform duration-500 blur-sm" />
-              <div className="absolute inset-0 bg-gradient-to-l from-amber-400/20 to-pink-500/20 dark:from-amber-400/10 dark:to-pink-500/10 rounded-3xl transform -rotate-3 scale-105 group-hover:-rotate-6 transition-transform duration-500 blur-sm" />
+            {/* Elegant Glowing Profile Frame */}
+            <div className="relative group w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96">
+              {/* Outer brand glows */}
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-amber-500/20 rounded-[2.5rem] transform rotate-3 scale-[1.03] group-hover:rotate-6 group-hover:scale-[1.05] transition-all duration-500 blur-md" />
+              <div className="absolute inset-0 bg-gradient-to-l from-cyan-500/15 to-blue-500/15 rounded-[2.5rem] transform -rotate-3 scale-[1.03] group-hover:-rotate-6 group-hover:scale-[1.05] transition-all duration-500 blur-md" />
 
-              {/* Image Container */}
-              <div className="relative w-full h-full rounded-3xl overflow-hidden bg-white/50 dark:bg-neutral-900/50 backdrop-blur-sm border border-white/60 dark:border-white/10 shadow-xl">
-                 <Image
+              {/* Clean Image Container */}
+              <div className="relative w-full h-full rounded-[2.5rem] overflow-hidden bg-neutral-900 border border-white/10 shadow-2xl">
+                <Image
                   src={profileImage}
                   alt={`${name} Profile`}
                   fill
-                  sizes="(max-width: 640px) 256px, (max-width: 768px) 320px, (max-width: 1024px) 448px, 512px"
-                  className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                  sizes="(max-width: 640px) 256px, (max-width: 768px) 320px, 400px"
+                  className="object-cover object-top group-hover:scale-[1.03] transition-transform duration-700 ease-out"
                   priority
                 />
+                
+                {/* Visual overlay for depth */}
+                <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/60 via-transparent to-transparent opacity-80" />
               </div>
 
-               {/* Decorative Badge */}
-              {/* <motion.div 
-                className="absolute -bottom-4 right-4 sm:-bottom-6 sm:-right-4 bg-white/90 dark:bg-neutral-800/90 backdrop-blur-md px-4 py-2 sm:px-6 sm:py-3 rounded-2xl shadow-xl border border-white/50 dark:border-neutral-700 pointer-events-none"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8, duration: 0.5 }}
-                viewport={{ once: true }}
-              >
-                 <div className="flex items-center gap-2">
-                    <span className="relative flex h-3 w-3">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-                    </span>
-                    <span className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200">Available for work</span>
-                 </div>
-              </motion.div> */}
-              <motion.div 
-                className="absolute md:hidden right-4 sm:-bottom-6 sm:-right-4 bg-white/90 dark:bg-neutral-800/90 backdrop-blur-md px-4 py-2 sm:px-6 sm:py-3 rounded-2xl shadow-xl border border-white/50 dark:border-neutral-700 pointer-events-none"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8, duration: 0.5 }}
-                viewport={{ once: true }}
-              >
-                 <div className="flex items-center gap-2">
-                    <span className="relative flex h-3 w-3">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-                    </span>
-                    <span className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200">Available for work</span>
-                 </div>
-              </motion.div>
+              {/* Pulsing Availability Status Badge */}
+              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-neutral-900/90 backdrop-blur-md px-5 py-2.5 rounded-full shadow-2xl border border-white/10 flex items-center gap-2.5 whitespace-nowrap">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span className="text-xs font-semibold tracking-wider text-slate-300 uppercase">Available for work</span>
+              </div>
+            </div>
+
+            {/* Premium Highlights / Performance Stats Panel */}
+            <div className="w-full mt-6 grid grid-cols-3 gap-4 p-5 rounded-[2rem] border border-white/5 bg-neutral-900/30 backdrop-blur-xl">
+              <div className="text-center border-r border-white/5">
+                <div className="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-300">5+</div>
+                <div className="text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider mt-1.5">Years Experience</div>
+              </div>
+              <div className="text-center border-r border-white/5">
+                <div className="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-300">22</div>
+                <div className="text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider mt-1.5">Projects Built</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-300">10+</div>
+                <div className="text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider mt-1.5">Technologies</div>
+              </div>
             </div>
           </motion.div>
 
-          {/* Content & Skills - Mobile First: Below image */}
+          {/* Description & Structured Tech Stack Column (Right Side) */}
           <motion.div 
-            className="w-full lg:w-1/2 flex flex-col items-center text-center lg:items-start lg:text-left order-1 lg:order-2 space-y-6 sm:space-y-8"
+            className="w-full lg:w-7/12 flex flex-col items-center text-center lg:items-start lg:text-left order-1 lg:order-2 space-y-8"
             variants={containerVariants}
           >
-            {/* Header / Intro */}
+            {/* Header Badge & Title */}
             <motion.div variants={itemVariants} className="space-y-4 w-full">
-              <span className="inline-block text-lg sm:text-xl font-medium text-slate-600 dark:text-slate-400 tracking-wide uppercase">
-                Hi, I am
-              </span>
-              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-                {name}
+              <div className="inline-flex items-center gap-2 rounded-full border border-orange-500/20 bg-orange-500/5 px-4 py-1.5 text-xs font-bold text-orange-400 tracking-widest uppercase">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>About Me</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">
+                Crafting Scalable Applications <br />
+                <span className="bg-gradient-to-r from-orange-400 via-amber-300 to-yellow-400 bg-clip-text text-transparent">
+                  With Clean Code & Design
+                </span>
               </h2>
             </motion.div>
 
-            {/* Bio */}
-            <motion.div variants={itemVariants}>
-               <p className="text-base sm:text-lg md:text-xl text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl">
-                 {bio}
-               </p>
+            {/* Professional Bio */}
+            <motion.div variants={itemVariants} className="space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed font-light max-w-2xl">
+              <p>
+                {bio}
+              </p>
+              <p>
+                My focus lies in building high-performance web systems, retro game simulations, real-time multiplayer applications, and polished corporate interfaces. I bridge the gap between creative visual designs and robust frontend-to-backend engineering.
+              </p>
             </motion.div>
 
-             {/* Dynamic Line Separator */}
+            {/* Orange Accent Line */}
             <motion.div 
               variants={itemVariants} 
-              className={`w-24 h-1.5 bg-gradient-to-r ${themeColors.primary} rounded-full lg:mx-0`} 
+              className="w-20 h-[3px] rounded-full bg-gradient-to-r from-orange-500 to-amber-400" 
             />
 
-            {/* Skills Section */}
-            <motion.div variants={itemVariants} className="w-full pt-4">
-              <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-800 dark:text-slate-200 mb-6 flex items-center justify-center lg:justify-start gap-3">
-                 <span className={`w-2 h-2 rounded-full bg-gradient-to-br ${themeColors.primary}`} />
-                 Skills & Technologies
+            {/* Categorized Skills Panels */}
+            <motion.div variants={itemVariants} className="w-full pt-2">
+              <h3 className="text-lg font-bold tracking-widest uppercase text-slate-400 mb-6 flex items-center justify-center lg:justify-start gap-2.5">
+                <Code2 className="w-4 h-4 text-orange-500" />
+                <span>Professional Core Capabilities</span>
               </h3>
               
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 sm:gap-3">
-                {skills.map((skill, index) => (
-                  <motion.span
-                    key={skill}
-                    custom={index}
-                    variants={{
-                      hidden: { opacity: 0, scale: 0.8 },
-                      visible: (idx) => ({
-                        opacity: 1,
-                        scale: 1,
-                        transition: { delay: idx * 0.05, duration: 0.4, type: "spring", stiffness: 100 }
-                      })
-                    }}
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    className="px-4 py-2 sm:px-5 sm:py-2.5 bg-white/70 dark:bg-neutral-800/70 backdrop-blur-md rounded-xl text-sm sm:text-base font-medium text-slate-700 dark:text-slate-200 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.1)] dark:shadow-none border border-slate-200/50 dark:border-neutral-700/50 hover:shadow-lg hover:border-blue-300 dark:hover:border-blue-500/50 cursor-default transition-colors"
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                {categorizedSkills.map((category) => (
+                  <div 
+                    key={category.title}
+                    className="p-5 rounded-2xl border border-white/5 bg-neutral-900/30 backdrop-blur-xl hover:border-white/10 transition-all duration-300 flex flex-col gap-4 text-left group"
                   >
-                    {skill}
-                  </motion.span>
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-xl bg-white/5 group-hover:bg-orange-500/10 group-hover:scale-105 transition-all duration-300">
+                        {category.icon}
+                      </div>
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200">{category.title}</h4>
+                    </div>
+
+                    <div className="flex flex-wrap gap-1.5 mt-1">
+                      {category.list.map((skill) => (
+                        <span
+                          key={skill}
+                          className="px-2.5 py-1 bg-white/[0.03] border border-white/5 rounded-lg text-xs text-slate-400 hover:bg-orange-500/5 hover:text-orange-400 hover:border-orange-500/20 transition-all duration-300 cursor-default"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
             </motion.div>

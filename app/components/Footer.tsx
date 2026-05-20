@@ -1,6 +1,6 @@
 'use client'
 
-import { Github, Linkedin, Twitter, ArrowUp, Heart } from 'lucide-react'
+import { Github, Linkedin, Twitter, ArrowUp, Heart, ExternalLink } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 export default function Footer() {
@@ -11,102 +11,149 @@ export default function Footer() {
   const socials = [
     {
       icon: Github,
-      href: 'https://github.com/pujan-joshi',
+      href: 'https://github.com/pujanjoci',
       label: 'GitHub',
-      hoverColor: 'hover:text-white hover:border-white/40',
+      hoverColor: 'hover:text-white hover:border-white/30 hover:bg-white/5',
     },
     {
       icon: Linkedin,
-      href: 'https://linkedin.com/in/pujan-joshi',
+      href: 'https://www.linkedin.com/in/pujan-joshi-np/',
       label: 'LinkedIn',
-      hoverColor: 'hover:text-blue-400 hover:border-blue-400/40',
+      hoverColor: 'hover:text-blue-400 hover:border-blue-500/20 hover:bg-blue-500/5',
     },
     {
       icon: Twitter,
-      href: 'https://twitter.com/pujanjoshi',
-      label: 'Twitter',
-      hoverColor: 'hover:text-sky-400 hover:border-sky-400/40',
+      href: 'https://x.com/pujanjoshi3',
+      label: 'Twitter / X',
+      hoverColor: 'hover:text-sky-400 hover:border-sky-500/20 hover:bg-sky-500/5',
     },
   ]
 
+  const navLinks = [
+    { name: 'Home', href: '#' },
+    { name: 'About', href: '#about' },
+    { name: 'Projects', href: '#projects' },
+    { name: 'Gallery', href: '/gallery', isExternal: false },
+    { name: 'Contact', href: '#contact' },
+  ]
+
   return (
-    <footer className="relative bg-neutral-950 border-t border-white/5 py-12 px-6 overflow-hidden">
-      {/* ── Decorative background blobs (matching contact section) ── */}
+    <footer className="relative bg-neutral-950 border-t border-white/5 pt-16 pb-10 px-6 sm:px-12 md:px-16 overflow-hidden">
+      
+      {/* ── Decorative premium background light effect ── */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
-        <div className="absolute -bottom-24 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full bg-orange-500/5 blur-3xl" />
+        <div className="absolute -bottom-48 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full bg-gradient-to-t from-orange-500/10 to-transparent blur-3xl opacity-60" />
+        <div className="absolute top-0 left-1/4 w-[300px] h-[300px] rounded-full bg-blue-500/5 blur-3xl opacity-30" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8 pb-12 border-b border-white/5">
           
-          {/* Copyright and credit */}
-          <div className="text-center md:text-left">
+          {/* Column 1: Brand & Tagline */}
+          <div className="md:col-span-5 flex flex-col items-start gap-4">
             <motion.div 
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="flex items-center justify-center md:justify-start gap-2 mb-2"
+              className="flex items-center gap-2.5"
             >
-              <span className="text-xl font-bold bg-gradient-to-r from-orange-400 to-amber-300 bg-clip-text text-transparent">
+              <span className="text-2xl font-black bg-gradient-to-r from-orange-400 to-amber-300 bg-clip-text text-transparent tracking-tight">
                 Pujan
               </span>
-              <span className="text-white/20 text-lg">|</span>
-              <span className="text-slate-400 text-sm font-medium tracking-wide">Developer</span>
+              <span className="text-white/20 text-xl font-light">/</span>
+              <span className="text-slate-400 text-xs font-semibold uppercase tracking-widest mt-0.5">
+                Portfolio
+              </span>
             </motion.div>
-            <p className="text-sm text-slate-500">
-              © {new Date().getFullYear()} Pujan Joshi. All rights reserved.
+            
+            <p className="text-sm text-slate-400 leading-relaxed max-w-sm">
+              Crafting premium digital experiences, fullstack architectures, and immersive interactive web applications with ultimate precision.
             </p>
-            <p className="flex items-center justify-center md:justify-start gap-1.5 text-xs text-slate-600 mt-2">
-              Designed & built with <Heart size={10} className="text-orange-500 fill-orange-500/20" /> using Next.js
-            </p>
+
+            {/* Availability Dot Badge */}
+            <div className="flex items-center gap-2 bg-emerald-500/5 border border-emerald-500/20 rounded-full px-3 py-1 mt-2">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+              </span>
+              <span className="text-xs font-medium text-emerald-400">Available for projects</span>
+            </div>
           </div>
 
-          {/* Social links with premium dark effect */}
-          <div className="flex items-center gap-4">
-            {socials.map(({ icon: Icon, href, label, hoverColor }) => (
-              <motion.a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                whileHover={{ y: -4, scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                viewport={{ once: true }}
-                className={`
-                  flex items-center justify-center w-11 h-11 rounded-full
-                  bg-white/5 border border-white/10 text-slate-400
-                  transition-all duration-300 ${hoverColor}
-                `}
-                aria-label={label}
-              >
-                <Icon size={18} />
-              </motion.a>
-            ))}
+          {/* Column 2: Sitemap Navigation */}
+          <div className="md:col-span-3 flex flex-col gap-4">
+            <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-widest">
+              Navigation
+            </h4>
+            <ul className="flex flex-col gap-2.5">
+              {navLinks.map((link) => (
+                <li key={link.name}>
+                  <a
+                    href={link.href}
+                    className="group inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-white transition-colors duration-200 cursor-pointer"
+                  >
+                    <span>{link.name}</span>
+                    {link.isExternal && (
+                      <ExternalLink size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                    )}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          {/* Back to top button */}
-          <motion.button
-            onClick={scrollToTop}
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            viewport={{ once: true }}
-            className="group flex items-center gap-2.5 px-5 py-2.5 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-full border border-white/10 text-sm font-medium text-slate-300 hover:text-white transition-all duration-300"
-            aria-label="Back to top"
-          >
-            <ArrowUp size={16} className="group-hover:-translate-y-1 transition-transform" />
-            <span>Back to top</span>
-          </motion.button>
+          {/* Column 3: Connect & Back to Top */}
+          <div className="md:col-span-4 flex flex-col items-start md:items-end gap-6">
+            <div className="w-full flex flex-col items-start md:items-end gap-3">
+              <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-widest">
+                Connect Online
+              </h4>
+              <div className="flex gap-2.5">
+                {socials.map(({ icon: Icon, href, label, hoverColor }) => (
+                  <motion.a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ y: -3, scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className={`
+                      flex items-center justify-center w-10 h-10 rounded-xl
+                      bg-white/5 border border-white/10 text-slate-400
+                      transition-all duration-300 ${hoverColor}
+                    `}
+                    aria-label={label}
+                  >
+                    <Icon size={18} />
+                  </motion.a>
+                ))}
+              </div>
+            </div>
+
+            <motion.button
+              onClick={scrollToTop}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              className="group inline-flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 rounded-xl border border-white/10 text-xs font-semibold text-slate-300 hover:text-white transition-all duration-300"
+              aria-label="Back to top"
+            >
+              <ArrowUp size={14} className="group-hover:-translate-y-0.5 transition-transform" />
+              <span>Back to top</span>
+            </motion.button>
+          </div>
+
         </div>
 
-        {/* Small separator and bottom info */}
-        <div className="mt-12 pt-8 border-t border-white/5 text-center">
-          <p className="text-xs text-slate-500 tracking-wide uppercase opacity-50">
-            Crafted with Tailwind CSS & Lucide Icons
+        {/* Bottom copyright block */}
+        <div className="pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
+          <p className="text-xs text-slate-500">
+            © {new Date().getFullYear()} Pujan Joshi. All rights reserved.
           </p>
+          <div className="flex items-center gap-1 text-xs text-slate-600">
+            <span>Designed & built with</span>
+            <Heart size={11} className="text-orange-500 fill-orange-500/20 animate-pulse" />
+            <span>using Next.js & Tailwind CSS</span>
+          </div>
         </div>
       </div>
     </footer>

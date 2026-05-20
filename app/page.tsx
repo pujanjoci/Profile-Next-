@@ -18,7 +18,7 @@ export default function Home() {
         <About 
           name="Pujan"
           bio="I'm a passionate full‑stack developer with over 5 years of experience building beautiful, functional web applications. I love turning complex problems into simple, elegant solutions. When I'm not coding, you'll find me hiking, reading sci‑fi, or experimenting with new technologies."
-          skills={['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Node.js', 'Figma']}
+          skills={['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'HTML', 'CSS', 'JS', 'MySQL', 'Supabase', 'Figma', 'Git/GitHub', 'Canva', 'Photoshop']}
           profileImage="/Pujan(ghandruk-sitting).png"
         />
         <Projects />

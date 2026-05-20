@@ -159,6 +159,8 @@ export default function Hero() {
                 >
                   Hire me
                 </Link>
+
+                
               </motion.div>
             </div>
           </motion.div>

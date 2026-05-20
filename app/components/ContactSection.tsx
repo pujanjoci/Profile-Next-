@@ -60,25 +60,25 @@ function validate(fields: FormFields): FieldErrors {
 const contactInfo = [
   {
     icon: Mail,
-    label: 'Email',
-    value: 'hello@pujan.dev',
-    href: 'mailto:hello@pujan.dev',
+    label: 'E-mail',
+    value: 'contact@pujan-joshi.com.np',
+    href: 'mailto:contact@pujan-joshi.com.np',
     color: 'text-orange-400',
     bg: 'bg-orange-500/10',
   },
   {
     icon: Phone,
     label: 'Phone',
-    value: '+977 9800-123-456',
-    href: 'tel:+9779800123456',
+    value: '+977 (98) 609 28 584',
+    href: 'tel:+9779860928584',
     color: 'text-blue-400',
     bg: 'bg-blue-500/10',
   },
   {
     icon: MapPin,
-    label: 'Location',
-    value: 'Kathmandu, Nepal',
-    href: 'https://maps.google.com/?q=Kathmandu,Nepal',
+    label: 'Address',
+    value: 'Bhaktapur, Katunje - Nepal',
+    href: 'https://maps.google.com/?q=Bhaktapur,Katunje,Nepal',
     color: 'text-emerald-400',
     bg: 'bg-emerald-500/10',
   },
@@ -88,19 +88,19 @@ const socials = [
   {
     icon: Github,
     label: 'GitHub',
-    href: 'https://github.com/pujan-joshi',
+    href: 'https://github.com/pujanjoci',
     hoverColor: 'hover:text-white hover:border-white/40',
   },
   {
     icon: Linkedin,
     label: 'LinkedIn',
-    href: 'https://linkedin.com/in/pujan-joshi',
+    href: 'https://www.linkedin.com/in/pujan-joshi-np/',
     hoverColor: 'hover:text-blue-400 hover:border-blue-400/40',
   },
   {
     icon: Twitter,
     label: 'Twitter / X',
-    href: 'https://twitter.com/pujanjoshi',
+    href: 'https://x.com/pujanjoshi3',
     hoverColor: 'hover:text-sky-400 hover:border-sky-400/40',
   },
 ]
@@ -233,7 +233,7 @@ export default function ContactSection({ id = 'contact' }: { id?: string }) {
        * Formspree endpoint. Replace YOUR_FORM_ID with your actual ID.
        * e.g. https://formspree.io/f/xpzgkwjq
        */
-      const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID'
+      const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xvgzjlpd'
 
       const res = await fetch(FORMSPREE_ENDPOINT, {
         method: 'POST',
