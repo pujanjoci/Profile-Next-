@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Menu, X, Home, User, FolderGit2, Mail, BookOpen } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useRouter, usePathname } from 'next/navigation'
+import ThemeToggle from './ThemeToggle'
 
 const navItems = [
   { name: 'Home', href: '#', icon: Home, isRoute: false },
@@ -146,8 +147,9 @@ export default function Header() {
     <>
       <header className="fixed top-0 left-0 w-full z-50 pointer-events-none">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-6 flex items-center justify-between md:justify-center">
-          {/* Logo / Initials (empty div for layout) */}
-          <div className="md:hidden pointer-events-auto z-50"></div>
+          <div className="md:hidden pointer-events-auto z-50">
+            <ThemeToggle />
+          </div>
 
           {/* Desktop Navigation Pill */}
           <div className="hidden md:block pointer-events-auto">
@@ -194,6 +196,10 @@ export default function Header() {
                 </a>
               ))}
             </motion.nav>
+          </div>
+
+          <div className="hidden md:block pointer-events-auto absolute right-6 sm:right-8 lg:right-12">
+            <ThemeToggle />
           </div>
 
           {/* Mobile Menu Button */}

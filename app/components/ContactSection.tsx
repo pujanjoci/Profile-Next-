@@ -89,7 +89,7 @@ const socials = [
     icon: Github,
     label: 'GitHub',
     href: 'https://github.com/pujanjoci',
-    hoverColor: 'hover:text-white hover:border-white/40',
+    hoverColor: 'hover:text-slate-950 hover:border-slate-400 dark:hover:text-white dark:hover:border-white/40',
   },
   {
     icon: Linkedin,
@@ -143,16 +143,17 @@ function Field({
 }) {
   const [focused, setFocused] = useState(false)
   const baseClass = `
-    w-full px-4 py-3 rounded-xl bg-white/5 border
-    text-white placeholder:text-slate-500 text-sm
+    w-full px-4 py-3 rounded-xl bg-white border
+    text-slate-900 placeholder:text-slate-400 text-sm
     outline-none transition-all duration-200 resize-none
-    ${focused ? 'border-orange-500/60 bg-orange-500/5 shadow-[0_0_0_3px_rgba(249,115,22,0.12)]' : 'border-white/10'}
+    dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500
+    ${focused ? 'border-orange-500/60 bg-orange-500/5 shadow-[0_0_0_3px_rgba(249,115,22,0.12)]' : 'border-slate-200 dark:border-white/10'}
     ${error ? '!border-red-500/60 !bg-red-500/5' : ''}
   `
 
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={id} className="text-sm font-medium text-slate-300">
+      <label htmlFor={id} className="text-sm font-medium text-slate-700 dark:text-slate-300">
         {label}
         <span className="text-orange-500 ml-0.5">*</span>
       </label>
@@ -260,7 +261,7 @@ export default function ContactSection({ id = 'contact' }: { id?: string }) {
   }
 
   return (
-    <section id={id} className="relative w-full bg-neutral-950 py-20 md:py-32 overflow-hidden">
+    <section id={id} className="relative w-full bg-slate-50 py-20 transition-colors duration-300 dark:bg-neutral-950 md:py-32 overflow-hidden">
       
       {/* ── Decorative background blobs ── */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
@@ -281,14 +282,14 @@ export default function ContactSection({ id = 'contact' }: { id?: string }) {
           <span className="inline-block text-orange-500 text-sm font-semibold uppercase tracking-widest mb-3">
             Get In Touch
           </span>
-          <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-4">
+          <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-950 dark:text-white mb-4">
             Contact{' '}
             <span className="bg-gradient-to-r from-orange-400 to-amber-300 bg-clip-text text-transparent">
               Me
             </span>
           </h2>
           <div className="w-20 h-1 bg-gradient-to-r from-orange-500 to-amber-400 mx-auto rounded-full mb-5" />
-          <p className="text-lg text-slate-400 max-w-xl mx-auto leading-relaxed">
+          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-xl mx-auto leading-relaxed">
             Have a project in mind, want to collaborate, or just want to say hello?
             I&apos;d love to hear from you.
           </p>
@@ -307,8 +308,8 @@ export default function ContactSection({ id = 'contact' }: { id?: string }) {
             custom={1}
           >
             {/* Info cards */}
-            <div className="rounded-2xl border border-white/8 bg-white/4 backdrop-blur-sm p-6 space-y-5">
-              <h3 className="text-lg font-semibold text-white">Contact Information</h3>
+            <div className="rounded-2xl border border-slate-200 bg-white/80 backdrop-blur-sm p-6 space-y-5 shadow-xl shadow-slate-200/50 dark:border-white/10 dark:bg-white/4 dark:shadow-none">
+              <h3 className="text-lg font-semibold text-slate-950 dark:text-white">Contact Information</h3>
               <div className="space-y-4">
                 {contactInfo.map(({ icon: Icon, label, value, href, color, bg }) => (
                   <a
@@ -316,7 +317,7 @@ export default function ContactSection({ id = 'contact' }: { id?: string }) {
                     href={href}
                     target={href.startsWith('http') ? '_blank' : undefined}
                     rel="noopener noreferrer"
-                    className="group flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors duration-200"
+                    className="group flex items-center gap-4 p-3 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors duration-200"
                   >
                     <span className={`flex-shrink-0 p-2.5 rounded-lg ${bg}`}>
                       <Icon size={18} className={color} />
@@ -325,7 +326,7 @@ export default function ContactSection({ id = 'contact' }: { id?: string }) {
                       <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">
                         {label}
                       </p>
-                      <p className="text-sm text-slate-200 group-hover:text-white transition-colors">
+                      <p className="text-sm text-slate-700 group-hover:text-slate-950 transition-colors dark:text-slate-200 dark:group-hover:text-white">
                         {value}
                       </p>
                     </div>
@@ -335,8 +336,8 @@ export default function ContactSection({ id = 'contact' }: { id?: string }) {
             </div>
 
             {/* Social links */}
-            <div className="rounded-2xl border border-white/8 bg-white/4 backdrop-blur-sm p-6">
-              <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">
+            <div className="rounded-2xl border border-slate-200 bg-white/80 backdrop-blur-sm p-6 shadow-xl shadow-slate-200/50 dark:border-white/10 dark:bg-white/4 dark:shadow-none">
+              <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">
                 Find me online
               </h3>
               <div className="flex gap-3">
@@ -351,7 +352,8 @@ export default function ContactSection({ id = 'contact' }: { id?: string }) {
                     whileTap={{ scale: 0.95 }}
                     className={`
                       flex items-center justify-center w-11 h-11 rounded-full
-                      border border-white/15 text-slate-400
+                      border border-slate-200 text-slate-600
+                      dark:border-white/15 dark:text-slate-400
                       transition-all duration-200 ${hoverColor}
                     `}
                   >
@@ -385,7 +387,7 @@ export default function ContactSection({ id = 'contact' }: { id?: string }) {
             variants={fadeUp}
             custom={2}
           >
-            <div className="rounded-2xl border border-white/8 bg-white/4 backdrop-blur-sm p-7 sm:p-9 shadow-2xl">
+            <div className="rounded-2xl border border-slate-200 bg-white/80 backdrop-blur-sm p-7 sm:p-9 shadow-2xl shadow-slate-200/60 dark:border-white/10 dark:bg-white/4 dark:shadow-2xl">
 
               {/* Success state */}
               <AnimatePresence mode="wait">
@@ -401,13 +403,13 @@ export default function ContactSection({ id = 'contact' }: { id?: string }) {
                     <div className="w-16 h-16 rounded-full bg-emerald-500/15 flex items-center justify-center mb-2">
                       <CheckCircle size={32} className="text-emerald-400" />
                     </div>
-                    <h3 className="text-2xl font-bold text-white">Message sent!</h3>
-                    <p className="text-slate-400 max-w-xs">
+                    <h3 className="text-2xl font-bold text-slate-950 dark:text-white">Message sent!</h3>
+                    <p className="text-slate-600 dark:text-slate-400 max-w-xs">
                       Thank you for reaching out. I&apos;ll get back to you as soon as possible.
                     </p>
                     <button
                       onClick={resetForm}
-                      className="mt-2 px-5 py-2 rounded-full border border-white/15 text-sm text-slate-300 hover:bg-white/8 hover:text-white transition-all duration-200 shadow-sm"
+                      className="mt-2 px-5 py-2 rounded-full border border-slate-200 text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-950 transition-all duration-200 shadow-sm dark:border-white/15 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"
                     >
                       Send another message
                     </button>
@@ -425,13 +427,13 @@ export default function ContactSection({ id = 'contact' }: { id?: string }) {
                     <div className="w-16 h-16 rounded-full bg-red-500/15 flex items-center justify-center mb-2">
                       <AlertCircle size={32} className="text-red-400" />
                     </div>
-                    <h3 className="text-2xl font-bold text-white">Something went wrong</h3>
-                    <p className="text-slate-400 max-w-xs">
+                    <h3 className="text-2xl font-bold text-slate-950 dark:text-white">Something went wrong</h3>
+                    <p className="text-slate-600 dark:text-slate-400 max-w-xs">
                       Your message couldn&apos;t be sent. Please try again or email me directly.
                     </p>
                     <button
                       onClick={resetForm}
-                      className="mt-2 px-5 py-2 rounded-full border border-white/15 text-sm text-slate-300 hover:bg-white/8 hover:text-white transition-all duration-200"
+                      className="mt-2 px-5 py-2 rounded-full border border-slate-200 text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-950 transition-all duration-200 dark:border-white/15 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"
                     >
                       Try again
                     </button>
@@ -446,7 +448,7 @@ export default function ContactSection({ id = 'contact' }: { id?: string }) {
                     noValidate
                     className="space-y-5"
                   >
-                    <h3 className="text-xl font-semibold text-white mb-6">Send a Message</h3>
+                    <h3 className="text-xl font-semibold text-slate-950 dark:text-white mb-6">Send a Message</h3>
 
                     {/* Name + Email row */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -503,7 +505,7 @@ export default function ContactSection({ id = 'contact' }: { id?: string }) {
                         shadow-lg shadow-orange-500/25
                         transition-all duration-200
                         disabled:opacity-60 disabled:cursor-not-allowed
-                        focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-neutral-900
+                        focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-neutral-900
                       "
                     >
                       {formState === 'loading' ? (

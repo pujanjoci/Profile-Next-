@@ -13,7 +13,7 @@ export default function Footer() {
       icon: Github,
       href: 'https://github.com/pujanjoci',
       label: 'GitHub',
-      hoverColor: 'hover:text-white hover:border-white/30 hover:bg-white/5',
+      hoverColor: 'hover:text-slate-950 hover:border-slate-400 hover:bg-slate-100 dark:hover:text-white dark:hover:border-white/30 dark:hover:bg-white/5',
     },
     {
       icon: Linkedin,
@@ -38,7 +38,7 @@ export default function Footer() {
   ]
 
   return (
-    <footer className="relative bg-neutral-950 border-t border-white/5 pt-16 pb-10 px-6 sm:px-12 md:px-16 overflow-hidden">
+    <footer className="relative bg-white border-t border-slate-200 pt-16 pb-10 px-6 sm:px-12 md:px-16 overflow-hidden transition-colors duration-300 dark:bg-neutral-950 dark:border-white/5">
       
       {/* ── Decorative premium background light effect ── */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
@@ -47,7 +47,7 @@ export default function Footer() {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8 pb-12 border-b border-white/5">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8 pb-12 border-b border-slate-200 dark:border-white/5">
           
           {/* Column 1: Brand & Tagline */}
           <div className="md:col-span-5 flex flex-col items-start gap-4">
@@ -60,13 +60,13 @@ export default function Footer() {
               <span className="text-2xl font-black bg-gradient-to-r from-orange-400 to-amber-300 bg-clip-text text-transparent tracking-tight">
                 Pujan
               </span>
-              <span className="text-white/20 text-xl font-light">/</span>
-              <span className="text-slate-400 text-xs font-semibold uppercase tracking-widest mt-0.5">
+              <span className="text-slate-300 text-xl font-light dark:text-white/20">/</span>
+              <span className="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-widest mt-0.5">
                 Portfolio
               </span>
             </motion.div>
             
-            <p className="text-sm text-slate-400 leading-relaxed max-w-sm">
+            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed max-w-sm">
               Crafting premium digital experiences, fullstack architectures, and immersive interactive web applications with ultimate precision.
             </p>
 
@@ -90,7 +90,7 @@ export default function Footer() {
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className="group inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-white transition-colors duration-200 cursor-pointer"
+                    className="group inline-flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-950 transition-colors duration-200 cursor-pointer dark:text-slate-400 dark:hover:text-white"
                   >
                     <span>{link.name}</span>
                     {link.isExternal && (
@@ -119,7 +119,8 @@ export default function Footer() {
                     whileTap={{ scale: 0.95 }}
                     className={`
                       flex items-center justify-center w-10 h-10 rounded-xl
-                      bg-white/5 border border-white/10 text-slate-400
+                      bg-slate-50 border border-slate-200 text-slate-600
+                      dark:bg-white/5 dark:border-white/10 dark:text-slate-400
                       transition-all duration-300 ${hoverColor}
                     `}
                     aria-label={label}
@@ -134,7 +135,7 @@ export default function Footer() {
               onClick={scrollToTop}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              className="group inline-flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 rounded-xl border border-white/10 text-xs font-semibold text-slate-300 hover:text-white transition-all duration-300"
+              className="group inline-flex items-center gap-2 px-4 py-2 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 hover:text-slate-950 transition-all duration-300 dark:bg-white/5 dark:hover:bg-white/10 dark:border-white/10 dark:text-slate-300 dark:hover:text-white"
               aria-label="Back to top"
             >
               <ArrowUp size={14} className="group-hover:-translate-y-0.5 transition-transform" />

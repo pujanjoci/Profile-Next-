@@ -2,49 +2,34 @@
 
 import dynamic from 'next/dynamic'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { SectionSkeleton } from './PageSkeleton'
 
 const About = dynamic(() => import('./About'), {
   ssr: false,
-  loading: () => <SectionFallback minHeight="780px" dark />,
+  loading: () => <SectionSkeleton variant="about" minHeight="780px" />,
 })
 const Projects = dynamic(() => import('./Projects'), {
   ssr: false,
-  loading: () => <SectionFallback minHeight="920px" dark />,
+  loading: () => <SectionSkeleton variant="projects" minHeight="920px" />,
 })
 const Contact = dynamic(() => import('./Contact'), {
   ssr: false,
-  loading: () => <SectionFallback minHeight="820px" dark />,
+  loading: () => <SectionSkeleton variant="contact" minHeight="820px" />,
 })
 const Footer = dynamic(() => import('./Footer'), {
   ssr: false,
-  loading: () => <SectionFallback minHeight="340px" dark />,
+  loading: () => <SectionSkeleton variant="footer" minHeight="340px" />,
 })
-
-function SectionFallback({
-  dark = false,
-  minHeight,
-}: {
-  dark?: boolean
-  minHeight: string
-}) {
-  return (
-    <div
-      aria-hidden="true"
-      className={dark ? 'bg-neutral-950' : 'bg-neutral-900'}
-      style={{ minHeight }}
-    />
-  )
-}
 
 function LazyMount({
   id,
   minHeight,
-  dark,
+  skeleton,
   children,
 }: {
   id?: string
   minHeight: string
-  dark?: boolean
+  skeleton: 'about' | 'projects' | 'contact' | 'footer'
   children: ReactNode
 }) {
   const [shouldRender, setShouldRender] = useState(false)
@@ -72,17 +57,13 @@ function LazyMount({
 
   if (shouldRender) return children
 
-  return (
-    <section id={id} ref={anchorRef} style={{ minHeight }}>
-      <SectionFallback minHeight={minHeight} dark={dark} />
-    </section>
-  )
+  return <SectionSkeleton anchorRef={anchorRef} id={id} variant={skeleton} minHeight={minHeight} />
 }
 
 export default function LazyHomeSections() {
   return (
     <>
-      <LazyMount id="about" minHeight="780px" dark>
+      <LazyMount id="about" minHeight="780px" skeleton="about">
         <About
           id="about"
           name="Pujan"
@@ -92,15 +73,15 @@ export default function LazyHomeSections() {
         />
       </LazyMount>
 
-      <LazyMount id="projects" minHeight="920px" dark>
+      <LazyMount id="projects" minHeight="920px" skeleton="projects">
         <Projects id="projects" />
       </LazyMount>
 
-      <LazyMount id="contact" minHeight="820px" dark>
+      <LazyMount id="contact" minHeight="820px" skeleton="contact">
         <Contact id="contact" />
       </LazyMount>
 
-      <LazyMount minHeight="340px" dark>
+      <LazyMount minHeight="340px" skeleton="footer">
         <Footer />
       </LazyMount>
     </>

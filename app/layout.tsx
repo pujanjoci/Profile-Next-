@@ -46,8 +46,29 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${poppins.variable} scroll-smooth`}>
-      <body className="font-sans bg-white text-gray-900 antialiased">
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${inter.variable} ${poppins.variable} scroll-smooth`}
+    >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(() => {
+  try {
+    const storedTheme = localStorage.getItem('theme');
+    const theme = storedTheme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    document.documentElement.style.colorScheme = theme;
+  } catch {
+    document.documentElement.classList.add('dark');
+    document.documentElement.style.colorScheme = 'dark';
+  }
+})();`,
+          }}
+        />
+      </head>
+      <body className="font-sans bg-white text-gray-900 antialiased transition-colors duration-300 dark:bg-neutral-950 dark:text-gray-100">
         {children}
       </body>
     </html>

@@ -42,7 +42,7 @@ function BookFlip() {
 
 export default function GalleryPage() {
   return (
-    <main className="min-h-screen bg-neutral-950 text-white overflow-x-hidden">
+    <main className="min-h-screen bg-slate-50 text-slate-950 overflow-x-hidden transition-colors duration-300 dark:bg-neutral-950 dark:text-white">
       {/* Shared site header */}
       <Header />
 
@@ -61,9 +61,9 @@ export default function GalleryPage() {
           <span className="inline-block text-orange-500 text-sm font-semibold uppercase tracking-widest mb-3">
             Creative Lab
           </span>
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-4">Gallery</h1>
+          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-4 text-slate-950 dark:text-white">Gallery</h1>
           <div className="w-24 h-1 bg-gradient-to-r from-purple-500 to-orange-400 mx-auto rounded-full mb-6" />
-          <p className="text-lg text-slate-400 max-w-xl mx-auto">
+          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-xl mx-auto">
             A space for interactive experiments, animations, and visual ideas.
           </p>
         </motion.div>
@@ -78,9 +78,9 @@ export default function GalleryPage() {
           transition={{ duration: 0.7 }}
           className="max-w-4xl mx-auto"
         >
-          <div className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden shadow-2xl">
+          <div className="rounded-3xl border border-slate-200 bg-white/80 backdrop-blur-sm overflow-hidden shadow-2xl shadow-slate-200/60 dark:border-white/10 dark:bg-white/5 dark:shadow-2xl">
             {/* Animation area — no label, no title */}
-            <div className="relative py-10 px-4 bg-gradient-to-br from-neutral-900 to-neutral-950 min-h-[560px] flex items-center justify-center">
+            <div className="relative py-10 px-4 bg-gradient-to-br from-slate-100 to-white dark:from-neutral-900 dark:to-neutral-950 min-h-[560px] flex items-center justify-center">
               <BookFlip />
             </div>
           </div>

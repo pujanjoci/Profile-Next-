@@ -528,7 +528,7 @@ function ProjectCarousel() {
       onMouseLeave={() => { isHoveredRef.current = false }}
     >
       {/* Left Column: Project Details Panel */}
-      <div className="lg:col-span-5 flex flex-col justify-between p-6 sm:p-8 rounded-[2rem] border border-white/10 bg-neutral-950 shadow-2xl relative overflow-hidden min-h-[480px] lg:order-first order-last">
+      <div className="lg:col-span-5 flex flex-col justify-between p-6 sm:p-8 rounded-[2rem] border border-slate-200 bg-white shadow-2xl shadow-slate-200/60 relative overflow-hidden min-h-[480px] lg:order-first order-last dark:border-white/10 dark:bg-neutral-950 dark:shadow-2xl">
         {/* Glow behind the active theme */}
         <div 
           className="absolute -right-24 -top-24 h-48 w-48 rounded-full blur-3xl opacity-20 transition-all duration-700 pointer-events-none"
@@ -541,7 +541,7 @@ function ProjectCarousel() {
             Featured Project
           </span>
           <div className="flex items-center gap-2 font-mono">
-            <span className="text-sm font-bold text-white">
+            <span className="text-sm font-bold text-slate-950 dark:text-white">
               {String(activeIndex + 1).padStart(2, '0')}
             </span>
             <span className="text-xs text-slate-500">/</span>
@@ -563,14 +563,14 @@ function ProjectCarousel() {
               className="flex flex-col gap-4"
             >
               {/* Title */}
-              <h3 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+              <h3 className="text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
                 <span className={`bg-gradient-to-r ${selectedProject.color} bg-clip-text text-transparent`}>
                   {selectedProject.title}
                 </span>
               </h3>
               
               {/* Description */}
-              <p className="text-slate-300 text-sm leading-relaxed sm:text-base">
+              <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed sm:text-base">
                 {selectedProject.description}
               </p>
               
@@ -579,7 +579,7 @@ function ProjectCarousel() {
                 {selectedProject.tech.map((tech) => (
                   <span
                     key={tech}
-                    className="rounded-full border border-white/5 bg-white/5 px-3 py-1 text-xs font-medium text-slate-300 hover:bg-white/10 hover:border-white/20 transition-all duration-300 cursor-default"
+                    className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600 hover:bg-slate-100 hover:border-slate-300 transition-all duration-300 cursor-default dark:border-white/5 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:border-white/20"
                   >
                     {tech}
                   </span>
@@ -592,7 +592,7 @@ function ProjectCarousel() {
         {/* Bottom Section: Interactive Controls, Links, Progress bar */}
         <div className="relative z-10 space-y-6">
           {/* Progress Bar */}
-          <div className="h-[2px] w-full bg-white/5 rounded-full overflow-hidden">
+          <div className="h-[2px] w-full bg-slate-200 dark:bg-white/5 rounded-full overflow-hidden">
             <motion.div 
               className="h-full"
               style={{ 
@@ -611,7 +611,7 @@ function ProjectCarousel() {
                 type="button"
                 aria-label="Previous project"
                 onClick={() => selectProject(activeIndex - 1)}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:bg-white/15 active:scale-95 cursor-pointer"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-800 transition hover:bg-slate-100 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/15"
               >
                 <ChevronLeft size={16} />
               </button>
@@ -619,7 +619,7 @@ function ProjectCarousel() {
                 type="button"
                 aria-label="Reset carousel"
                 onClick={() => selectProject(0)}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:bg-white/15 active:scale-95 cursor-pointer"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-800 transition hover:bg-slate-100 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/15"
               >
                 <RotateCcw size={15} />
               </button>
@@ -627,7 +627,7 @@ function ProjectCarousel() {
                 type="button"
                 aria-label="Next project"
                 onClick={() => selectProject(activeIndex + 1)}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:bg-white/15 active:scale-95 cursor-pointer"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-800 transition hover:bg-slate-100 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/15"
               >
                 <ChevronRight size={16} />
               </button>
@@ -639,7 +639,7 @@ function ProjectCarousel() {
                 href={selectedProject.repoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 text-xs font-semibold text-white transition hover:bg-white/15 hover:border-white/20 active:scale-95 cursor-pointer"
+                className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 text-xs font-semibold text-slate-800 transition hover:bg-slate-100 hover:border-slate-300 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/15 dark:hover:border-white/20"
               >
                 <Github size={14} />
                 Code
@@ -663,7 +663,7 @@ function ProjectCarousel() {
       </div>
 
       {/* Right Column: 3D Scene Viewport */}
-      <div className="lg:col-span-7 relative h-[420px] sm:h-[500px] lg:h-auto rounded-[2rem] border border-white/10 bg-neutral-950 overflow-hidden shadow-2xl group/canvas lg:order-last order-first min-h-[420px]">
+      <div className="lg:col-span-7 relative h-[420px] sm:h-[500px] lg:h-auto rounded-[2rem] border border-slate-200 bg-slate-100 overflow-hidden shadow-2xl shadow-slate-200/60 group/canvas lg:order-last order-first min-h-[420px] dark:border-white/10 dark:bg-neutral-950 dark:shadow-2xl">
         {/* Touch layer for dragging */}
         <div
           className="absolute inset-0 z-10 touch-pan-y cursor-grab active:cursor-grabbing"
@@ -737,7 +737,7 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
   return (
     <section
       id={id}
-      className="relative min-h-screen w-full overflow-hidden bg-neutral-950 py-20 md:py-28"
+      className="relative min-h-screen w-full overflow-hidden bg-slate-50 py-20 transition-colors duration-300 dark:bg-neutral-950 md:py-28"
     >
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute left-1/2 top-1/2 h-[620px] w-[620px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-orange-500/5 blur-3xl" />
@@ -755,7 +755,7 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
           <span className="mb-3 inline-block text-sm font-semibold uppercase tracking-widest text-orange-500">
             My Work
           </span>
-          <h2 className="mb-4 text-4xl font-extrabold text-white md:text-5xl">
+          <h2 className="mb-4 text-4xl font-extrabold text-slate-950 dark:text-white md:text-5xl">
             Projects
           </h2>
           <div className="mx-auto h-1 w-24 rounded-full bg-gradient-to-r from-orange-500 to-amber-400" />
@@ -788,7 +788,7 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
             href="https://github.com/pujanjoci"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 font-semibold text-white shadow-lg backdrop-blur-sm transition-colors hover:bg-white/10 active:scale-95 cursor-pointer"
+            className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-6 py-3 font-semibold text-slate-800 shadow-lg backdrop-blur-sm transition-colors hover:bg-slate-100 active:scale-95 cursor-pointer dark:border-white/20 dark:text-white dark:hover:bg-white/10"
           >
             <Github size={18} />
             View on GitHub
