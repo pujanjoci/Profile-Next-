@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Menu, X, Home, User, FolderGit2, Mail, BookOpen } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useRouter, usePathname } from 'next/navigation'
@@ -16,7 +16,9 @@ const navItems = [
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [showIcons, setShowIcons] = useState(false)
-  const [prevScrollY, setPrevScrollY] = useState(0)
+  const prevScrollYRef = useRef(0)
+  const showIconsRef = useRef(false)
+  const tickingRef = useRef(false)
   const router = useRouter()
   const pathname = usePathname()
   const isHomePage = pathname === '/'
@@ -49,21 +51,37 @@ export default function Header() {
   // Handle scroll direction to toggle icons on desktop
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY
-      const scrollingDown = currentScrollY > prevScrollY
+      if (tickingRef.current) return
+      tickingRef.current = true
 
-      if (scrollingDown && currentScrollY > 80) {
-        setShowIcons(true)
-      } else if (!scrollingDown) {
-        setShowIcons(false)
-      }
+      window.requestAnimationFrame(() => {
+        const currentScrollY = window.scrollY
+        const scrollingDown = currentScrollY > prevScrollYRef.current
+        const nextShowIcons = scrollingDown && currentScrollY > 80
 
-      setPrevScrollY(currentScrollY)
+        if (nextShowIcons !== showIconsRef.current) {
+          showIconsRef.current = nextShowIcons
+          setShowIcons(nextShowIcons)
+        }
+
+        prevScrollYRef.current = currentScrollY
+        tickingRef.current = false
+      })
     }
 
+    const initializeScrollState = () => {
+      prevScrollYRef.current = window.scrollY
+      const nextShowIcons = window.scrollY > 80
+      if (nextShowIcons !== showIconsRef.current) {
+        showIconsRef.current = nextShowIcons
+        setShowIcons(nextShowIcons)
+      }
+    }
+
+    initializeScrollState()
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [prevScrollY])
+  }, [])
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {

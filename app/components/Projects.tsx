@@ -733,10 +733,10 @@ function ProjectCarousel() {
   )
 }
 
-export default function Projects() {
+export default function Projects({ id = 'projects' }: { id?: string }) {
   return (
     <section
-      id="projects"
+      id={id}
       className="relative min-h-screen w-full overflow-hidden bg-neutral-950 py-20 md:py-28"
     >
       <div className="absolute inset-0 pointer-events-none">

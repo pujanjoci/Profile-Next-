@@ -100,9 +100,11 @@ export default function Hero() {
             <div className="relative aspect-[4/5] 
                             w-[140%] max-w-none sm:w-[400px] md:w-[500px] lg:w-[600px] xl:w-[650px] flex-shrink-0">
               <Image
-                src="/Pujan(Profile)-nobg.png"
+                src="/Pujan(Profile)-hero.webp"
                 alt="Pujan Profile"
                 fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 600px, 650px"
+                quality={82}
                 className="object-contain object-bottom drop-shadow-2xl"
                 priority
               />

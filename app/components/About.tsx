@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 
 export interface AboutProps {
+  id?: string;
   name: string;
   bio: string;
   skills: string[];
@@ -20,10 +21,11 @@ export interface AboutProps {
 }
 
 export default function About({
+  id = "about",
   name = "Pujan",
   bio = "I'm a passionate full‑stack developer with over 5 years of experience building beautiful, functional web applications. I love turning complex problems into simple, elegant solutions. When I'm not coding, you'll find me reading sci‑fi, or experimenting with new technologies.",
   skills = ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'HTML', 'CSS', 'JS', 'MySQL', 'Supabase', 'Figma', 'Git/GitHub', 'Canva', 'Photoshop'],
-  profileImage = "/Pujan(ghandruk-sitting).png",
+  profileImage = "/Pujan(ghandruk-sitting)-profile.webp",
 }: AboutProps) {
 
   // Dynamically categorize skills to present a highly structured and professional layout
@@ -80,7 +82,7 @@ export default function About({
 
   return (
     <section
-      id="about"
+      id={id}
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-neutral-950 text-white py-24 sm:py-32"
     >
       {/* Background Glowing Ambient Orbs */}
@@ -130,7 +132,6 @@ export default function About({
                   fill
                   sizes="(max-width: 640px) 256px, (max-width: 768px) 320px, 400px"
                   className="object-cover object-top group-hover:scale-[1.03] transition-transform duration-700 ease-out"
-                  priority
                 />
                 
                 {/* Visual overlay for depth */}
