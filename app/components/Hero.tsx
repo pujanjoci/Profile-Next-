@@ -4,11 +4,11 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowUpRight, Quote } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 
 export default function Hero() {
   // Typing effect state
-  const roles = ['Web Designer', 'Web Developer', 'Graphic Designer', 'Gamer']
+  const roles = useMemo(() => ['Web Designer', 'Web Developer', 'Graphic Designer', 'Gamer'], [])
   const [displayText, setDisplayText] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
   const [roleIndex, setRoleIndex] = useState(0)

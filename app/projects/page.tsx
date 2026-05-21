@@ -4,22 +4,20 @@ import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   ArrowLeft,
-  ArrowUpRight,
   ExternalLink,
   Github,
   Search,
   Sparkles,
   X,
-  Code,
   FolderGit2,
   Tv,
   Gamepad,
   Palette,
   Layers,
 } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { projects } from '../data/projects'
-import type { Project } from '../data/projects'
 
 const CATEGORIES = ['All', 'Web Apps', 'Games', 'UI/UX', 'Designs'] as const
 type Category = typeof CATEGORIES[number]
@@ -239,11 +237,12 @@ export default function ProjectsPage() {
 
                 {/* Card Top: Image */}
                 <div className="relative aspect-[16/10] w-full overflow-hidden border-b border-white/5 bg-neutral-950">
-                  <img
+                  <Image
                     src={project.image}
                     alt={project.title}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 group-hover:rotate-1"
+                    fill
+                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105 group-hover:rotate-1"
                   />
                   <div className="absolute inset-0 bg-neutral-950/20 group-hover:bg-transparent transition-colors duration-500" />
                   

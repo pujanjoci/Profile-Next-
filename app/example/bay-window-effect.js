@@ -22,7 +22,7 @@ gsap.timeline()
         let current = e.currentTarget;
         gsap.to('.img', {opacity:(i,t)=>(t==current)? 1:0.5, ease:'power3'})
       })
-      $('.img').on('mouseleave', (e)=>{
+      $('.img').on('mouseleave', ()=>{
         gsap.to('.img', {opacity:1, ease:'power2.inOut'})
       })
     }, '-=0.5')
@@ -51,7 +51,7 @@ function drag(e){
 }
 
 
-function dragEnd(e){
+function dragEnd(){
   $(window).off('mousemove touchmove', drag);
   gsap.set('.ring', {cursor:'grab'});
 }
@@ -83,7 +83,7 @@ gsap.timeline()
         let current = e.currentTarget;
         gsap.to('.img', {opacity:(i,t)=>(t==current)? 1:0.5, ease:'power3'})
       })
-      $('.img').on('mouseleave', (e)=>{
+      $('.img').on('mouseleave', ()=>{
         gsap.to('.img', {opacity:1, ease:'power2.inOut'})
       })
     }, '-=0.5')
@@ -112,7 +112,7 @@ function drag(e){
 }
 
 
-function dragEnd(e){
+function dragEnd(){
   $(window).off('mousemove touchmove', drag);
   gsap.set('.ring', {cursor:'grab'});
 }

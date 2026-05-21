@@ -5,10 +5,6 @@ import {
   Cpu, 
   Database, 
   Palette, 
-  Briefcase, 
-  Layers, 
-  CheckCircle2,
-  Trophy,
   Code2
 } from 'lucide-react';
 
@@ -28,10 +24,6 @@ export default function About({
   bio = "I'm a passionate full‑stack developer with over 5 years of experience building beautiful, functional web applications. I love turning complex problems into simple, elegant solutions. When I'm not coding, you'll find me reading sci‑fi, or experimenting with new technologies.",
   skills = ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'HTML', 'CSS', 'JS', 'MySQL', 'Supabase', 'Figma', 'Git/GitHub', 'Canva', 'Photoshop'],
   profileImage = "/Pujan(ghandruk-sitting).png",
-  themeColors = {
-    primary: "from-orange-500 to-amber-400",
-    secondary: "from-cyan-500/10 to-blue-500/10"
-  }
 }: AboutProps) {
 
   // Dynamically categorize skills to present a highly structured and professional layout
