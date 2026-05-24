@@ -104,7 +104,7 @@ export default function Hero() {
                 alt="Pujan Profile"
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 600px, 650px"
-                quality={82}
+                quality={75}
                 className="object-contain object-bottom drop-shadow-2xl"
                 priority
               />

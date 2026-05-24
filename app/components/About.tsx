@@ -1,10 +1,6 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { 
-  ShieldCheck, 
-  LayoutTemplate, 
-  Code2 
-} from 'lucide-react';
+
 
 export interface AboutProps {
   id?: string;
@@ -45,24 +41,7 @@ export default function About({
     }
   ];
 
-  // Engineering principles matching the standards in .skills
-  const principles = [
-    {
-      title: "Design System Thinking",
-      description: "Building interfaces with exact spacing rhythm, cohesive type scales, and clean dark/light tokens instead of arbitrary layouts.",
-      icon: <LayoutTemplate className="w-5 h-5 text-orange-500" />
-    },
-    {
-      title: "Clean & Semantic Code",
-      description: "Writing type-safe, single-responsibility React components with semantic HTML and complete keyboard accessibility.",
-      icon: <Code2 className="w-5 h-5 text-orange-500" />
-    },
-    {
-      title: "Comprehensive State UX",
-      description: "Crafting bulletproof layouts that handle loading skeletons, empty/error scenarios, and smooth success states gracefully.",
-      icon: <ShieldCheck className="w-5 h-5 text-orange-500" />
-    }
-  ];
+
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -203,43 +182,7 @@ export default function About({
           </div>
         </motion.div>
 
-        {/* Engineering Philosophy / Values Section */}
-        <motion.div 
-          className="mt-20 pt-16 border-t border-slate-100 dark:border-white/5"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <motion.div variants={itemVariants} className="space-y-3 mb-10 text-center lg:text-left">
-            <span className="text-xs font-semibold uppercase tracking-widest text-orange-500">
-              02 / Execution & Values
-            </span>
-            <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-950 dark:text-white font-sans">
-              Engineering Standards
-            </h3>
-          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {principles.map((p, idx) => (
-              <motion.div 
-                key={idx} 
-                variants={itemVariants}
-                className="p-6 border border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-white/[0.01] rounded-2xl space-y-4 hover:border-slate-200 dark:hover:border-white/10 transition-all duration-300"
-              >
-                <div className="p-2.5 bg-slate-100 dark:bg-white/5 rounded-xl w-fit">
-                  {p.icon}
-                </div>
-                <h4 className="text-lg font-bold text-slate-950 dark:text-white">
-                  {p.title}
-                </h4>
-                <p className="text-sm text-slate-650 dark:text-slate-400 leading-relaxed font-normal">
-                  {p.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
       </div>
     </section>
   );
