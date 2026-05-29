@@ -29,16 +29,18 @@ export function createPageMetadata({
   description: string
   path?: string
 }): Metadata {
+  const absoluteUrl = `${siteConfig.url}${path === '/' ? '' : path}`
+
   return {
     title,
     description,
     alternates: {
-      canonical: path,
+      canonical: absoluteUrl,
     },
     openGraph: {
       title,
       description,
-      url: path,
+      url: absoluteUrl,
       siteName: siteConfig.name,
       images: [
         {
