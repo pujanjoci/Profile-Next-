@@ -26,7 +26,6 @@ export const metadata: Metadata = {
   category: 'portfolio',
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: 'any' },
       { url: '/icon.png', type: 'image/png' },
     ],
     apple: [{ url: '/apple-icon.png', type: 'image/png' }],

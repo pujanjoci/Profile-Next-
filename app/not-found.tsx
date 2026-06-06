@@ -46,7 +46,7 @@ export default function NotFound() {
           transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
           className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mt-3 leading-relaxed max-w-sm"
         >
-          The page you are looking for might have been removed, had its name changed, or is temporarily unavailable. Let's get you back on track.
+          The page you are looking for might have been removed, had its name changed, or is temporarily unavailable. Let&apos;s get you back on track.
         </motion.p>
 
         {/* Interactive Buttons */}

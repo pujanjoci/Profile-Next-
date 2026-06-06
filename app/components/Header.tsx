@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { Menu, X, Home, User, FolderGit2, Mail, BookOpen } from 'lucide-react'
+import { Menu, X, Home, User, FolderGit2, Mail, BookOpen, FileText } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useRouter, usePathname } from 'next/navigation'
 import ThemeToggle from './ThemeToggle'
@@ -12,6 +12,7 @@ const navItems = [
   { name: 'Projects', href: '#projects', icon: FolderGit2, isRoute: false },
   { name: 'Contact', href: '#contact', icon: Mail, isRoute: false },
   { name: 'Gallery', href: '/gallery', icon: BookOpen, isRoute: true },
+  { name: 'Resume', href: '/resume/Resume_Pujan-Joshi.pdf', icon: FileText, isRoute: true, isExternal: true },
 ]
 
 export default function Header() {
@@ -97,7 +98,11 @@ export default function Header() {
   }, [mobileMenuOpen])
 
   // Handle navigation click
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string, isRoute: boolean) => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string, isRoute: boolean, isExternal?: boolean) => {
+    if (isExternal) {
+      setMobileMenuOpen(false)
+      return
+    }
     e.preventDefault()
     setMobileMenuOpen(false)
 
@@ -157,14 +162,16 @@ export default function Header() {
               layout
               className="flex items-center gap-1 border border-gray-200/50 dark:border-gray-800/50 rounded-full p-2 bg-white/70 dark:bg-gray-950/70 backdrop-blur-xl shadow-lg shadow-gray-200/10 dark:shadow-black/20"
               initial={false}
-              animate={{ minWidth: showIcons ? '200px' : '350px' }}
+              animate={{ minWidth: showIcons ? '240px' : '420px' }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             >
               {navItems.map((item) => (
                 <a
                   key={item.name}
                   href={item.href}
-                  onClick={(e) => handleNavClick(e, item.href, item.isRoute)}
+                  onClick={(e) => handleNavClick(e, item.href, item.isRoute, item.isExternal)}
+                  target={item.isExternal ? "_blank" : undefined}
+                  rel={item.isExternal ? "noopener noreferrer" : undefined}
                   className="relative px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors group flex items-center justify-center min-w-[60px] cursor-pointer"
                 >
                   <AnimatePresence mode="popLayout" initial={false}>
@@ -252,7 +259,9 @@ export default function Header() {
                 <motion.li key={item.name} variants={itemVariants}>
                   <a
                     href={item.href}
-                    onClick={(e) => handleNavClick(e, item.href, item.isRoute)}
+                    onClick={(e) => handleNavClick(e, item.href, item.isRoute, item.isExternal)}
+                    target={item.isExternal ? "_blank" : undefined}
+                    rel={item.isExternal ? "noopener noreferrer" : undefined}
                     className="flex items-center gap-4 text-3xl font-light text-gray-900 dark:text-white hover:text-gray-500 dark:hover:text-gray-300 transition-colors tracking-tight cursor-pointer"
                   >
                     <item.icon className="w-6 h-6 opacity-70" />

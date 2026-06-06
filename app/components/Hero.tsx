@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowUpRight, Quote } from 'lucide-react'
+import { ArrowUpRight, Quote, FileText } from 'lucide-react'
 import { useState, useEffect, useMemo } from 'react'
 
 export default function Hero() {
@@ -155,6 +155,15 @@ export default function Hero() {
                   Portfolio
                   <ArrowUpRight size={16} />
                 </Link>
+                <a
+                  href="/resume/Resume_Pujan-Joshi.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center px-4 py-2 sm:px-6 sm:py-3 text-neutral-800 dark:text-neutral-200 hover:bg-white/20 dark:hover:bg-white/10 rounded-full font-medium transition-colors text-sm whitespace-nowrap gap-1.5"
+                >
+                  <FileText size={16} className="text-orange-500 dark:text-orange-400" />
+                  Resume
+                </a>
                 <Link
                   href="/contact"
                   className="inline-flex items-center justify-center px-4 py-2 sm:px-6 sm:py-3 text-neutral-800 dark:text-neutral-200 hover:bg-white/20 dark:hover:bg-white/10 rounded-full font-medium transition-colors text-sm whitespace-nowrap"

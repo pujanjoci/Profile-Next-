@@ -34,6 +34,7 @@ export default function Footer() {
     { name: 'About', href: '#about' },
     { name: 'Projects', href: '#projects' },
     { name: 'Gallery', href: '/gallery', isExternal: false },
+    { name: 'Resume', href: '/resume/Resume_Pujan-Joshi.pdf', isExternal: true },
     { name: 'Contact', href: '#contact' },
   ]
 
@@ -90,6 +91,8 @@ export default function Footer() {
                 <li key={link.name}>
                   <a
                     href={link.href}
+                    target={link.isExternal ? "_blank" : undefined}
+                    rel={link.isExternal ? "noopener noreferrer" : undefined}
                     className="group inline-flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-950 transition-colors duration-200 cursor-pointer dark:text-slate-400 dark:hover:text-white"
                   >
                     <span>{link.name}</span>
