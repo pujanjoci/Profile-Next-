@@ -637,28 +637,46 @@ function ProjectCarousel() {
 
             {/* Action Links */}
             <div className="flex items-center gap-2">
-              <a
-                href={selectedProject.repoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 text-xs font-semibold text-slate-800 transition hover:bg-slate-100 hover:border-slate-300 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/15 dark:hover:border-white/20"
-              >
-                <Github size={14} />
-                Code
-              </a>
-              <a
-                href={selectedProject.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-xs font-bold text-white transition shadow-lg active:scale-95 cursor-pointer"
-                style={{ 
-                  backgroundColor: selectedProject.glowColor,
-                  boxShadow: `0 4px 14px ${selectedProject.glowColor}40`
-                }}
-              >
-                <ExternalLink size={14} />
-                Live Demo
-              </a>
+              {selectedProject.category === 'Designs' ? (
+                <a
+                  href={selectedProject.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-xs font-bold text-white transition shadow-lg active:scale-95 cursor-pointer hover:opacity-95"
+                  style={{ 
+                    backgroundColor: selectedProject.glowColor,
+                    boxShadow: `0 4px 14px ${selectedProject.glowColor}40`
+                  }}
+                >
+                  <ExternalLink size={14} />
+                  View Designs
+                </a>
+              ) : (
+                <>
+                  <a
+                    href={selectedProject.repoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 text-xs font-semibold text-slate-800 transition hover:bg-slate-100 hover:border-slate-300 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/15 dark:hover:border-white/20"
+                  >
+                    <Github size={14} />
+                    Code
+                  </a>
+                  <a
+                    href={selectedProject.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-xs font-bold text-white transition shadow-lg active:scale-95 cursor-pointer"
+                    style={{ 
+                      backgroundColor: selectedProject.glowColor,
+                      boxShadow: `0 4px 14px ${selectedProject.glowColor}40`
+                    }}
+                  >
+                    <ExternalLink size={14} />
+                    Live Demo
+                  </a>
+                </>
+              )}
             </div>
           </div>
         </div>

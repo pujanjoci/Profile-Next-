@@ -284,28 +284,46 @@ export default function ProjectsPage() {
 
                     {/* Interactive Links */}
                     <div className="flex items-center gap-3 border-t border-slate-200 pt-4 dark:border-white/5">
-                      <a
-                        href={project.repoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 inline-flex h-10 items-center justify-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 text-xs font-bold text-slate-800 transition hover:bg-slate-100 hover:border-slate-300 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/15 dark:hover:border-white/20"
-                      >
-                        <Github size={13} />
-                        <span>Code</span>
-                      </a>
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-xs font-bold text-white transition shadow-lg active:scale-95 cursor-pointer hover:opacity-95"
-                        style={{
-                          backgroundColor: project.glowColor,
-                          boxShadow: `0 4px 12px ${project.glowColor}30`,
-                        }}
-                      >
-                        <ExternalLink size={13} />
-                        <span>Live Demo</span>
-                      </a>
+                      {project.category === 'Designs' ? (
+                        <a
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-xs font-bold text-white transition shadow-lg active:scale-95 cursor-pointer hover:opacity-95"
+                          style={{
+                            backgroundColor: project.glowColor,
+                            boxShadow: `0 4px 12px ${project.glowColor}30`,
+                          }}
+                        >
+                          <ExternalLink size={13} />
+                          <span>View Designs</span>
+                        </a>
+                      ) : (
+                        <>
+                          <a
+                            href={project.repoUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex-1 inline-flex h-10 items-center justify-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 text-xs font-bold text-slate-800 transition hover:bg-slate-100 hover:border-slate-300 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/15 dark:hover:border-white/20"
+                          >
+                            <Github size={13} />
+                            <span>Code</span>
+                          </a>
+                          <a
+                            href={project.liveUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex-1 inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-xs font-bold text-white transition shadow-lg active:scale-95 cursor-pointer hover:opacity-95"
+                            style={{
+                              backgroundColor: project.glowColor,
+                              boxShadow: `0 4px 12px ${project.glowColor}30`,
+                            }}
+                          >
+                            <ExternalLink size={13} />
+                            <span>Live Demo</span>
+                          </a>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
