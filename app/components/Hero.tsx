@@ -97,8 +97,7 @@ export default function Hero() {
             className="relative z-31 flex items-end justify-center w-full h-full pointer-events-auto pb-0"
           >
             {/* Image Wrapper */}
-            <div className="relative aspect-[4/5] 
-                            w-[140%] max-w-none sm:w-[400px] md:w-[500px] lg:w-[600px] xl:w-[650px] flex-shrink-0">
+            <div className="relative aspect-[4/5] h-[75%] sm:h-[80%] md:h-[85%] lg:h-[90%] max-w-[650px] w-auto flex-shrink-0">
               <Image
                 src="/Pujan(Profile)-hero.webp"
                 alt="Pujan Profile"

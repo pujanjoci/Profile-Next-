@@ -365,12 +365,14 @@ function ProjectCarouselScene({
         rotationTargetRef.current += velocityRef.current * 15
         velocityRef.current *= 0.92 // Apply friction
         
-        // Update active index in real-time as it spins
-        const rawIndex = -rotationTargetRef.current / angleStep
-        let closestIndex = Math.round(rawIndex) % n
-        if (closestIndex < 0) closestIndex += n
-        if (activeIndex !== closestIndex) {
-          setActiveIndex(closestIndex)
+        // Update active index in real-time as it spins, but only if it's not spinning too fast
+        if (Math.abs(velocityRef.current) < 0.03) {
+          const rawIndex = -rotationTargetRef.current / angleStep
+          let closestIndex = Math.round(rawIndex) % n
+          if (closestIndex < 0) closestIndex += n
+          if (activeIndex !== closestIndex) {
+            setActiveIndex(closestIndex)
+          }
         }
       } else {
         // 2. Snapping: if not dragging and velocity is low, snap to the activeIndex's target rotation
@@ -689,7 +691,8 @@ function ProjectCarousel() {
             rotationTargetRef.current += deltaX * sensitivity
             
             if (dt > 0) {
-              velocityRef.current = (deltaX * sensitivity) / dt // change in angle per ms
+              const rawVelocity = (deltaX * sensitivity) / dt // change in angle per ms
+              velocityRef.current = Math.max(-0.06, Math.min(0.06, rawVelocity))
             }
             
             lastX.current = event.clientX
@@ -705,9 +708,13 @@ function ProjectCarousel() {
             isDraggingRef.current = false
           }}
           onWheel={(event) => {
-            const delta = event.deltaY * 0.0015
+            // Clamp wheel input delta to prevent extreme jumps on fast scrolling/trackpads
+            const delta = Math.max(-0.15, Math.min(0.15, event.deltaY * 0.0005))
             rotationTargetRef.current += delta
-            velocityRef.current = delta * 0.4
+            
+            // Safely accumulate/dampen wheel velocity and clamp it
+            const newVelocity = velocityRef.current + delta * 0.1
+            velocityRef.current = Math.max(-0.06, Math.min(0.06, newVelocity))
             lastInteractionTimeRef.current = Date.now()
           }}
         >
