@@ -33,6 +33,7 @@ export default function Footer() {
     { name: 'Home', href: '#' },
     { name: 'About', href: '#about' },
     { name: 'Projects', href: '#projects' },
+    { name: 'Views', href: '#experiences' },
     { name: 'Gallery', href: '/gallery', isExternal: false },
     { name: 'Resume', href: '/resume/Resume_Pujan-Joshi.pdf', isExternal: true },
     { name: 'Contact', href: '#contact' },

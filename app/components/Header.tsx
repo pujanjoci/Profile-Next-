@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { Menu, X, Home, User, FolderGit2, Mail, BookOpen, FileText } from 'lucide-react'
+import { Menu, X, Home, User, FolderGit2, Mail, BookOpen, FileText, Monitor } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useRouter, usePathname } from 'next/navigation'
 import ThemeToggle from './ThemeToggle'
@@ -10,6 +10,7 @@ const navItems = [
   { name: 'Home', href: '#', icon: Home, isRoute: false },
   { name: 'About', href: '#about', icon: User, isRoute: false },
   { name: 'Projects', href: '#projects', icon: FolderGit2, isRoute: false },
+  { name: 'Views', href: '#experiences', icon: Monitor, isRoute: false },
   { name: 'Contact', href: '#contact', icon: Mail, isRoute: false },
   { name: 'Gallery', href: '/gallery', icon: BookOpen, isRoute: true },
   { name: 'Resume', href: '/resume/Resume_Pujan-Joshi.pdf', icon: FileText, isRoute: true, isExternal: true },
@@ -162,7 +163,7 @@ export default function Header() {
               layout
               className="flex items-center gap-1 border border-gray-200/50 dark:border-gray-800/50 rounded-full p-2 bg-white/70 dark:bg-gray-950/70 backdrop-blur-xl shadow-lg shadow-gray-200/10 dark:shadow-black/20"
               initial={false}
-              animate={{ minWidth: showIcons ? '240px' : '420px' }}
+              animate={{ minWidth: showIcons ? '280px' : '480px' }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             >
               {navItems.map((item) => (
