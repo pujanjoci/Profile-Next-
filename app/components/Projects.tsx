@@ -17,6 +17,7 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
   const categories = ['All', 'Web Apps', 'Games', 'UI/UX', 'Designs'] as const
   const [selectedCategory, setSelectedCategory] = useState<typeof categories[number]>('All')
   const [activeIndex, setActiveIndex] = useState(0)
+  const [disableTransition, setDisableTransition] = useState(false)
   const [visibleCards, setVisibleCards] = useState(1)
   
   const containerRef = useRef<HTMLDivElement>(null)
@@ -45,6 +46,7 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
   // Reset index when category changes
   useEffect(() => {
     setActiveIndex(0)
+    setDisableTransition(true)
   }, [selectedCategory])
 
   // Filter projects by category
@@ -53,16 +55,23 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
     return projects.filter((p) => p.category === selectedCategory)
   }, [selectedCategory])
 
-  const maxIndex = Math.max(0, filteredProjects.length - visibleCards)
+  // Determine if infinite loop is needed (only if content overflows the visible viewport)
+  const isLoopNeeded = filteredProjects.length > visibleCards
+  const cloneCount = 3
 
-  // Constrain activeIndex when constraints change
-  useEffect(() => {
-    if (activeIndex > maxIndex) {
-      setActiveIndex(maxIndex)
-    }
-  }, [maxIndex, activeIndex])
+  // Construct extended projects array with clones for seamless looping
+  const extendedProjects = useMemo(() => {
+    if (!isLoopNeeded) return filteredProjects
+    return [
+      ...filteredProjects.slice(-cloneCount),
+      ...filteredProjects,
+      ...filteredProjects.slice(0, cloneCount)
+    ]
+  }, [filteredProjects, isLoopNeeded])
 
-  const selectedProject = filteredProjects[activeIndex] || filteredProjects[0] || projects[0]
+  const maxIndex = filteredProjects.length - 1
+  const normalizedActiveIndex = (activeIndex + filteredProjects.length) % filteredProjects.length
+  const selectedProject = filteredProjects[normalizedActiveIndex] || filteredProjects[0] || projects[0]
 
   // Update card width and max scroll constraints dynamically
   const updateConstraints = () => {
@@ -85,37 +94,65 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
       window.removeEventListener('resize', updateConstraints)
       clearTimeout(timer)
     }
-  }, [filteredProjects, activeIndex, visibleCards])
+  }, [extendedProjects, activeIndex, visibleCards])
 
   const handleNext = () => {
-    setActiveIndex((prev) => Math.min(maxIndex, prev + 1))
+    if (disableTransition) return
+    setActiveIndex((prev) => prev + 1)
   }
 
   const handlePrev = () => {
-    setActiveIndex((prev) => Math.max(0, prev - 1))
+    if (disableTransition) return
+    setActiveIndex((prev) => prev - 1)
   }
 
-  const activeTranslation = -activeIndex * (cardWidth + 24)
+  const activeTranslation = isLoopNeeded
+    ? -(activeIndex + cloneCount) * (cardWidth + 24)
+    : 0
+
+  // Snap back instantly to original items when reaching cloned boundaries
+  const handleAnimationComplete = () => {
+    if (!isLoopNeeded) return
+
+    if (activeIndex < 0) {
+      setDisableTransition(true)
+      setActiveIndex(filteredProjects.length + activeIndex)
+    } else if (activeIndex >= filteredProjects.length) {
+      setDisableTransition(true)
+      setActiveIndex(activeIndex - filteredProjects.length)
+    }
+  }
+
+  // Restore sliding animations in next render cycle after instant snap coordinates reset
+  useEffect(() => {
+    if (disableTransition) {
+      const timer = setTimeout(() => {
+        setDisableTransition(false)
+      }, 30)
+      return () => clearTimeout(timer)
+    }
+  }, [disableTransition])
 
   // Magnetic snap logic on drag release
   const handleDragEnd = (event: any, info: any) => {
+    if (!isLoopNeeded || disableTransition) return
+    
     const step = cardWidth + 24 // cardStep
     const offset = info.offset.x
     const velocity = info.velocity.x
 
     // Determine target slide based on drag distance and velocity
     const draggedOffset = -activeTranslation - offset
-    let targetIndex = Math.round(draggedOffset / step)
+    let targetIndex = Math.round(draggedOffset / step) - cloneCount
 
     // Adjust snap index based on swipe speed / velocity
     if (velocity < -400) {
-      targetIndex = Math.ceil(draggedOffset / step)
+      targetIndex = Math.ceil(draggedOffset / step) - cloneCount
     } else if (velocity > 400) {
-      targetIndex = Math.floor(draggedOffset / step)
+      targetIndex = Math.floor(draggedOffset / step) - cloneCount
     }
 
-    const nextIndex = Math.max(0, Math.min(maxIndex, targetIndex))
-    setActiveIndex(nextIndex)
+    setActiveIndex(targetIndex)
   }
 
   // Resolve project case study slug
@@ -160,22 +197,24 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
           </motion.div>
 
           {/* Top Panel Index Display */}
-          <motion.div 
-            className="flex items-center gap-4"
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            {/* Slide Index Counter */}
-            <div className="font-mono text-sm font-bold text-slate-400 dark:text-slate-500 select-none">
-              <span className="text-slate-950 dark:text-white">
-                {String(activeIndex + 1).padStart(2, '0')}
-              </span>
-              <span className="mx-1 text-slate-400">/</span>
-              <span>{String(filteredProjects.length).padStart(2, '0')}</span>
-            </div>
-          </motion.div>
+          {isLoopNeeded && (
+            <motion.div 
+              className="flex items-center gap-4"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              {/* Slide Index Counter */}
+              <div className="font-mono text-sm font-bold text-slate-400 dark:text-slate-500 select-none">
+                <span className="text-slate-950 dark:text-white">
+                  {String(normalizedActiveIndex + 1).padStart(2, '0')}
+                </span>
+                <span className="mx-1 text-slate-400">/</span>
+                <span>{String(filteredProjects.length).padStart(2, '0')}</span>
+              </div>
+            </motion.div>
+          )}
         </div>
 
         {/* Category Filters Tab-Bar */}
@@ -217,15 +256,16 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
         <div className="relative w-full">
           
           {/* Floating Centered Prev Button */}
-          <button
-            type="button"
-            onClick={handlePrev}
-            disabled={activeIndex === 0}
-            className="absolute -left-2 sm:-left-6 lg:-left-7 top-1/2 -translate-y-1/2 z-30 inline-flex h-12 w-12 items-center justify-center rounded-full border border-slate-200/80 bg-white/90 text-slate-800 backdrop-blur-md shadow-lg transition-all duration-300 hover:bg-slate-50 hover:scale-110 active:scale-95 disabled:opacity-20 disabled:hover:scale-100 disabled:cursor-not-allowed cursor-pointer dark:border-white/10 dark:bg-neutral-900/90 dark:text-white dark:hover:bg-neutral-800"
-            aria-label="Previous slide"
-          >
-            <ChevronLeft size={20} />
-          </button>
+          {isLoopNeeded && (
+            <button
+              type="button"
+              onClick={handlePrev}
+              className="absolute -left-2 sm:-left-6 lg:-left-7 top-1/2 -translate-y-1/2 z-30 inline-flex h-12 w-12 items-center justify-center rounded-full border border-slate-200/80 bg-white/90 text-slate-800 backdrop-blur-md shadow-lg transition-all duration-300 hover:bg-slate-50 hover:scale-110 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-neutral-900/90 dark:text-white dark:hover:bg-neutral-800"
+              aria-label="Previous slide"
+            >
+              <ChevronLeft size={20} />
+            </button>
+          )}
 
           {/* Draggable Deck Viewport - Fits exactly 3 projects on desktop, 2 on tablet, and 1 on mobile */}
           <div 
@@ -235,22 +275,29 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
             {/* Draggable sliding row track */}
             <motion.div
               ref={trackRef}
-              drag="x"
+              drag={isLoopNeeded ? "x" : false}
               dragConstraints={{ left: -maxScroll, right: 0 }}
               dragElastic={0.25}
-              onDragEnd={handleDragEnd}
+              onDragEnd={isLoopNeeded ? handleDragEnd : undefined}
               animate={{ x: activeTranslation }}
-              transition={{ type: 'spring', stiffness: 150, damping: 24 }}
-              className="flex gap-6 cursor-grab active:cursor-grabbing w-max px-0.5"
+              transition={disableTransition ? { duration: 0 } : { type: 'spring', stiffness: 150, damping: 24 }}
+              onAnimationComplete={handleAnimationComplete}
+              className={`flex gap-6 cursor-grab active:cursor-grabbing w-max px-0.5 ${
+                isLoopNeeded ? '' : 'justify-center w-full'
+              }`}
             >
-              {filteredProjects.map((project, idx) => {
-                const isActive = idx === activeIndex
+              {extendedProjects.map((project, idx) => {
+                const isActive = isLoopNeeded
+                  ? idx === (activeIndex + cloneCount)
+                  : idx === activeIndex
+
                 const projectSlug = getProjectSlug(project)
+                const key = `${project.title}-${idx}`
                 
                 return (
                   <motion.div
-                    key={project.title}
-                    ref={idx === 0 ? cardRef : undefined}
+                    key={key}
+                    ref={idx === (isLoopNeeded ? cloneCount : 0) ? cardRef : undefined}
                     className={`w-[290px] xs:w-[320px] sm:w-[360px] flex-shrink-0 flex flex-col justify-between rounded-[2rem] border overflow-hidden transition-all duration-500 bg-white/80 backdrop-blur-md shadow-lg group select-none dark:bg-neutral-900/80 ${
                       isActive
                         ? 'border-slate-300 scale-[1.01] dark:border-neutral-700'
@@ -368,38 +415,44 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
           </div>
 
           {/* Floating Centered Next Button */}
-          <button
-            type="button"
-            onClick={handleNext}
-            disabled={activeIndex === maxIndex}
-            className="absolute -right-2 sm:-right-6 lg:-right-7 top-1/2 -translate-y-1/2 z-30 inline-flex h-12 w-12 items-center justify-center rounded-full border border-slate-200/80 bg-white/90 text-slate-800 backdrop-blur-md shadow-lg transition-all duration-300 hover:bg-slate-50 hover:scale-110 active:scale-95 disabled:opacity-20 disabled:hover:scale-100 disabled:cursor-not-allowed cursor-pointer dark:border-white/10 dark:bg-neutral-900/90 dark:text-white dark:hover:bg-neutral-800"
-            aria-label="Next slide"
-          >
-            <ChevronRight size={20} />
-          </button>
+          {isLoopNeeded && (
+            <button
+              type="button"
+              onClick={handleNext}
+              className="absolute -right-2 sm:-right-6 lg:-right-7 top-1/2 -translate-y-1/2 z-30 inline-flex h-12 w-12 items-center justify-center rounded-full border border-slate-200/80 bg-white/90 text-slate-800 backdrop-blur-md shadow-lg transition-all duration-300 hover:bg-slate-50 hover:scale-110 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-neutral-900/90 dark:text-white dark:hover:bg-neutral-800"
+              aria-label="Next slide"
+            >
+              <ChevronRight size={20} />
+            </button>
+          )}
 
         </div>
 
         {/* Sync Pagination Dots Indicators */}
-        <div className="flex justify-center flex-wrap gap-2 mt-8">
-          {Array.from({ length: maxIndex + 1 }).map((_, idx) => {
-            const isActive = idx === activeIndex
-            return (
-              <button
-                key={idx}
-                onClick={() => setActiveIndex(idx)}
-                className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                  isActive ? '' : 'bg-slate-300 dark:bg-neutral-800'
-                }`}
-                style={{
-                  width: isActive ? '24px' : '8px',
-                  backgroundColor: isActive ? selectedProject.glowColor : undefined,
-                }}
-                title={`Go to slide ${idx + 1}`}
-              />
-            )
-          })}
-        </div>
+        {isLoopNeeded && (
+          <div className="flex justify-center flex-wrap gap-2 mt-8">
+            {filteredProjects.map((project, idx) => {
+              const isActive = idx === normalizedActiveIndex
+              return (
+                <button
+                  key={project.title}
+                  onClick={() => {
+                    if (disableTransition) return
+                    setActiveIndex(idx)
+                  }}
+                  className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                    isActive ? '' : 'bg-slate-300 dark:bg-neutral-800'
+                  }`}
+                  style={{
+                    width: isActive ? '24px' : '8px',
+                    backgroundColor: isActive ? selectedProject.glowColor : undefined,
+                  }}
+                  title={`Go to project ${idx + 1}`}
+                />
+              )
+            })}
+          </div>
+        )}
 
         {/* Explore All Bottom CTA Buttons */}
         <motion.div
