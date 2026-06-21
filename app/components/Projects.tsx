@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo, useRef, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import {
   ArrowUpRight,
   ChevronLeft,
@@ -17,7 +17,13 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
   const categories = ['All', 'Web Apps', 'Games', 'UI/UX', 'Designs'] as const
   const [selectedCategory, setSelectedCategory] = useState<typeof categories[number]>('All')
   const [activeIndex, setActiveIndex] = useState(0)
-  const thumbnailRefs = useRef<(HTMLButtonElement | null)[]>([])
+  
+  const containerRef = useRef<HTMLDivElement>(null)
+  const trackRef = useRef<HTMLDivElement>(null)
+  const cardRef = useRef<HTMLDivElement>(null)
+
+  const [cardWidth, setCardWidth] = useState(360)
+  const [maxScroll, setMaxScroll] = useState(0)
 
   // Reset index when category changes
   useEffect(() => {
@@ -32,33 +38,52 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
 
   const selectedProject = filteredProjects[activeIndex] || filteredProjects[0] || projects[0]
 
+  // Update card width and max scroll constraints dynamically
+  const updateConstraints = () => {
+    if (cardRef.current) {
+      setCardWidth(cardRef.current.offsetWidth)
+    }
+    if (containerRef.current && trackRef.current) {
+      const containerWidth = containerRef.current.offsetWidth
+      const trackWidth = trackRef.current.scrollWidth
+      setMaxScroll(Math.max(0, trackWidth - containerWidth))
+    }
+  }
+
+  useEffect(() => {
+    updateConstraints()
+    // Set a short timeout to let layout settle
+    const timer = setTimeout(updateConstraints, 150)
+    window.addEventListener('resize', updateConstraints)
+    return () => {
+      window.removeEventListener('resize', updateConstraints)
+      clearTimeout(timer)
+    }
+  }, [filteredProjects, activeIndex])
+
   const handleNext = () => {
-    setActiveIndex((prev) => (prev + 1) % filteredProjects.length)
+    setActiveIndex((prev) => Math.min(filteredProjects.length - 1, prev + 1))
   }
 
   const handlePrev = () => {
-    setActiveIndex((prev) => (prev - 1 + filteredProjects.length) % filteredProjects.length)
+    setActiveIndex((prev) => Math.max(0, prev - 1))
   }
 
-  // Auto-scroll active thumbnail into view
-  useEffect(() => {
-    if (thumbnailRefs.current[activeIndex]) {
-      thumbnailRefs.current[activeIndex]?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'center',
-      })
-    }
-  }, [activeIndex])
-
-  // Drag handlers for swipe gestures
+  // Magnetic snap logic on drag release
   const handleDragEnd = (event: any, info: any) => {
-    const swipeThreshold = 50
-    if (info.offset.x < -swipeThreshold) {
-      handleNext()
-    } else if (info.offset.x > swipeThreshold) {
-      handlePrev()
+    const step = cardWidth + 24 // cardWidth + gap
+    const offset = info.offset.x
+    const velocity = info.velocity.x
+
+    let indexChange = 0
+    if (offset < -80 || velocity < -400) {
+      indexChange = 1
+    } else if (offset > 80 || velocity > 400) {
+      indexChange = -1
     }
+
+    const nextIndex = Math.max(0, Math.min(filteredProjects.length - 1, activeIndex + indexChange))
+    setActiveIndex(nextIndex)
   }
 
   // Resolve project case study slug
@@ -71,46 +96,89 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
     return slug
   }
 
-  const slug = getProjectSlug(selectedProject)
+  const activeTranslation = -activeIndex * (cardWidth + 24)
 
   return (
     <section
       id={id}
       className="relative min-h-screen w-full overflow-hidden bg-slate-50 py-20 transition-colors duration-300 dark:bg-neutral-950 md:py-28"
     >
-      {/* Background Glows */}
+      {/* Background ambient light matching the active project color */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute left-1/4 top-1/3 h-[500px] w-[500px] rounded-full bg-purple-500/5 blur-3xl" />
-        <div className="absolute right-1/4 bottom-1/3 h-[500px] w-[500px] rounded-full bg-fuchsia-500/5 blur-3xl" />
+        <div 
+          className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl opacity-10 transition-colors duration-1000"
+          style={{ backgroundColor: selectedProject.glowColor }}
+        />
       </div>
 
       <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* Section Header */}
-        <motion.div
-          className="mb-10 text-center"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <span className="mb-3 inline-block text-sm font-semibold uppercase tracking-widest text-orange-500">
-            My Work
-          </span>
-          <h2 className="mb-4 text-4xl font-extrabold text-slate-950 dark:text-white md:text-5xl">
-            Projects
-          </h2>
-          <div className="mx-auto h-1 w-24 rounded-full bg-gradient-to-r from-orange-500 to-amber-400" />
-        </motion.div>
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <span className="mb-2 inline-block text-sm font-semibold uppercase tracking-widest text-orange-500">
+              My Work
+            </span>
+            <h2 className="text-4xl font-extrabold text-slate-950 dark:text-white md:text-5xl">
+              Projects
+            </h2>
+            <div className="h-1 w-20 mt-3 rounded-full bg-gradient-to-r from-orange-500 to-amber-400" />
+          </motion.div>
+
+          {/* Top Panel Controls */}
+          <motion.div 
+            className="flex items-center gap-4"
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            {/* Slide Index Counter */}
+            <div className="font-mono text-sm font-bold text-slate-400 dark:text-slate-500 select-none">
+              <span className="text-slate-950 dark:text-white">
+                {String(activeIndex + 1).padStart(2, '0')}
+              </span>
+              <span className="mx-1 text-slate-400">/</span>
+              <span>{String(filteredProjects.length).padStart(2, '0')}</span>
+            </div>
+
+            {/* Pagination Arrow Buttons */}
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                aria-label="Previous project"
+                onClick={handlePrev}
+                disabled={activeIndex === 0}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-800 transition hover:bg-slate-50 hover:scale-105 active:scale-95 disabled:opacity-40 disabled:hover:scale-100 disabled:cursor-not-allowed cursor-pointer dark:border-white/10 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
+              >
+                <ChevronLeft size={18} />
+              </button>
+              <button
+                type="button"
+                aria-label="Next project"
+                onClick={handleNext}
+                disabled={activeIndex === filteredProjects.length - 1}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-800 transition hover:bg-slate-50 hover:scale-105 active:scale-95 disabled:opacity-40 disabled:hover:scale-100 disabled:cursor-not-allowed cursor-pointer dark:border-white/10 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
+              >
+                <ChevronRight size={18} />
+              </button>
+            </div>
+          </motion.div>
+        </div>
 
         {/* Category Filters Tab-Bar */}
         <motion.div 
-          className="flex flex-wrap justify-center gap-2 mb-10"
+          className="flex flex-wrap justify-start gap-2 mb-12"
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
-          <div className="flex flex-wrap justify-center gap-1.5 p-1.5 rounded-full border border-slate-200 bg-white/80 backdrop-blur-md shadow-sm dark:border-white/5 dark:bg-neutral-900/80">
+          <div className="flex flex-wrap gap-1.5 p-1.5 rounded-full border border-slate-200 bg-white/80 backdrop-blur-md shadow-sm dark:border-white/5 dark:bg-neutral-900/80">
             {categories.map((category) => {
               const isActive = selectedCategory === category
               return (
@@ -137,238 +205,172 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
           </div>
         </motion.div>
 
-        {/* Main Carousel Display Box */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch w-full mb-10">
-          
-          {/* Left Panel: Project Details */}
-          <div className="lg:col-span-5 flex flex-col justify-between p-6 sm:p-8 rounded-[2rem] border border-slate-200/80 bg-white shadow-xl relative overflow-hidden min-h-[460px] lg:order-first order-last dark:border-white/10 dark:bg-neutral-900 dark:shadow-2xl">
-            {/* Dynamic Corner Gradient Shadow */}
-            <div 
-              className="absolute -right-24 -top-24 h-48 w-48 rounded-full blur-3xl opacity-20 transition-all duration-700 pointer-events-none"
-              style={{ backgroundColor: selectedProject.glowColor }}
-            />
-
-            {/* Pagination / Featured Indicator */}
-            <div className="relative z-10 flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">
-                {selectedProject.category} Project
-              </span>
-              <div className="flex items-center gap-2 font-mono">
-                <span className="text-sm font-bold text-slate-950 dark:text-white">
-                  {String(activeIndex + 1).padStart(2, '0')}
-                </span>
-                <span className="text-xs text-slate-500">/</span>
-                <span className="text-xs text-slate-400 font-medium">
-                  {String(filteredProjects.length).padStart(2, '0')}
-                </span>
-              </div>
-            </div>
-
-            {/* Animated Details Block */}
-            <div className="relative z-10 my-auto py-6">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={`${selectedCategory}-${activeIndex}`}
-                  initial={{ opacity: 0, x: -15 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 15 }}
-                  transition={{ duration: 0.3, ease: 'easeOut' }}
-                  className="flex flex-col gap-4"
-                >
-                  <h3 className="text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
-                    <span className={`bg-gradient-to-r ${selectedProject.color} bg-clip-text text-transparent`}>
-                      {selectedProject.title}
-                    </span>
-                  </h3>
-                  
-                  <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed sm:text-base">
-                    {selectedProject.description}
-                  </p>
-                  
-                  {/* Tech Stack Badges */}
-                  <div className="flex flex-wrap gap-1.5 mt-2">
-                    {selectedProject.tech.map((tech) => (
-                      <span
-                        key={tech}
-                        className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-600 hover:bg-slate-100 hover:border-slate-300 transition-all duration-300 cursor-default dark:border-white/5 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            {/* Carousel Bottom Control Bars */}
-            <div className="relative z-10 space-y-6">
-              {/* Progress Line */}
-              <div className="h-[2px] w-full bg-slate-200 dark:bg-neutral-800 rounded-full overflow-hidden">
-                <motion.div 
-                  className="h-full"
-                  style={{ 
-                    width: `${((activeIndex + 1) / filteredProjects.length) * 100}%`,
-                    backgroundColor: selectedProject.glowColor
-                  }}
-                  layoutId="carouselProgressBar"
-                  transition={{ type: 'spring', stiffness: 80, damping: 15 }}
-                />
-              </div>
-
-              {/* Interaction Row */}
-              <div className="flex flex-wrap items-center justify-between gap-4">
-                {/* Arrow Navs */}
-                <div className="flex items-center gap-1.5">
-                  <button
-                    type="button"
-                    aria-label="Previous project"
-                    onClick={handlePrev}
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-800 transition hover:bg-slate-100 hover:scale-105 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
-                  >
-                    <ChevronLeft size={16} />
-                  </button>
-                  <button
-                    type="button"
-                    aria-label="Next project"
-                    onClick={handleNext}
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-800 transition hover:bg-slate-100 hover:scale-105 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
-                  >
-                    <ChevronRight size={16} />
-                  </button>
-                </div>
-
-                {/* CTAs */}
-                <div className="flex items-center gap-2">
-                  <Link
-                    href={`/projects/${slug}`}
-                    className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 text-xs font-bold text-slate-800 transition hover:bg-slate-100 hover:border-slate-300 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
-                    title={`View case study of ${selectedProject.title}`}
-                  >
-                    Case Study
-                  </Link>
-                  <a
-                    href={selectedProject.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-xs font-bold text-white transition shadow-lg active:scale-95 cursor-pointer glimmer-btn"
-                    style={{ 
-                      backgroundColor: selectedProject.glowColor,
-                      boxShadow: `0 4px 14px ${selectedProject.glowColor}40`
-                    }}
-                    title={`Launch live demo of ${selectedProject.title}`}
-                  >
-                    <ExternalLink size={14} />
-                    <span>{selectedProject.category === 'Designs' ? 'View Designs' : 'Live Demo'}</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Panel: Premium Screenshot Frame with Drag/Swipe */}
-          <div className="lg:col-span-7 relative flex items-center justify-center rounded-[2rem] border border-slate-200 bg-slate-100 overflow-hidden shadow-xl group/canvas lg:order-last order-first min-h-[380px] sm:min-h-[460px] dark:border-white/10 dark:bg-neutral-900 dark:shadow-2xl">
-            {/* Dynamic Background Glow */}
-            <div 
-              className="absolute -inset-10 opacity-20 blur-3xl rounded-full transition-all duration-1000 pointer-events-none"
-              style={{
-                background: `radial-gradient(circle, ${selectedProject.glowColor} 0%, transparent 70%)`
-              }}
-            />
-
-            {/* Mac-Style Glass Browser Mockup */}
-            <motion.div 
-              className="relative w-[90%] aspect-[16/10] rounded-xl border border-slate-200/80 bg-white/70 backdrop-blur-md shadow-2xl overflow-hidden cursor-grab active:cursor-grabbing dark:border-white/10 dark:bg-neutral-950/70"
-              drag="x"
-              dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={0.2}
-              onDragEnd={handleDragEnd}
-              whileTap={{ scale: 0.98 }}
-            >
-              {/* Browser Header Bar */}
-              <div className="h-8 border-b border-slate-200/60 bg-slate-100/60 px-4 flex items-center gap-1.5 select-none dark:border-neutral-800/60 dark:bg-neutral-900/60">
-                {/* Dots */}
-                <div className="h-2.5 w-2.5 rounded-full bg-red-400" />
-                <div className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
-                <div className="h-2.5 w-2.5 rounded-full bg-green-400" />
-                
-                {/* Address Bar */}
-                <div className="mx-auto w-[60%] h-5 rounded bg-white/80 border border-slate-200/60 flex items-center justify-center text-[9px] font-mono text-slate-400 truncate px-2 select-none dark:bg-neutral-900/80 dark:border-neutral-800/60 dark:text-neutral-500">
-                  pujan-joshi.com.np/projects/{slug}
-                </div>
-              </div>
-
-              {/* Active Screenshot */}
-              <div className="relative w-full h-[calc(100%-2rem)] overflow-hidden bg-slate-50 dark:bg-neutral-900">
-                <AnimatePresence mode="wait">
-                  <motion.img
-                    key={`${selectedCategory}-${activeIndex}`}
-                    src={selectedProject.image}
-                    alt={selectedProject.title}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 1.05 }}
-                    transition={{ duration: 0.3 }}
-                    className="w-full h-full object-cover object-top select-none pointer-events-none transition-transform duration-700 ease-out group-hover/canvas:scale-[1.03]"
-                  />
-                </AnimatePresence>
-                
-                {/* Gesture Swipe Helper Badge */}
-                <div className="absolute bottom-3 right-3 bg-black/60 border border-white/10 px-3 py-1 rounded-full text-[9px] uppercase tracking-wider text-slate-300 font-bold opacity-0 group-hover/canvas:opacity-100 transition-opacity duration-300 pointer-events-none select-none">
-                  Swipe Left/Right to Navigate
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-
-        {/* Thumbnail Navigation Strip */}
-        <motion.div
-          className="w-full mb-12"
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+        {/* Draggable Deck Viewport */}
+        <div 
+          ref={containerRef}
+          className="relative w-full overflow-visible py-4"
         >
-          <div className="flex gap-3 overflow-x-auto pb-4 pt-2 scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-neutral-800 scroll-smooth">
+          {/* Glass Fade overlays on bounds to mask the exit slides */}
+          <div className="pointer-events-none absolute inset-y-0 -left-4 w-12 sm:w-20 bg-gradient-to-r from-slate-50 to-transparent dark:from-neutral-950 z-20" />
+          <div className="pointer-events-none absolute inset-y-0 -right-4 w-12 sm:w-20 bg-gradient-to-l from-slate-50 to-transparent dark:from-neutral-950 z-20" />
+
+          {/* Draggable sliding row track */}
+          <motion.div
+            ref={trackRef}
+            drag="x"
+            dragConstraints={{ left: -maxScroll, right: 0 }}
+            dragElastic={0.15}
+            onDragEnd={handleDragEnd}
+            animate={{ x: activeTranslation }}
+            transition={{ type: 'spring', stiffness: 220, damping: 26 }}
+            className="flex gap-6 cursor-grab active:cursor-grabbing w-max px-2"
+          >
             {filteredProjects.map((project, idx) => {
               const isActive = idx === activeIndex
+              const projectSlug = getProjectSlug(project)
+              
               return (
-                <button
+                <motion.div
                   key={project.title}
-                  ref={(el) => {
-                    thumbnailRefs.current[idx] = el
-                  }}
-                  onClick={() => setActiveIndex(idx)}
-                  className={`relative flex-shrink-0 w-32 aspect-[16/10] rounded-xl overflow-hidden border-2 transition-all duration-300 cursor-pointer shadow-md hover:scale-105 active:scale-95 group ${
-                    isActive 
-                      ? 'scale-105' 
-                      : 'border-slate-200 opacity-55 hover:opacity-100 dark:border-neutral-800'
+                  ref={idx === 0 ? cardRef : undefined}
+                  className={`w-[290px] xs:w-[320px] sm:w-[360px] flex-shrink-0 flex flex-col justify-between rounded-[2rem] border overflow-hidden transition-all duration-500 bg-white/80 backdrop-blur-md shadow-lg group select-none dark:bg-neutral-900/80 ${
+                    isActive
+                      ? 'border-slate-300 scale-[1.01] dark:border-neutral-700'
+                      : 'border-slate-200/60 opacity-60 scale-95 dark:border-neutral-800/60'
                   }`}
                   style={{
                     borderColor: isActive ? project.glowColor : undefined,
-                    boxShadow: isActive ? `0 4px 12px ${project.glowColor}25` : undefined
+                    boxShadow: isActive ? `0 20px 40px ${project.glowColor}15` : undefined
+                  }}
+                  whileHover={{ 
+                    y: -8,
+                    scale: isActive ? 1.02 : 0.97,
+                    borderColor: project.glowColor,
+                    boxShadow: `0 25px 50px ${project.glowColor}20`
                   }}
                 >
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover select-none pointer-events-none transition-transform duration-300 group-hover:scale-105"
-                  />
-                  {/* Minimal Title Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-2">
-                    <span className="text-[9px] text-white font-bold truncate w-full">
-                      {project.title}
-                    </span>
+                  {/* Top Part: Mockup Browser Box */}
+                  <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 border-b border-slate-200/60 dark:bg-neutral-800 dark:border-neutral-800/60">
+                    {/* Mockup Top Header */}
+                    <div className="h-7 bg-slate-200/50 px-3 flex items-center gap-1 border-b border-slate-200/40 dark:bg-neutral-800/50 dark:border-neutral-700/30">
+                      <div className="h-2 w-2 rounded-full bg-red-400" />
+                      <div className="h-2 w-2 rounded-full bg-yellow-400" />
+                      <div className="h-2 w-2 rounded-full bg-green-400" />
+                      <div className="mx-auto w-[65%] h-4 rounded bg-white/70 flex items-center justify-center text-[8px] font-mono text-slate-400 truncate dark:bg-neutral-950/70 dark:text-neutral-500">
+                        pujan-joshi.com.np/{projectSlug}
+                      </div>
+                    </div>
+
+                    {/* Screenshot */}
+                    <div className="relative w-full h-[calc(100%-1.75rem)] overflow-hidden bg-slate-50 dark:bg-neutral-900">
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover object-top select-none pointer-events-none transition-transform duration-700 ease-out group-hover:scale-105"
+                      />
+                      {/* Dark Overlay with Launch helper */}
+                      <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <span className="text-[10px] uppercase font-bold tracking-widest text-white border border-white/20 px-3 py-1 rounded-full bg-black/40 backdrop-blur-sm">
+                          Drag / Swipe
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                </button>
+
+                  {/* Body Content */}
+                  <div className="p-6 flex flex-col justify-between flex-grow min-h-[220px]">
+                    <div className="space-y-3">
+                      {/* Tech stack details */}
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+                        {project.category}
+                      </span>
+                      
+                      {/* Title */}
+                      <h3 className="text-xl font-extrabold tracking-tight text-slate-950 dark:text-white">
+                        <span className={`bg-gradient-to-r ${project.color} bg-clip-text text-transparent`}>
+                          {project.title}
+                        </span>
+                      </h3>
+
+                      {/* Snippet */}
+                      <p className="text-slate-600 dark:text-slate-300 text-xs sm:text-sm line-clamp-3 leading-relaxed">
+                        {project.description}
+                      </p>
+                    </div>
+
+                    <div className="space-y-4 pt-4 mt-auto">
+                      {/* Tech Badges */}
+                      <div className="flex flex-wrap gap-1">
+                        {project.tech.slice(0, 3).map((tech) => (
+                          <span
+                            key={tech}
+                            className="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-[10px] font-semibold text-slate-500 dark:border-white/5 dark:bg-white/5 dark:text-slate-400"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                        {project.tech.length > 3 && (
+                          <span className="text-[9px] font-semibold text-slate-400 self-center">
+                            +{project.tech.length - 3} more
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Action Links */}
+                      <div className="flex items-center justify-between gap-2 border-t border-slate-100/80 pt-4 dark:border-neutral-800/80">
+                        <Link
+                          href={`/projects/${projectSlug}`}
+                          className="inline-flex h-9 items-center justify-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 text-[11px] font-bold text-slate-800 transition hover:bg-slate-100 hover:border-slate-300 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
+                        >
+                          <span>Case Study</span>
+                          <ArrowUpRight size={12} />
+                        </Link>
+                        <a
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex h-9 items-center justify-center gap-1.5 rounded-full px-4 text-[11px] font-bold text-white transition shadow-md active:scale-95 cursor-pointer glimmer-btn"
+                          style={{ 
+                            backgroundColor: project.glowColor,
+                            boxShadow: `0 4px 10px ${project.glowColor}30`
+                          }}
+                        >
+                          <ExternalLink size={12} />
+                          <span>{project.category === 'Designs' ? 'View Designs' : 'Live Demo'}</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
               )
             })}
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
+
+        {/* Sync Pagination Dots Indicators */}
+        <div className="flex justify-center flex-wrap gap-2 mt-8">
+          {filteredProjects.map((project, idx) => {
+            const isActive = idx === activeIndex
+            return (
+              <button
+                key={project.title}
+                onClick={() => setActiveIndex(idx)}
+                className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                  isActive ? '' : 'bg-slate-300 dark:bg-neutral-800'
+                }`}
+                style={{
+                  width: isActive ? '24px' : '8px',
+                  backgroundColor: isActive ? selectedProject.glowColor : undefined,
+                }}
+                title={`Go to project ${idx + 1}`}
+              />
+            )
+          })}
+        </div>
 
         {/* Explore All Bottom CTA Buttons */}
         <motion.div
-          className="mt-10 flex flex-wrap justify-center gap-4 text-center"
+          className="mt-14 flex flex-wrap justify-center gap-4 text-center"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
