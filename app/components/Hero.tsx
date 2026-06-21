@@ -63,8 +63,11 @@ export default function Hero() {
           </span>
         </motion.div>
 
-        <motion.h1
-          className="text-center tracking-tight text-neutral-900 dark:text-neutral-50 drop-shadow-sm md:drop-shadow-none"
+        {/* Semantic H1 for SEO */}
+        <h1 className="sr-only">Pujan Joshi — Web Designer & Developer</h1>
+
+        <motion.div
+          className="text-center tracking-tight text-neutral-900 dark:text-neutral-50 drop-shadow-sm md:drop-shadow-none font-bold"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -76,7 +79,17 @@ export default function Hero() {
             {displayText}
             <span className="animate-pulse">|</span> {/* Blinking cursor */}
           </span>
-        </motion.h1>
+        </motion.div>
+
+        {/* SEO-friendly intro paragraph */}
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.35 }}
+          className="mt-6 max-w-xl mx-auto text-sm sm:text-base md:text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed font-normal px-4 pointer-events-auto"
+        >
+          I’m Pujan Joshi, a web designer and developer from Nepal. I create responsive websites, portfolio sites, e-commerce interfaces, and modern web applications using Next.js, React, Tailwind CSS, and JavaScript.
+        </motion.p>
       </div>
 
       {/* Image Container - always at bottom (unchanged) */}
@@ -154,15 +167,13 @@ export default function Hero() {
                   Portfolio
                   <ArrowUpRight size={16} />
                 </Link>
-                <a
-                  href="/resume/Resume_Pujan-Joshi.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/resume"
                   className="inline-flex items-center justify-center px-4 py-2 sm:px-6 sm:py-3 text-neutral-800 dark:text-neutral-200 hover:bg-white/20 dark:hover:bg-white/10 rounded-full font-medium transition-colors text-sm whitespace-nowrap gap-1.5"
                 >
                   <FileText size={16} className="text-orange-500 dark:text-orange-400" />
                   Resume
-                </a>
+                </Link>
                 <Link
                   href="/contact"
                   className="inline-flex items-center justify-center px-4 py-2 sm:px-6 sm:py-3 text-neutral-800 dark:text-neutral-200 hover:bg-white/20 dark:hover:bg-white/10 rounded-full font-medium transition-colors text-sm whitespace-nowrap"

@@ -13,7 +13,7 @@ const navItems = [
   { name: 'Views', href: '#experiences', icon: Monitor, isRoute: false },
   { name: 'Contact', href: '#contact', icon: Mail, isRoute: false },
   { name: 'Gallery', href: '/gallery', icon: BookOpen, isRoute: true },
-  { name: 'Resume', href: '/resume/Resume_Pujan-Joshi.pdf', icon: FileText, isRoute: true, isExternal: true },
+  { name: 'Resume', href: '/resume', icon: FileText, isRoute: true, isExternal: false },
 ]
 
 export default function Header() {

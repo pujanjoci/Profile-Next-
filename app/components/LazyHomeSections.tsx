@@ -12,6 +12,10 @@ const Projects = dynamic(() => import('./Projects'), {
   ssr: false,
   loading: () => <SectionSkeleton variant="projects" minHeight="920px" />,
 })
+const ServicesSection = dynamic(() => import('./ServicesSection'), {
+  ssr: false,
+  loading: () => <SectionSkeleton variant="about" minHeight="600px" />,
+})
 const PortfolioExperiences = dynamic(() => import('./PortfolioExperiences'), {
   ssr: false,
   loading: () => <SectionSkeleton variant="about" minHeight="600px" />,
@@ -79,6 +83,10 @@ export default function LazyHomeSections() {
 
       <LazyMount id="projects" minHeight="920px" skeleton="projects">
         <Projects id="projects" />
+      </LazyMount>
+
+      <LazyMount id="services" minHeight="600px" skeleton="about">
+        <ServicesSection id="services" />
       </LazyMount>
 
       <LazyMount id="experiences" minHeight="600px" skeleton="about">

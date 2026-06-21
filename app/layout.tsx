@@ -14,18 +14,46 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
-  ...createPageMetadata({
-    title: siteConfig.title,
-    description: siteConfig.description,
-  }),
+  title: {
+    default: siteConfig.title,
+    template: '%s | Pujan Joshi',
+  },
+  description: siteConfig.description,
   applicationName: `${siteConfig.name} Portfolio`,
   authors: [{ name: siteConfig.name, url: siteConfig.url }],
   creator: siteConfig.name,
   publisher: siteConfig.name,
   keywords: siteConfig.keywords,
   category: 'portfolio',
+  alternates: {
+    canonical: siteConfig.url,
+  },
+  openGraph: {
+    title: siteConfig.title,
+    description: siteConfig.description,
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Pujan Joshi | Web Designer & Developer in Nepal',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: siteConfig.title,
+    description: siteConfig.description,
+    creator: '@pujanjoshi3',
+    images: ['/og-image.png'],
+  },
   icons: {
     icon: [
+      { url: '/favicon.ico', type: 'image/x-icon' },
       { url: '/icon.png', type: 'image/png' },
     ],
     apple: [{ url: '/apple-icon.png', type: 'image/png' }],

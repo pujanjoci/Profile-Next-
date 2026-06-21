@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { FileText } from 'lucide-react';
+import Link from 'next/link';
 
 
 export interface AboutProps {
@@ -133,7 +134,7 @@ export default function About({
               <div className="relative w-full h-full rounded-2xl overflow-hidden bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10">
                 <Image
                   src={profileImage}
-                  alt={`${name} Joshi`}
+                  alt="Pujan Joshi web designer and developer portfolio"
                   fill
                   sizes="(max-width: 640px) 320px, 380px"
                   className="object-cover object-top"
@@ -160,15 +161,13 @@ export default function About({
               transition={{ duration: 0.6, delay: 0.8 }}
               className="w-full flex items-center gap-2"
             >
-              <a
-                href="/resume/Resume_Pujan-Joshi.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-6 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-lg font-medium transition-all hover:bg-slate-800 dark:hover:bg-slate-100 gap-2 text-sm shadow-sm"
+              <Link
+                href="/resume"
+                className="inline-flex items-center justify-center px-6 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-lg font-medium transition-all hover:bg-slate-800 dark:hover:bg-slate-100 gap-2 text-sm shadow-sm cursor-pointer"
               >
                 <FileText size={16} />
-                Download Resume
-              </a>
+                View Resume
+              </Link>
             </motion.div>
 
             {/* Structured Tech Stack Groupings */}

@@ -510,6 +510,12 @@ function ProjectCarousel() {
   const selectedProject = projects[activeIndex]
   const angleStep = (Math.PI * 2) / projects.length
 
+  let slug = selectedProject.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+  if (selectedProject.title === 'Modern E-Commerce') slug = 'ecommerce-website'
+  if (selectedProject.title === 'Personal Portfolio') slug = 'terminal-portfolio'
+  if (selectedProject.title === 'Windows 11 Simulation') slug = 'windows-portfolio'
+  if (selectedProject.title === 'House Locator') slug = 'house-locator'
+
   const selectProject = (nextIndex: number) => {
     const normalizedIndex = (nextIndex + projects.length) % projects.length
     const baseTarget = -normalizedIndex * angleStep
@@ -635,49 +641,30 @@ function ProjectCarousel() {
               </button>
             </div>
 
-            {/* Action Links */}
-            <div className="flex items-center gap-2">
-              {selectedProject.category === 'Designs' ? (
-                <a
-                  href={selectedProject.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-xs font-bold text-white transition shadow-lg active:scale-95 cursor-pointer hover:opacity-95"
-                  style={{ 
-                    backgroundColor: selectedProject.glowColor,
-                    boxShadow: `0 4px 14px ${selectedProject.glowColor}40`
-                  }}
-                >
-                  <ExternalLink size={14} />
-                  View Designs
-                </a>
-              ) : (
-                <>
-                  <a
-                    href={selectedProject.repoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 text-xs font-semibold text-slate-800 transition hover:bg-slate-100 hover:border-slate-300 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/15 dark:hover:border-white/20"
-                  >
-                    <Github size={14} />
-                    Code
-                  </a>
-                  <a
-                    href={selectedProject.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-xs font-bold text-white transition shadow-lg active:scale-95 cursor-pointer"
-                    style={{ 
-                      backgroundColor: selectedProject.glowColor,
-                      boxShadow: `0 4px 14px ${selectedProject.glowColor}40`
-                    }}
-                  >
-                    <ExternalLink size={14} />
-                    Live Demo
-                  </a>
-                </>
-              )}
-            </div>
+             {/* Action Links */}
+             <div className="flex items-center gap-2">
+               <Link
+                 href={`/projects/${slug}`}
+                 className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 text-xs font-semibold text-slate-800 transition hover:bg-slate-100 hover:border-slate-300 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/15 dark:hover:border-white/20"
+                 title={`View case study of ${selectedProject.title}`}
+               >
+                 Case Study
+               </Link>
+               <a
+                 href={selectedProject.liveUrl}
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 className="inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-xs font-bold text-white transition shadow-lg active:scale-95 cursor-pointer"
+                 style={{ 
+                   backgroundColor: selectedProject.glowColor,
+                   boxShadow: `0 4px 14px ${selectedProject.glowColor}40`
+                 }}
+                 title={`Launch live demo of ${selectedProject.title}`}
+               >
+                 <ExternalLink size={14} />
+                 <span>{selectedProject.category === 'Designs' ? 'View Designs' : 'Live Demo'}</span>
+               </a>
+             </div>
           </div>
         </div>
       </div>

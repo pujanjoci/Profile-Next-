@@ -2,21 +2,25 @@ import type { Metadata } from 'next'
 
 export const siteConfig = {
   name: 'Pujan Joshi',
-  title: 'Pujan Joshi - Full-Stack Developer Portfolio',
+  title: 'Pujan Joshi | Web Designer & Developer in Nepal',
   description:
-    'Portfolio of Pujan Joshi, a full-stack developer and designer building responsive web apps, interactive projects, and polished digital experiences.',
+    'Official portfolio of Pujan Joshi, a web designer and developer from Nepal specializing in modern websites, UI/UX design, React, Next.js, Tailwind CSS, e-commerce projects, and creative web experiences.',
   url: 'https://pujan-joshi.com.np',
-  profileImage: '/Pujan(Profile)-nobg.png',
-  creator: '@pujanjoshi3',
+  profileImage: '/og-image.png',
+  creator: 'Pujan Joshi',
   keywords: [
     'Pujan Joshi',
-    'Pujan portfolio',
-    'full-stack developer',
+    'Pujan Joshi portfolio',
+    'Pujan Joshi web developer',
+    'Pujan Joshi web designer',
     'web developer Nepal',
-    'Next.js developer',
-    'React developer',
-    'graphic designer',
-    'UI UX designer',
+    'web designer Nepal',
+    'frontend developer Nepal',
+    'React developer Nepal',
+    'Next.js developer Nepal',
+    'Tailwind CSS developer',
+    'UI UX designer Nepal',
+    'portfolio website Nepal',
   ],
 }
 
@@ -44,10 +48,10 @@ export function createPageMetadata({
       siteName: siteConfig.name,
       images: [
         {
-          url: siteConfig.profileImage,
-          width: 1080,
-          height: 1080,
-          alt: `${siteConfig.name} profile photo`,
+          url: '/og-image.png',
+          width: 1200,
+          height: 630,
+          alt: 'Pujan Joshi | Web Designer & Developer in Nepal',
         },
       ],
       locale: 'en_US',
@@ -57,8 +61,8 @@ export function createPageMetadata({
       card: 'summary_large_image',
       title,
       description,
-      creator: siteConfig.creator,
-      images: [siteConfig.profileImage],
+      creator: '@pujanjoshi3',
+      images: ['/og-image.png'],
     },
   }
 }

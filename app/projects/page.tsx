@@ -223,68 +223,81 @@ export default function ProjectsPage() {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch"
         >
           <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project, index) => (
-              <motion.div
-                layout
-                key={project.title}
-                initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: -20 }}
-                transition={{ duration: 0.45, ease: 'easeOut', delay: index * 0.02 }}
-                className="group relative flex flex-col justify-between overflow-hidden rounded-[2rem] border border-slate-200 bg-white/85 backdrop-blur-xl shadow-2xl shadow-slate-200/60 transition-all duration-500 hover:-translate-y-2 hover:border-slate-300 dark:border-white/10 dark:bg-neutral-900/40 dark:shadow-2xl dark:hover:border-white/20"
-              >
-                {/* Glow Overlay behind the card */}
-                <div
-                  className="absolute -right-20 -top-20 h-40 w-40 rounded-full blur-[80px] opacity-0 group-hover:opacity-20 transition-all duration-700 pointer-events-none"
-                  style={{ backgroundColor: project.glowColor }}
-                />
+            {filteredProjects.map((project, index) => {
+              let slug = project.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+              if (project.title === 'Modern E-Commerce') slug = 'ecommerce-website'
+              if (project.title === 'Personal Portfolio') slug = 'terminal-portfolio'
+              if (project.title === 'Windows 11 Simulation') slug = 'windows-portfolio'
+              if (project.title === 'House Locator') slug = 'house-locator'
 
-                {/* Card Top: Image */}
-                <div className="relative aspect-[16/10] w-full overflow-hidden border-b border-slate-200 bg-slate-100 dark:border-white/5 dark:bg-neutral-950">
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-                    className="object-cover transition-transform duration-700 group-hover:scale-105 group-hover:rotate-1"
+              return (
+                <motion.div
+                  layout
+                  key={project.title}
+                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: -20 }}
+                  transition={{ duration: 0.45, ease: 'easeOut', delay: index * 0.02 }}
+                  className="group relative flex flex-col justify-between overflow-hidden rounded-[2rem] border border-slate-200 bg-white/85 backdrop-blur-xl shadow-2xl shadow-slate-200/60 transition-all duration-500 hover:-translate-y-2 hover:border-slate-300 dark:border-white/10 dark:bg-neutral-900/40 dark:shadow-2xl dark:hover:border-white/20"
+                >
+                  {/* Glow Overlay behind the card */}
+                  <div
+                    className="absolute -right-20 -top-20 h-40 w-40 rounded-full blur-[80px] opacity-0 group-hover:opacity-20 transition-all duration-700 pointer-events-none"
+                    style={{ backgroundColor: project.glowColor }}
                   />
-                  <div className="absolute inset-0 bg-white/10 group-hover:bg-transparent transition-colors duration-500 dark:bg-neutral-950/20" />
-                  
-                  {/* Category Pill Tag on Image */}
-                  <span className="absolute top-4 left-4 rounded-full bg-black/60 border border-white/10 backdrop-blur-md px-3 py-1 text-[10px] uppercase font-bold tracking-widest text-slate-300">
-                    {project.category}
-                  </span>
-                </div>
 
-                {/* Card Body: Info */}
-                <div className="flex flex-col flex-grow p-6 sm:p-7 justify-between relative z-10">
-                  <div className="space-y-3">
-                    <h3 className="text-xl font-extrabold text-slate-950 dark:text-white">
-                      <span className={`bg-gradient-to-r ${project.color} bg-clip-text text-transparent group-hover:opacity-100 transition-opacity`}>
-                        {project.title}
-                      </span>
-                    </h3>
-                    <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed font-light">
-                      {project.description}
-                    </p>
-                  </div>
+                  {/* Card Top: Image */}
+                  <Link href={`/projects/${slug}`} className="relative aspect-[16/10] w-full overflow-hidden border-b border-slate-200 bg-slate-100 block dark:border-white/5 dark:bg-neutral-950">
+                    <Image
+                      src={project.image}
+                      alt={`${project.title} project by Pujan Joshi`}
+                      fill
+                      sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105 group-hover:rotate-1"
+                    />
+                    <div className="absolute inset-0 bg-white/10 group-hover:bg-transparent transition-colors duration-500 dark:bg-neutral-950/20" />
+                    
+                    {/* Category Pill Tag on Image */}
+                    <span className="absolute top-4 left-4 rounded-full bg-black/60 border border-white/10 backdrop-blur-md px-3 py-1 text-[10px] uppercase font-bold tracking-widest text-slate-300">
+                      {project.category}
+                    </span>
+                  </Link>
 
-                  {/* Tech Tags and Buttons Container */}
-                  <div className="mt-6 space-y-6">
-                    <div className="flex flex-wrap gap-1.5">
-                      {project.tech.map((tech) => (
-                        <span
-                          key={tech}
-                          className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-0.5 text-[10px] font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-950 transition-all duration-300 cursor-default dark:border-white/5 dark:bg-white/5 dark:text-slate-400 dark:hover:bg-white/10 dark:hover:text-white"
-                        >
-                          {tech}
-                        </span>
-                      ))}
+                  {/* Card Body: Info */}
+                  <div className="flex flex-col flex-grow p-6 sm:p-7 justify-between relative z-10">
+                    <div className="space-y-3">
+                      <h3 className="text-xl font-extrabold text-slate-950 dark:text-white">
+                        <Link href={`/projects/${slug}`} className={`bg-gradient-to-r ${project.color} bg-clip-text text-transparent group-hover:opacity-100 transition-opacity hover:opacity-80`}>
+                          {project.title}
+                        </Link>
+                      </h3>
+                      <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed font-light">
+                        {project.description}
+                      </p>
                     </div>
 
-                    {/* Interactive Links */}
-                    <div className="flex items-center gap-3 border-t border-slate-200 pt-4 dark:border-white/5">
-                      {project.category === 'Designs' ? (
+                    {/* Tech Tags and Buttons Container */}
+                    <div className="mt-6 space-y-6">
+                      <div className="flex flex-wrap gap-1.5">
+                        {project.tech.map((tech) => (
+                          <span
+                            key={tech}
+                            className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-0.5 text-[10px] font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-950 transition-all duration-300 cursor-default dark:border-white/5 dark:bg-white/5 dark:text-slate-400 dark:hover:bg-white/10 dark:hover:text-white"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* Interactive Links */}
+                      <div className="flex items-center gap-3 border-t border-slate-200 pt-4 dark:border-white/5">
+                        <Link
+                          href={`/projects/${slug}`}
+                          className="flex-1 inline-flex h-10 items-center justify-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 text-xs font-bold text-slate-800 transition hover:bg-slate-100 hover:border-slate-300 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/15 dark:hover:border-white/20"
+                          title={`View case study of ${project.title}`}
+                        >
+                          <span>Case Study</span>
+                        </Link>
                         <a
                           href={project.liveUrl}
                           target="_blank"
@@ -294,42 +307,18 @@ export default function ProjectsPage() {
                             backgroundColor: project.glowColor,
                             boxShadow: `0 4px 12px ${project.glowColor}30`,
                           }}
+                          title={`Launch live demo of ${project.title}`}
                         >
                           <ExternalLink size={13} />
-                          <span>View Designs</span>
+                          <span>{project.category === 'Designs' ? 'Designs' : 'Live Demo'}</span>
                         </a>
-                      ) : (
-                        <>
-                          <a
-                            href={project.repoUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex-1 inline-flex h-10 items-center justify-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 text-xs font-bold text-slate-800 transition hover:bg-slate-100 hover:border-slate-300 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/15 dark:hover:border-white/20"
-                          >
-                            <Github size={13} />
-                            <span>Code</span>
-                          </a>
-                          <a
-                            href={project.liveUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex-1 inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-xs font-bold text-white transition shadow-lg active:scale-95 cursor-pointer hover:opacity-95"
-                            style={{
-                              backgroundColor: project.glowColor,
-                              boxShadow: `0 4px 12px ${project.glowColor}30`,
-                            }}
-                          >
-                            <ExternalLink size={13} />
-                            <span>Live Demo</span>
-                          </a>
-                        </>
-                      )}
+                      </div>
                     </div>
                   </div>
-                </div>
 
-              </motion.div>
-            ))}
+                </motion.div>
+              )
+            })}
           </AnimatePresence>
         </motion.section>
 

@@ -2,6 +2,7 @@
 
 import { Github, Linkedin, Twitter, ArrowUp, Heart, ExternalLink } from 'lucide-react'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 
 export default function Footer() {
   const scrollToTop = () => {
@@ -30,13 +31,13 @@ export default function Footer() {
   ]
 
   const navLinks = [
-    { name: 'Home', href: '#' },
-    { name: 'About', href: '#about' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Views', href: '#experiences' },
-    { name: 'Gallery', href: '/gallery', isExternal: false },
-    { name: 'Resume', href: '/resume/Resume_Pujan-Joshi.pdf', isExternal: true },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Home', href: '/' },
+    { name: 'About', href: '/about' },
+    { name: 'Projects', href: '/projects' },
+    { name: 'Services', href: '/services' },
+    { name: 'Gallery', href: '/gallery' },
+    { name: 'Resume', href: '/resume' },
+    { name: 'Contact', href: '/contact' },
   ]
 
   return (
@@ -90,17 +91,12 @@ export default function Footer() {
             <ul className="flex flex-col gap-2.5">
               {navLinks.map((link) => (
                 <li key={link.name}>
-                  <a
+                  <Link
                     href={link.href}
-                    target={link.isExternal ? "_blank" : undefined}
-                    rel={link.isExternal ? "noopener noreferrer" : undefined}
                     className="group inline-flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-950 transition-colors duration-200 cursor-pointer dark:text-slate-400 dark:hover:text-white"
                   >
                     <span>{link.name}</span>
-                    {link.isExternal && (
-                      <ExternalLink size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                    )}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
