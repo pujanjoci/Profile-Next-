@@ -16,11 +16,6 @@ const nextConfig: NextConfig = {
         destination: '/',
         permanent: true,
       },
-      {
-        source: '/resume',
-        destination: '/',
-        permanent: true,
-      },
     ]
   },
 };
