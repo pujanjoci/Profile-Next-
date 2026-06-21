@@ -9,6 +9,7 @@ export default function AboutPage() {
     <main className="min-h-screen bg-slate-50 text-slate-950 dark:bg-neutral-950 dark:text-white">
       <Header />
       <div className="pt-20">
+        <h1 className="sr-only">About Pujan Joshi — My Journey</h1>
         <About
           name="Pujan"
           bio="I am a developer and designer based in Nepal, focused on crafting polished, performant web applications and high-fidelity user experiences. With a background that bridges front-end architecture and visual design, I build interfaces that are clean, responsive, and intuitive."

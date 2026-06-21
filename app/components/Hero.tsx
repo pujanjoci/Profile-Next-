@@ -82,14 +82,9 @@ export default function Hero() {
         </motion.div>
 
         {/* SEO-friendly intro paragraph */}
-        <motion.p
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.35 }}
-          className="mt-6 max-w-xl mx-auto text-sm sm:text-base md:text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed font-normal px-4 pointer-events-auto"
-        >
+        <p className="sr-only">
           I’m Pujan Joshi, a web designer and developer from Nepal. I create responsive websites, portfolio sites, e-commerce interfaces, and modern web applications using Next.js, React, Tailwind CSS, and JavaScript.
-        </motion.p>
+        </p>
       </div>
 
       {/* Image Container - always at bottom (unchanged) */}
