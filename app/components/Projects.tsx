@@ -1,764 +1,93 @@
 'use client'
 
-import { useMemo, useRef, useState, useEffect, Suspense, Component } from 'react'
-import type { MutableRefObject, ReactNode, ErrorInfo } from 'react'
-import { Canvas, ThreeEvent, useFrame } from '@react-three/fiber'
-import { Environment, Image as DreiImage, ContactShadows } from '@react-three/drei'
+import { useState, useMemo, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { easing } from 'maath'
 import {
   ArrowUpRight,
   ChevronLeft,
   ChevronRight,
   ExternalLink,
-  Github,
-  RotateCcw,
+  Github
 } from 'lucide-react'
 import Link from 'next/link'
-import * as THREE from 'three'
-
 import { projects } from '../data/projects'
 import type { Project } from '../data/projects'
 
-type ProjectImageMaterial = THREE.ShaderMaterial & {
-  radius: number
-  zoom: number
-  grayscale: number
-  opacity: number
-}
-
-class BentPlaneGeometry extends THREE.PlaneGeometry {
-  constructor(bend = 0.16, width = 1, height = 1, widthSegments = 20, heightSegments = 20) {
-    super(width, height, widthSegments, heightSegments)
-
-    const halfWidth = width / 2
-    const left = new THREE.Vector2(-halfWidth, 0)
-    const top = new THREE.Vector2(0, bend)
-    const right = new THREE.Vector2(halfWidth, 0)
-    const leftToTop = new THREE.Vector2().subVectors(left, top)
-    const topToRight = new THREE.Vector2().subVectors(top, right)
-    const leftToRight = new THREE.Vector2().subVectors(left, right)
-    const radius =
-      (leftToTop.length() * topToRight.length() * leftToRight.length()) /
-      (2 * Math.abs(leftToTop.cross(leftToRight)))
-    const center = new THREE.Vector2(0, bend - radius)
-    const baseAngle = new THREE.Vector2().subVectors(left, center).angle() - Math.PI / 2
-    const arc = baseAngle * 2
-    const uv = this.attributes.uv
-    const position = this.attributes.position
-    const point = new THREE.Vector2()
-
-    for (let index = 0; index < uv.count; index += 1) {
-      const uvX = 1 - uv.getX(index)
-      const y = position.getY(index)
-
-      point.copy(right).rotateAround(center, arc * uvX)
-      position.setXYZ(index, point.x, y, -point.y)
-    }
-
-    position.needsUpdate = true
-    this.computeVertexNormals()
-  }
-}
-
-interface ErrorBoundaryProps {
-  children: ReactNode
-  fallback: ReactNode
-}
-
-interface ErrorBoundaryState {
-  hasError: boolean
-}
-
-class ThreeErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  constructor(props: ErrorBoundaryProps) {
-    super(props)
-    this.state = { hasError: false }
-  }
-
-  static getDerivedStateFromError(): ErrorBoundaryState {
-    return { hasError: true }
-  }
-
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.warn("ThreeErrorBoundary caught an asset load error:", error, errorInfo)
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return this.props.fallback
-    }
-    return this.props.children
-  }
-}
-
-function ProjectCardPlaceholder({
-  angle,
-  radius,
-  active,
-}: {
-  angle: number
-  radius: number
-  active: boolean
-}) {
-  const geometry = useMemo(() => new BentPlaneGeometry(0.18, 1.08, 1.48, 32, 20), [])
-  return (
-    <mesh
-      position={[Math.sin(angle) * radius, 0, Math.cos(angle) * radius]}
-      rotation={[0, Math.PI + angle, 0]}
-      scale={active ? 1.1 : 0.88}
-    >
-      <primitive object={geometry} attach="geometry" />
-      <meshBasicMaterial
-        color="#171717"
-        transparent
-        opacity={0.3}
-        side={THREE.DoubleSide}
-      />
-    </mesh>
-  )
-}
-
-function ProjectCardFallback({
-  angle,
-  project,
-  radius,
-  active,
-  onSelect,
-  index,
-}: {
-  angle: number
-  project: Project
-  radius: number
-  active: boolean
-  onSelect: (index: number) => void
-  index: number
-}) {
-  const [hovered, setHovered] = useState(false)
-  const geometry = useMemo(() => new BentPlaneGeometry(0.18, 1.08, 1.48, 32, 20), [])
-  const meshRef = useRef<THREE.Mesh>(null)
-
-  useFrame((_, delta) => {
-    if (!meshRef.current) return
-    const targetScale = active ? (hovered ? 1.2 : 1.1) : (hovered ? 1.0 : 0.88)
-    easing.damp3(meshRef.current.scale, targetScale, 0.2, delta)
-  })
-
-  return (
-    <mesh
-      ref={meshRef}
-      position={[Math.sin(angle) * radius, 0, Math.cos(angle) * radius]}
-      rotation={[0, Math.PI + angle, 0]}
-      onClick={(e) => {
-        e.stopPropagation()
-        onSelect(index)
-      }}
-      onPointerOver={(e) => {
-        e.stopPropagation()
-        setHovered(true)
-        document.body.style.cursor = 'pointer'
-      }}
-      onPointerOut={() => {
-        setHovered(false)
-        document.body.style.cursor = ''
-      }}
-    >
-      <primitive object={geometry} attach="geometry" />
-      <meshStandardMaterial
-        color={project.glowColor}
-        roughness={0.4}
-        metalness={0.6}
-        side={THREE.DoubleSide}
-        transparent
-        opacity={active ? 0.95 : 0.4}
-      />
-    </mesh>
-  )
-}
-
-function ProjectCardImage({
-  angle,
-  index,
-  radius,
-  active,
-  onSelect,
-  imageUrl,
-}: {
-  angle: number
-  index: number
-  radius: number
-  active: boolean
-  onSelect: (index: number) => void
-  imageUrl: string
-}) {
-  const [hovered, setHovered] = useState(false)
-  const geometry = useMemo(() => new BentPlaneGeometry(0.18, 1.08, 1.48, 32, 20), [])
-  const internalMesh = useRef<THREE.Mesh>(null)
-
-  useFrame((_, delta) => {
-    if (!internalMesh.current) return
-
-    const material = internalMesh.current.material as ProjectImageMaterial
-    
-    // Scale up active card more, scale down inactive ones
-    const targetScale = active ? (hovered ? 1.2 : 1.1) : (hovered ? 1.0 : 0.88)
-    easing.damp3(internalMesh.current.scale, targetScale, 0.2, delta)
-    
-    // Radius (border rounding in DreiImage shader)
-    const targetRadius = active ? (hovered ? 0.22 : 0.15) : 0.08
-    easing.damp(material, 'radius', targetRadius, 0.2, delta)
-    
-    // Zoom effect
-    const targetZoom = active ? (hovered ? 1.0 : 1.05) : 1.3
-    easing.damp(material, 'zoom', targetZoom, 0.2, delta)
-    
-    // Grayscale: active is colorful, inactive is desaturated
-    const targetGrayscale = active ? 0.0 : (hovered ? 0.2 : 0.8)
-    easing.damp(material, 'grayscale', targetGrayscale, 0.2, delta)
-    
-    // Opacity: active is fully visible, inactive fades into the background
-    const targetOpacity = active ? 1.0 : (hovered ? 0.7 : 0.35)
-    easing.damp(material, 'opacity', targetOpacity, 0.2, delta)
-  })
-
-  const stopAndSelect = (event: ThreeEvent<MouseEvent>) => {
-    event.stopPropagation()
-    onSelect(index)
-  }
-
-  return (
-    <DreiImage
-      ref={internalMesh}
-      url={imageUrl}
-      transparent
-      toneMapped={false}
-      side={THREE.DoubleSide}
-      position={[Math.sin(angle) * radius, 0, Math.cos(angle) * radius]}
-      rotation={[0, Math.PI + angle, 0]}
-      onClick={stopAndSelect}
-      onPointerOver={(event) => {
-        event.stopPropagation()
-        setHovered(true)
-        document.body.style.cursor = 'pointer'
-      }}
-      onPointerOut={() => {
-        setHovered(false)
-        document.body.style.cursor = ''
-      }}
-    >
-      <primitive object={geometry} attach="geometry" />
-    </DreiImage>
-  )
-}
-
-function ProjectCard3D({
-  angle,
-  index,
-  project,
-  radius,
-  active,
-  onSelect,
-}: {
-  angle: number
-  index: number
-  project: Project
-  radius: number
-  active: boolean
-  onSelect: (index: number) => void
-}) {
-  const [safeUrl, setSafeUrl] = useState<string | null>(null)
-
-  useEffect(() => {
-    let isCurrent = true
-    const img = new window.Image()
-    img.crossOrigin = 'anonymous'
-    img.src = project.image
-    img.onload = () => {
-      if (isCurrent) setSafeUrl(project.image)
-    }
-    img.onerror = () => {
-      if (isCurrent) {
-        console.warn(`Failed to load image for project "${project.title}": ${project.image}`)
-        setSafeUrl('fallback')
-      }
-    }
-    return () => {
-      isCurrent = false
-    }
-  }, [project.image, project.title])
-
-  if (safeUrl === null) {
-    return <ProjectCardPlaceholder angle={angle} radius={radius} active={active} />
-  }
-
-  if (safeUrl === 'fallback') {
-    return (
-      <ProjectCardFallback
-        angle={angle}
-        project={project}
-        radius={radius}
-        active={active}
-        onSelect={onSelect}
-        index={index}
-      />
-    )
-  }
-
-  return (
-    <ProjectCardImage
-      angle={angle}
-      index={index}
-      radius={radius}
-      active={active}
-      onSelect={onSelect}
-      imageUrl={safeUrl}
-    />
-  )
-}
-
-function ProjectCarouselScene({
-  activeIndex,
-  rotationTargetRef,
-  isDraggingRef,
-  velocityRef,
-  isHoveredRef,
-  lastInteractionTimeRef,
-  setActiveIndex,
-}: {
-  activeIndex: number
-  rotationTargetRef: MutableRefObject<number>
-  isDraggingRef: MutableRefObject<boolean>
-  velocityRef: MutableRefObject<number>
-  isHoveredRef: MutableRefObject<boolean>
-  lastInteractionTimeRef: MutableRefObject<number>
-  setActiveIndex: (index: number) => void
-}) {
-  const group = useRef<THREE.Group>(null)
-  const cardRadius = 2.2
-  const n = projects.length
-  const angleStep = (Math.PI * 2) / n
-
-  const handleSelect = (selectedIndex: number) => {
-    const baseTarget = -selectedIndex * angleStep
-    const diff = rotationTargetRef.current - baseTarget
-    const k = Math.round(diff / (Math.PI * 2))
-    rotationTargetRef.current = baseTarget + k * (Math.PI * 2)
-    velocityRef.current = 0
-    setActiveIndex(selectedIndex)
-    lastInteractionTimeRef.current = Date.now()
-  }
-
-  useFrame((state, delta) => {
-    if (!group.current) return
-
-    if (isDraggingRef.current) {
-      // While dragging, check what card is closest to front and update activeIndex in real-time
-      const rawIndex = -rotationTargetRef.current / angleStep
-      let closestIndex = Math.round(rawIndex) % n
-      if (closestIndex < 0) closestIndex += n
-      if (activeIndex !== closestIndex) {
-        setActiveIndex(closestIndex)
-      }
-    } else {
-      // 1. Friction / Inertia decay
-      if (Math.abs(velocityRef.current) > 0.005) {
-        rotationTargetRef.current += velocityRef.current * 15
-        velocityRef.current *= 0.92 // Apply friction
-        
-        // Update active index in real-time as it spins, but only if it's not spinning too fast
-        if (Math.abs(velocityRef.current) < 0.03) {
-          const rawIndex = -rotationTargetRef.current / angleStep
-          let closestIndex = Math.round(rawIndex) % n
-          if (closestIndex < 0) closestIndex += n
-          if (activeIndex !== closestIndex) {
-            setActiveIndex(closestIndex)
-          }
-        }
-      } else {
-        // 2. Snapping: if not dragging and velocity is low, snap to the activeIndex's target rotation
-        const baseTarget = -activeIndex * angleStep
-        const diff = rotationTargetRef.current - baseTarget
-        const k = Math.round(diff / (Math.PI * 2))
-        const targetRotation = baseTarget + k * (Math.PI * 2)
-        rotationTargetRef.current = THREE.MathUtils.lerp(rotationTargetRef.current, targetRotation, 0.1)
-      }
-      
-      // 3. Idle Auto-play: check if we should auto-advance
-      const now = Date.now()
-      if (now - lastInteractionTimeRef.current > 5000 && !isHoveredRef.current) {
-        const nextIndex = (activeIndex + 1) % n
-        setActiveIndex(nextIndex)
-        rotationTargetRef.current -= angleStep
-        lastInteractionTimeRef.current = now // Reset timer
-      }
-    }
-
-    // Apply rotation target with damping to the actual group mesh
-    easing.damp(group.current.rotation, 'y', rotationTargetRef.current, 0.28, delta)
-
-    // Parallax camera effect based on mouse cursor pointer
-    state.camera.position.x = THREE.MathUtils.damp(
-      state.camera.position.x,
-      -state.pointer.x * 0.4,
-      4,
-      delta,
-    )
-    state.camera.position.y = THREE.MathUtils.damp(
-      state.camera.position.y,
-      0.2 + state.pointer.y * 0.2,
-      4,
-      delta,
-    )
-    state.camera.lookAt(0, 0.1, 0)
-  })
-
-  const currentProject = projects[activeIndex]
-
-  return (
-    <>
-      <fog attach="fog" args={['#0a0a0a', 6.5, 11]} />
-      
-      <ambientLight intensity={0.4} />
-      <directionalLight position={[0, 5, 5]} intensity={0.6} />
-      
-      {/* Spotlighting target has default direction pointing at center */}
-      <spotLight
-        position={[0, 3, 4]}
-        angle={0.45}
-        penumbra={1}
-        intensity={2.5}
-        color={currentProject.glowColor}
-      />
-      
-      <group ref={group}>
-        {projects.map((project, index) => (
-          <ThreeErrorBoundary
-            key={project.title}
-            fallback={
-              <ProjectCardFallback
-                angle={index * angleStep}
-                project={project}
-                radius={cardRadius}
-                active={index === activeIndex}
-                onSelect={handleSelect}
-                index={index}
-              />
-            }
-          >
-            <Suspense
-              fallback={
-                <ProjectCardPlaceholder
-                  angle={index * angleStep}
-                  radius={cardRadius}
-                  active={index === activeIndex}
-                />
-              }
-            >
-              <ProjectCard3D
-                angle={index * angleStep}
-                index={index}
-                project={project}
-                radius={cardRadius}
-                active={index === activeIndex}
-                onSelect={handleSelect}
-              />
-            </Suspense>
-          </ThreeErrorBoundary>
-        ))}
-      </group>
-
-      {/* Flat Glowing Guide Pedestal Ring under the cards */}
-      <mesh position={[0, -0.92, 0]}>
-        <cylinderGeometry args={[cardRadius, cardRadius, 0.015, 64, 1, true]} />
-        <meshBasicMaterial
-          color={currentProject.glowColor}
-          transparent
-          opacity={0.25}
-          side={THREE.DoubleSide}
-        />
-      </mesh>
-
-      {/* Soft Contact Shadows below the floating cards */}
-      <ContactShadows
-        position={[0, -0.95, 0]}
-        opacity={0.65}
-        scale={6}
-        blur={2}
-        far={1.5}
-      />
-      
-      <Environment preset="dawn" />
-    </>
-  )
-}
-
-function ProjectCarousel() {
-  const [activeIndex, setActiveIndex] = useState(0)
-  const rotationTargetRef = useRef(0)
-  const isDraggingRef = useRef(false)
-  const lastX = useRef(0)
-  const lastTimeRef = useRef(0)
-  const velocityRef = useRef(0)
-  const isHoveredRef = useRef(false)
-  const lastInteractionTimeRef = useRef(0)
-  const containerRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    lastInteractionTimeRef.current = Date.now()
-  }, [])
-
-  const selectedProject = projects[activeIndex]
-  const angleStep = (Math.PI * 2) / projects.length
-
-  let slug = selectedProject.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
-  if (selectedProject.title === 'Modern E-Commerce') slug = 'ecommerce-website'
-  if (selectedProject.title === 'Personal Portfolio') slug = 'terminal-portfolio'
-  if (selectedProject.title === 'Windows 11 Simulation') slug = 'windows-portfolio'
-  if (selectedProject.title === 'House Locator') slug = 'house-locator'
-
-  const selectProject = (nextIndex: number) => {
-    const normalizedIndex = (nextIndex + projects.length) % projects.length
-    const baseTarget = -normalizedIndex * angleStep
-    const diff = rotationTargetRef.current - baseTarget
-    const k = Math.round(diff / (Math.PI * 2))
-    
-    rotationTargetRef.current = baseTarget + k * (Math.PI * 2)
-    velocityRef.current = 0
-    lastInteractionTimeRef.current = Date.now()
-    setActiveIndex(normalizedIndex)
-  }
-
-  return (
-    <div 
-      ref={containerRef}
-      className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch w-full max-w-6xl mx-auto"
-      onMouseEnter={() => { isHoveredRef.current = true }}
-      onMouseLeave={() => { isHoveredRef.current = false }}
-    >
-      {/* Left Column: Project Details Panel */}
-      <div className="lg:col-span-5 flex flex-col justify-between p-6 sm:p-8 rounded-[2rem] border border-slate-200 bg-white shadow-2xl shadow-slate-200/60 relative overflow-hidden min-h-[480px] lg:order-first order-last dark:border-white/10 dark:bg-neutral-950 dark:shadow-2xl">
-        {/* Glow behind the active theme */}
-        <div 
-          className="absolute -right-24 -top-24 h-48 w-48 rounded-full blur-3xl opacity-20 transition-all duration-700 pointer-events-none"
-          style={{ backgroundColor: selectedProject.glowColor }}
-        />
-        
-        {/* Top Section: Pagination & Title */}
-        <div className="relative z-10 flex items-center justify-between">
-          <span className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">
-            Featured Project
-          </span>
-          <div className="flex items-center gap-2 font-mono">
-            <span className="text-sm font-bold text-slate-950 dark:text-white">
-              {String(activeIndex + 1).padStart(2, '0')}
-            </span>
-            <span className="text-xs text-slate-500">/</span>
-            <span className="text-xs text-slate-400 font-medium">
-              {String(projects.length).padStart(2, '0')}
-            </span>
-          </div>
-        </div>
-
-        {/* Middle Section: Text & Tech Stack with Framer Motion AnimatePresence */}
-        <div className="relative z-10 my-auto py-6">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeIndex}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.3, ease: 'easeOut' }}
-              className="flex flex-col gap-4"
-            >
-              {/* Title */}
-              <h3 className="text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
-                <span className={`bg-gradient-to-r ${selectedProject.color} bg-clip-text text-transparent`}>
-                  {selectedProject.title}
-                </span>
-              </h3>
-              
-              {/* Description */}
-              <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed sm:text-base">
-                {selectedProject.description}
-              </p>
-              
-              {/* Tech Tags */}
-              <div className="flex flex-wrap gap-1.5 mt-2">
-                {selectedProject.tech.map((tech) => (
-                  <span
-                    key={tech}
-                    className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600 hover:bg-slate-100 hover:border-slate-300 transition-all duration-300 cursor-default dark:border-white/5 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:border-white/20"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* Bottom Section: Interactive Controls, Links, Progress bar */}
-        <div className="relative z-10 space-y-6">
-          {/* Progress Bar */}
-          <div className="h-[2px] w-full bg-slate-200 dark:bg-white/5 rounded-full overflow-hidden">
-            <motion.div 
-              className="h-full"
-              style={{ 
-                width: `${((activeIndex + 1) / projects.length) * 100}%`,
-                backgroundColor: selectedProject.glowColor
-              }}
-              layoutId="progressBar"
-              transition={{ type: 'spring', stiffness: 80, damping: 15 }}
-            />
-          </div>
-
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            {/* Nav Arrows */}
-            <div className="flex items-center gap-1.5">
-              <button
-                type="button"
-                aria-label="Previous project"
-                onClick={() => selectProject(activeIndex - 1)}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-800 transition hover:bg-slate-100 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/15"
-              >
-                <ChevronLeft size={16} />
-              </button>
-              <button
-                type="button"
-                aria-label="Reset carousel"
-                onClick={() => selectProject(0)}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-800 transition hover:bg-slate-100 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/15"
-              >
-                <RotateCcw size={15} />
-              </button>
-              <button
-                type="button"
-                aria-label="Next project"
-                onClick={() => selectProject(activeIndex + 1)}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-800 transition hover:bg-slate-100 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/15"
-              >
-                <ChevronRight size={16} />
-              </button>
-            </div>
-
-             {/* Action Links */}
-             <div className="flex items-center gap-2">
-               <Link
-                 href={`/projects/${slug}`}
-                 className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 text-xs font-semibold text-slate-800 transition hover:bg-slate-100 hover:border-slate-300 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/15 dark:hover:border-white/20"
-                 title={`View case study of ${selectedProject.title}`}
-               >
-                 Case Study
-               </Link>
-               <a
-                 href={selectedProject.liveUrl}
-                 target="_blank"
-                 rel="noopener noreferrer"
-                 className="inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-xs font-bold text-white transition shadow-lg active:scale-95 cursor-pointer glimmer-btn"
-                 style={{ 
-                   backgroundColor: selectedProject.glowColor,
-                   boxShadow: `0 4px 14px ${selectedProject.glowColor}40`
-                 }}
-                 title={`Launch live demo of ${selectedProject.title}`}
-               >
-                 <ExternalLink size={14} />
-                 <span>{selectedProject.category === 'Designs' ? 'View Designs' : 'Live Demo'}</span>
-               </a>
-             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Right Column: 3D Scene Viewport */}
-      <div className="lg:col-span-7 relative h-[420px] sm:h-[500px] lg:h-auto rounded-[2rem] border border-slate-200 bg-slate-100 overflow-hidden shadow-2xl shadow-slate-200/60 group/canvas lg:order-last order-first min-h-[420px] dark:border-white/10 dark:bg-neutral-950 dark:shadow-2xl">
-        {/* Touch layer for dragging */}
-        <div
-          className="absolute inset-0 z-10 touch-pan-y cursor-grab active:cursor-grabbing"
-          onPointerDown={(event) => {
-            isDraggingRef.current = true
-            lastX.current = event.clientX
-            lastTimeRef.current = performance.now()
-            velocityRef.current = 0
-            lastInteractionTimeRef.current = Date.now()
-            event.currentTarget.setPointerCapture(event.pointerId)
-          }}
-          onPointerMove={(event) => {
-            if (!isDraggingRef.current) return
-
-            const now = performance.now()
-            const dt = now - lastTimeRef.current
-            const deltaX = event.clientX - lastX.current
-            
-            // Adjust sensitivity based on viewport width
-            const width = containerRef.current?.clientWidth || 800
-            const sensitivity = (Math.PI * 2.2) / width
-            
-            rotationTargetRef.current += deltaX * sensitivity
-            
-            if (dt > 0) {
-              const rawVelocity = (deltaX * sensitivity) / dt // change in angle per ms
-              velocityRef.current = Math.max(-0.06, Math.min(0.06, rawVelocity))
-            }
-            
-            lastX.current = event.clientX
-            lastTimeRef.current = now
-            lastInteractionTimeRef.current = Date.now()
-          }}
-          onPointerUp={(event) => {
-            isDraggingRef.current = false
-            event.currentTarget.releasePointerCapture(event.pointerId)
-            lastInteractionTimeRef.current = Date.now()
-          }}
-          onPointerCancel={() => {
-            isDraggingRef.current = false
-          }}
-          onWheel={(event) => {
-            // Clamp wheel input delta to prevent extreme jumps on fast scrolling/trackpads
-            const delta = Math.max(-0.15, Math.min(0.15, event.deltaY * 0.0005))
-            rotationTargetRef.current += delta
-            
-            // Safely accumulate/dampen wheel velocity and clamp it
-            const newVelocity = velocityRef.current + delta * 0.1
-            velocityRef.current = Math.max(-0.06, Math.min(0.06, newVelocity))
-            lastInteractionTimeRef.current = Date.now()
-          }}
-        >
-          {/* Info Badge */}
-          <div className="absolute top-6 left-1/2 -translate-x-1/2 bg-black/60 border border-white/10 px-4 py-1.5 rounded-full text-[10px] uppercase tracking-widest text-slate-400 font-semibold opacity-0 group-hover/canvas:opacity-100 transition-opacity duration-300 pointer-events-none select-none">
-            Drag to Rotate &bull; Scroll to Spin
-          </div>
-        </div>
-
-        <Canvas camera={{ position: [0, 0.25, 6.2], fov: 42 }} dpr={[1, 1.5]}>
-          <ProjectCarouselScene
-            activeIndex={activeIndex}
-            rotationTargetRef={rotationTargetRef}
-            isDraggingRef={isDraggingRef}
-            velocityRef={velocityRef}
-            isHoveredRef={isHoveredRef}
-            lastInteractionTimeRef={lastInteractionTimeRef}
-            setActiveIndex={setActiveIndex}
-          />
-        </Canvas>
-      </div>
-    </div>
-  )
-}
-
 export default function Projects({ id = 'projects' }: { id?: string }) {
+  const categories = ['All', 'Web Apps', 'Games', 'UI/UX', 'Designs'] as const
+  const [selectedCategory, setSelectedCategory] = useState<typeof categories[number]>('All')
+  const [activeIndex, setActiveIndex] = useState(0)
+  const thumbnailRefs = useRef<(HTMLButtonElement | null)[]>([])
+
+  // Reset index when category changes
+  useEffect(() => {
+    setActiveIndex(0)
+  }, [selectedCategory])
+
+  // Filter projects by category
+  const filteredProjects = useMemo(() => {
+    if (selectedCategory === 'All') return projects
+    return projects.filter((p) => p.category === selectedCategory)
+  }, [selectedCategory])
+
+  const selectedProject = filteredProjects[activeIndex] || filteredProjects[0] || projects[0]
+
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % filteredProjects.length)
+  }
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev - 1 + filteredProjects.length) % filteredProjects.length)
+  }
+
+  // Auto-scroll active thumbnail into view
+  useEffect(() => {
+    if (thumbnailRefs.current[activeIndex]) {
+      thumbnailRefs.current[activeIndex]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      })
+    }
+  }, [activeIndex])
+
+  // Drag handlers for swipe gestures
+  const handleDragEnd = (event: any, info: any) => {
+    const swipeThreshold = 50
+    if (info.offset.x < -swipeThreshold) {
+      handleNext()
+    } else if (info.offset.x > swipeThreshold) {
+      handlePrev()
+    }
+  }
+
+  // Resolve project case study slug
+  const getProjectSlug = (project: Project) => {
+    let slug = project.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+    if (project.title === 'Modern E-Commerce') slug = 'ecommerce-website'
+    if (project.title === 'Personal Portfolio') slug = 'terminal-portfolio'
+    if (project.title === 'Windows 11 Simulation') slug = 'windows-portfolio'
+    if (project.title === 'House Locator') slug = 'house-locator'
+    return slug
+  }
+
+  const slug = getProjectSlug(selectedProject)
+
   return (
     <section
       id={id}
       className="relative min-h-screen w-full overflow-hidden bg-slate-50 py-20 transition-colors duration-300 dark:bg-neutral-950 md:py-28"
     >
+      {/* Background Glows */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute left-1/2 top-1/2 h-[620px] w-[620px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-orange-500/5 blur-3xl" />
-        <div className="absolute right-0 top-1/4 h-[420px] w-[420px] rounded-full bg-cyan-500/5 blur-3xl" />
+        <div className="absolute left-1/4 top-1/3 h-[500px] w-[500px] rounded-full bg-purple-500/5 blur-3xl" />
+        <div className="absolute right-1/4 bottom-1/3 h-[500px] w-[500px] rounded-full bg-fuchsia-500/5 blur-3xl" />
       </div>
 
-      <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        {/* Section Header */}
         <motion.div
-          className="mb-14 text-center"
+          className="mb-10 text-center"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -773,17 +102,273 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
           <div className="mx-auto h-1 w-24 rounded-full bg-gradient-to-r from-orange-500 to-amber-400" />
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.98 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.7, delay: 0.15 }}
+        {/* Category Filters Tab-Bar */}
+        <motion.div 
+          className="flex flex-wrap justify-center gap-2 mb-10"
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.1 }}
         >
-          <ProjectCarousel />
+          <div className="flex flex-wrap justify-center gap-1.5 p-1.5 rounded-full border border-slate-200 bg-white/80 backdrop-blur-md shadow-sm dark:border-white/5 dark:bg-neutral-900/80">
+            {categories.map((category) => {
+              const isActive = selectedCategory === category
+              return (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`relative px-4 py-2 text-xs sm:text-sm font-bold rounded-full cursor-pointer transition-colors duration-300 z-10 ${
+                    isActive 
+                      ? 'text-white' 
+                      : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100'
+                  }`}
+                >
+                  {category}
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeCategoryTab"
+                      className="absolute inset-0 bg-gradient-to-r from-orange-500 to-amber-400 rounded-full -z-10 shadow-sm"
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                </button>
+              )
+            })}
+          </div>
         </motion.div>
 
+        {/* Main Carousel Display Box */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch w-full mb-10">
+          
+          {/* Left Panel: Project Details */}
+          <div className="lg:col-span-5 flex flex-col justify-between p-6 sm:p-8 rounded-[2rem] border border-slate-200/80 bg-white shadow-xl relative overflow-hidden min-h-[460px] lg:order-first order-last dark:border-white/10 dark:bg-neutral-900 dark:shadow-2xl">
+            {/* Dynamic Corner Gradient Shadow */}
+            <div 
+              className="absolute -right-24 -top-24 h-48 w-48 rounded-full blur-3xl opacity-20 transition-all duration-700 pointer-events-none"
+              style={{ backgroundColor: selectedProject.glowColor }}
+            />
+
+            {/* Pagination / Featured Indicator */}
+            <div className="relative z-10 flex items-center justify-between">
+              <span className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">
+                {selectedProject.category} Project
+              </span>
+              <div className="flex items-center gap-2 font-mono">
+                <span className="text-sm font-bold text-slate-950 dark:text-white">
+                  {String(activeIndex + 1).padStart(2, '0')}
+                </span>
+                <span className="text-xs text-slate-500">/</span>
+                <span className="text-xs text-slate-400 font-medium">
+                  {String(filteredProjects.length).padStart(2, '0')}
+                </span>
+              </div>
+            </div>
+
+            {/* Animated Details Block */}
+            <div className="relative z-10 my-auto py-6">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={`${selectedCategory}-${activeIndex}`}
+                  initial={{ opacity: 0, x: -15 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 15 }}
+                  transition={{ duration: 0.3, ease: 'easeOut' }}
+                  className="flex flex-col gap-4"
+                >
+                  <h3 className="text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
+                    <span className={`bg-gradient-to-r ${selectedProject.color} bg-clip-text text-transparent`}>
+                      {selectedProject.title}
+                    </span>
+                  </h3>
+                  
+                  <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed sm:text-base">
+                    {selectedProject.description}
+                  </p>
+                  
+                  {/* Tech Stack Badges */}
+                  <div className="flex flex-wrap gap-1.5 mt-2">
+                    {selectedProject.tech.map((tech) => (
+                      <span
+                        key={tech}
+                        className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-600 hover:bg-slate-100 hover:border-slate-300 transition-all duration-300 cursor-default dark:border-white/5 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* Carousel Bottom Control Bars */}
+            <div className="relative z-10 space-y-6">
+              {/* Progress Line */}
+              <div className="h-[2px] w-full bg-slate-200 dark:bg-neutral-800 rounded-full overflow-hidden">
+                <motion.div 
+                  className="h-full"
+                  style={{ 
+                    width: `${((activeIndex + 1) / filteredProjects.length) * 100}%`,
+                    backgroundColor: selectedProject.glowColor
+                  }}
+                  layoutId="carouselProgressBar"
+                  transition={{ type: 'spring', stiffness: 80, damping: 15 }}
+                />
+              </div>
+
+              {/* Interaction Row */}
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                {/* Arrow Navs */}
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    aria-label="Previous project"
+                    onClick={handlePrev}
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-800 transition hover:bg-slate-100 hover:scale-105 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
+                  >
+                    <ChevronLeft size={16} />
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="Next project"
+                    onClick={handleNext}
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-800 transition hover:bg-slate-100 hover:scale-105 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
+                  >
+                    <ChevronRight size={16} />
+                  </button>
+                </div>
+
+                {/* CTAs */}
+                <div className="flex items-center gap-2">
+                  <Link
+                    href={`/projects/${slug}`}
+                    className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 text-xs font-bold text-slate-800 transition hover:bg-slate-100 hover:border-slate-300 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
+                    title={`View case study of ${selectedProject.title}`}
+                  >
+                    Case Study
+                  </Link>
+                  <a
+                    href={selectedProject.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-xs font-bold text-white transition shadow-lg active:scale-95 cursor-pointer glimmer-btn"
+                    style={{ 
+                      backgroundColor: selectedProject.glowColor,
+                      boxShadow: `0 4px 14px ${selectedProject.glowColor}40`
+                    }}
+                    title={`Launch live demo of ${selectedProject.title}`}
+                  >
+                    <ExternalLink size={14} />
+                    <span>{selectedProject.category === 'Designs' ? 'View Designs' : 'Live Demo'}</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Panel: Premium Screenshot Frame with Drag/Swipe */}
+          <div className="lg:col-span-7 relative flex items-center justify-center rounded-[2rem] border border-slate-200 bg-slate-100 overflow-hidden shadow-xl group/canvas lg:order-last order-first min-h-[380px] sm:min-h-[460px] dark:border-white/10 dark:bg-neutral-900 dark:shadow-2xl">
+            {/* Dynamic Background Glow */}
+            <div 
+              className="absolute -inset-10 opacity-20 blur-3xl rounded-full transition-all duration-1000 pointer-events-none"
+              style={{
+                background: `radial-gradient(circle, ${selectedProject.glowColor} 0%, transparent 70%)`
+              }}
+            />
+
+            {/* Mac-Style Glass Browser Mockup */}
+            <motion.div 
+              className="relative w-[90%] aspect-[16/10] rounded-xl border border-slate-200/80 bg-white/70 backdrop-blur-md shadow-2xl overflow-hidden cursor-grab active:cursor-grabbing dark:border-white/10 dark:bg-neutral-950/70"
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.2}
+              onDragEnd={handleDragEnd}
+              whileTap={{ scale: 0.98 }}
+            >
+              {/* Browser Header Bar */}
+              <div className="h-8 border-b border-slate-200/60 bg-slate-100/60 px-4 flex items-center gap-1.5 select-none dark:border-neutral-800/60 dark:bg-neutral-900/60">
+                {/* Dots */}
+                <div className="h-2.5 w-2.5 rounded-full bg-red-400" />
+                <div className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
+                <div className="h-2.5 w-2.5 rounded-full bg-green-400" />
+                
+                {/* Address Bar */}
+                <div className="mx-auto w-[60%] h-5 rounded bg-white/80 border border-slate-200/60 flex items-center justify-center text-[9px] font-mono text-slate-400 truncate px-2 select-none dark:bg-neutral-900/80 dark:border-neutral-800/60 dark:text-neutral-500">
+                  pujan-joshi.com.np/projects/{slug}
+                </div>
+              </div>
+
+              {/* Active Screenshot */}
+              <div className="relative w-full h-[calc(100%-2rem)] overflow-hidden bg-slate-50 dark:bg-neutral-900">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={`${selectedCategory}-${activeIndex}`}
+                    src={selectedProject.image}
+                    alt={selectedProject.title}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 1.05 }}
+                    transition={{ duration: 0.3 }}
+                    className="w-full h-full object-cover object-top select-none pointer-events-none transition-transform duration-700 ease-out group-hover/canvas:scale-[1.03]"
+                  />
+                </AnimatePresence>
+                
+                {/* Gesture Swipe Helper Badge */}
+                <div className="absolute bottom-3 right-3 bg-black/60 border border-white/10 px-3 py-1 rounded-full text-[9px] uppercase tracking-wider text-slate-300 font-bold opacity-0 group-hover/canvas:opacity-100 transition-opacity duration-300 pointer-events-none select-none">
+                  Swipe Left/Right to Navigate
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Thumbnail Navigation Strip */}
         <motion.div
-          className="mt-14 flex flex-wrap justify-center gap-4 text-center"
+          className="w-full mb-12"
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <div className="flex gap-3 overflow-x-auto pb-4 pt-2 scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-neutral-800 scroll-smooth">
+            {filteredProjects.map((project, idx) => {
+              const isActive = idx === activeIndex
+              return (
+                <button
+                  key={project.title}
+                  ref={(el) => {
+                    thumbnailRefs.current[idx] = el
+                  }}
+                  onClick={() => setActiveIndex(idx)}
+                  className={`relative flex-shrink-0 w-32 aspect-[16/10] rounded-xl overflow-hidden border-2 transition-all duration-300 cursor-pointer shadow-md hover:scale-105 active:scale-95 group ${
+                    isActive 
+                      ? 'scale-105' 
+                      : 'border-slate-200 opacity-55 hover:opacity-100 dark:border-neutral-800'
+                  }`}
+                  style={{
+                    borderColor: isActive ? project.glowColor : undefined,
+                    boxShadow: isActive ? `0 4px 12px ${project.glowColor}25` : undefined
+                  }}
+                >
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover select-none pointer-events-none transition-transform duration-300 group-hover:scale-105"
+                  />
+                  {/* Minimal Title Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-2">
+                    <span className="text-[9px] text-white font-bold truncate w-full">
+                      {project.title}
+                    </span>
+                  </div>
+                </button>
+              )
+            })}
+          </div>
+        </motion.div>
+
+        {/* Explore All Bottom CTA Buttons */}
+        <motion.div
+          className="mt-10 flex flex-wrap justify-center gap-4 text-center"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -806,6 +391,7 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
             View on GitHub
           </Link>
         </motion.div>
+
       </div>
     </section>
   )
