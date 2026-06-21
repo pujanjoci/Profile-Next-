@@ -1,8 +1,7 @@
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FileText, Briefcase, GraduationCap, Star, Mail, Globe, MapPin } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { FileText, Star } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
 
 export interface AboutProps {
   id?: string;
@@ -19,8 +18,6 @@ export default function About({
   skills = [],
   profileImage = "/Pujan(ghandruk-sitting)-profile.webp",
 }: AboutProps) {
-  const [activeTab, setActiveTab] = useState<'experience' | 'education'>('experience');
-
   const defaultSkills = skills.length > 0 ? skills : [
     'React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'HTML', 'CSS', 'JS',
     'MySQL', 'Supabase', 'Node.js', 'Git/GitHub', 'Figma', 'Canva', 'Photoshop'
@@ -46,29 +43,6 @@ export default function About({
         !['react', 'next.js', 'typescript', 'tailwind css', 'javascript', 'js', 'html', 'css', 'html5', 'css3',
           'node.js', 'express', 'mysql', 'supabase', 'postgresql', 'prisma', 'mongodb', 'rest apis', 'json apis', 'socket.io', 'json api', 'git/github'].includes(s.toLowerCase())
       )
-    }
-  ];
-
-  const experiences = [
-    {
-      role: 'Freelance Web Designer & Developer',
-      company: 'Digital Solutions',
-      period: '2021 - Present',
-      details: [
-        'Designed and developed custom corporate websites, interactive landing pages, and responsive portals for local and international clients.',
-        'Built full-fidelity design mockups and structured design systems in Figma to ensure consistent layout grids and typography.',
-        'Optimized client platforms to improve Core Web Vitals, increasing PageSpeed rankings and user session engagement metrics.',
-        'Integrated technical SEO best practices, structural schemas, meta tag flows, and clean semantic structures across websites.'
-      ]
-    }
-  ];
-
-  const education = [
-    {
-      degree: 'Bachelor of Science in Computer Science & Information Technology (B.Sc. CSIT)',
-      institution: 'Tribhuvan University',
-      period: 'Graduated',
-      details: 'Focused on software engineering, database architectures, algorithmic logic, computer systems, and web programming.'
     }
   ];
 
@@ -215,123 +189,6 @@ export default function About({
             </motion.div>
           </div>
         </motion.div>
-
-        {/* Timeline Path Tab Switcher */}
-        <div className="w-full max-w-4xl mx-auto pt-8 border-t border-slate-100 dark:border-white/5">
-          <div className="flex items-center justify-center rounded-2xl bg-slate-100/80 dark:bg-neutral-900/50 p-1 border border-slate-200/50 dark:border-white/10 mb-12">
-            <button
-              type="button"
-              onClick={() => setActiveTab('experience')}
-              className={`flex-1 py-3 text-sm font-semibold rounded-xl transition-all cursor-pointer ${
-                activeTab === 'experience'
-                  ? 'bg-white dark:bg-neutral-950 text-orange-500 shadow-sm border border-slate-200/50 dark:border-white/5'
-                  : 'text-slate-500 hover:text-slate-700 dark:text-slate-450 dark:hover:text-slate-200'
-              }`}
-            >
-              Career Path
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveTab('education')}
-              className={`flex-1 py-3 text-sm font-semibold rounded-xl transition-all cursor-pointer ${
-                activeTab === 'education'
-                  ? 'bg-white dark:bg-neutral-950 text-orange-500 shadow-sm border border-slate-200/50 dark:border-white/5'
-                  : 'text-slate-500 hover:text-slate-700 dark:text-slate-450 dark:hover:text-slate-200'
-              }`}
-            >
-              Education History
-            </button>
-          </div>
-
-          {/* Timeline Nodes */}
-          <div className="relative">
-            <AnimatePresence mode="wait">
-              {activeTab === 'experience' ? (
-                <motion.div
-                  key="experience"
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -15 }}
-                  transition={{ duration: 0.35 }}
-                  className="space-y-12"
-                >
-                  {experiences.map((exp, index) => (
-                    <div key={index} className="relative pl-10 md:pl-16">
-                      {/* Timeline Dot Icon */}
-                      <div className="absolute left-0 top-1.5 flex h-10 w-10 items-center justify-center rounded-full bg-orange-500/10 text-orange-500 border border-orange-500/20 shadow-sm">
-                        <Briefcase size={18} />
-                      </div>
-                      
-                      {/* Connector Line */}
-                      {index < experiences.length - 1 && (
-                        <div className="absolute left-5 top-12 bottom-0 w-px bg-gradient-to-b from-orange-500/30 to-transparent" />
-                      )}
-                      
-                      {/* Event Card */}
-                      <div className="rounded-2xl border border-slate-200/60 bg-slate-50/50 p-6 md:p-8 dark:border-white/5 dark:bg-neutral-900/30 backdrop-blur-md shadow-sm">
-                        <h4 className="text-xl sm:text-2xl font-extrabold text-slate-950 dark:text-white mb-1">
-                          {exp.role}
-                        </h4>
-                        
-                        <div className="flex flex-wrap items-center gap-2 mb-4 text-xs font-semibold uppercase tracking-wider text-slate-450 dark:text-slate-400">
-                          <span className="text-orange-500">{exp.company}</span>
-                          <span className="w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-neutral-700" />
-                          <span>{exp.period}</span>
-                        </div>
-                        
-                        <ul className="list-disc pl-5 space-y-2.5 text-sm sm:text-base text-slate-650 dark:text-slate-350 leading-relaxed font-normal">
-                          {exp.details.map((detail, dIdx) => (
-                            <li key={dIdx}>{detail}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  ))}
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="education"
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -15 }}
-                  transition={{ duration: 0.35 }}
-                  className="space-y-12"
-                >
-                  {education.map((edu, index) => (
-                    <div key={index} className="relative pl-10 md:pl-16">
-                      {/* Timeline Dot Icon */}
-                      <div className="absolute left-0 top-1.5 flex h-10 w-10 items-center justify-center rounded-full bg-orange-500/10 text-orange-500 border border-orange-500/20 shadow-sm">
-                        <GraduationCap size={18} />
-                      </div>
-                      
-                      {/* Connector Line */}
-                      {index < education.length - 1 && (
-                        <div className="absolute left-5 top-12 bottom-0 w-px bg-gradient-to-b from-orange-500/30 to-transparent" />
-                      )}
-                      
-                      {/* Event Card */}
-                      <div className="rounded-2xl border border-slate-200/60 bg-slate-50/50 p-6 md:p-8 dark:border-white/5 dark:bg-neutral-900/30 backdrop-blur-md shadow-sm">
-                        <h4 className="text-xl sm:text-2xl font-extrabold text-slate-950 dark:text-white mb-1">
-                          {edu.degree}
-                        </h4>
-                        
-                        <div className="flex flex-wrap items-center gap-2 mb-4 text-xs font-semibold uppercase tracking-wider text-slate-450 dark:text-slate-400">
-                          <span className="text-orange-500">{edu.institution}</span>
-                          <span className="w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-neutral-700" />
-                          <span>{edu.period}</span>
-                        </div>
-                        
-                        <p className="text-sm sm:text-base text-slate-650 dark:text-slate-350 leading-relaxed font-normal">
-                          {edu.details}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </div>
 
       </div>
     </section>
