@@ -17,6 +17,7 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
   const categories = ['All', 'Web Apps', 'Games', 'UI/UX', 'Designs'] as const
   const [selectedCategory, setSelectedCategory] = useState<typeof categories[number]>('All')
   const [activeIndex, setActiveIndex] = useState(0)
+  const [visibleCards, setVisibleCards] = useState(1)
   
   const containerRef = useRef<HTMLDivElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
@@ -24,6 +25,22 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
 
   const [cardWidth, setCardWidth] = useState(360)
   const [maxScroll, setMaxScroll] = useState(0)
+
+  // Track viewport sizes to determine number of visible cards
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setVisibleCards(3)
+      } else if (window.innerWidth >= 768) {
+        setVisibleCards(2)
+      } else {
+        setVisibleCards(1)
+      }
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   // Reset index when category changes
   useEffect(() => {
@@ -35,6 +52,15 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
     if (selectedCategory === 'All') return projects
     return projects.filter((p) => p.category === selectedCategory)
   }, [selectedCategory])
+
+  const maxIndex = Math.max(0, filteredProjects.length - visibleCards)
+
+  // Constrain activeIndex when constraints change
+  useEffect(() => {
+    if (activeIndex > maxIndex) {
+      setActiveIndex(maxIndex)
+    }
+  }, [maxIndex, activeIndex])
 
   const selectedProject = filteredProjects[activeIndex] || filteredProjects[0] || projects[0]
 
@@ -59,10 +85,10 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
       window.removeEventListener('resize', updateConstraints)
       clearTimeout(timer)
     }
-  }, [filteredProjects, activeIndex])
+  }, [filteredProjects, activeIndex, visibleCards])
 
   const handleNext = () => {
-    setActiveIndex((prev) => Math.min(filteredProjects.length - 1, prev + 1))
+    setActiveIndex((prev) => Math.min(maxIndex, prev + 1))
   }
 
   const handlePrev = () => {
@@ -82,7 +108,7 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
       indexChange = -1
     }
 
-    const nextIndex = Math.max(0, Math.min(filteredProjects.length - 1, activeIndex + indexChange))
+    const nextIndex = Math.max(0, Math.min(maxIndex, activeIndex + indexChange))
     setActiveIndex(nextIndex)
   }
 
@@ -161,7 +187,7 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
                 type="button"
                 aria-label="Next project"
                 onClick={handleNext}
-                disabled={activeIndex === filteredProjects.length - 1}
+                disabled={activeIndex === maxIndex}
                 className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-800 transition hover:bg-slate-50 hover:scale-105 active:scale-95 disabled:opacity-40 disabled:hover:scale-100 disabled:cursor-not-allowed cursor-pointer dark:border-white/10 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
               >
                 <ChevronRight size={18} />
@@ -205,25 +231,21 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
           </div>
         </motion.div>
 
-        {/* Draggable Deck Viewport */}
+        {/* Draggable Deck Viewport - Fits exactly 3 projects on desktop, 2 on tablet, and 1 on mobile */}
         <div 
           ref={containerRef}
-          className="relative w-full overflow-visible py-4"
+          className="relative w-full mx-auto overflow-hidden py-4 max-w-[290px] xs:max-w-[320px] sm:max-w-[360px] md:max-w-[744px] lg:max-w-[1128px]"
         >
-          {/* Glass Fade overlays on bounds to mask the exit slides */}
-          <div className="pointer-events-none absolute inset-y-0 -left-4 w-12 sm:w-20 bg-gradient-to-r from-slate-50 to-transparent dark:from-neutral-950 z-20" />
-          <div className="pointer-events-none absolute inset-y-0 -right-4 w-12 sm:w-20 bg-gradient-to-l from-slate-50 to-transparent dark:from-neutral-950 z-20" />
-
           {/* Draggable sliding row track */}
           <motion.div
             ref={trackRef}
             drag="x"
             dragConstraints={{ left: -maxScroll, right: 0 }}
-            dragElastic={0.15}
+            dragElastic={0.1}
             onDragEnd={handleDragEnd}
             animate={{ x: activeTranslation }}
             transition={{ type: 'spring', stiffness: 220, damping: 26 }}
-            className="flex gap-6 cursor-grab active:cursor-grabbing w-max px-2"
+            className="flex gap-6 cursor-grab active:cursor-grabbing w-max px-0.5"
           >
             {filteredProjects.map((project, idx) => {
               const isActive = idx === activeIndex
@@ -252,7 +274,7 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
                   {/* Top Part: Mockup Browser Box */}
                   <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 border-b border-slate-200/60 dark:bg-neutral-800 dark:border-neutral-800/60">
                     {/* Mockup Top Header */}
-                    <div className="h-7 bg-slate-200/50 px-3 flex items-center gap-1 border-b border-slate-200/40 dark:bg-neutral-800/50 dark:border-neutral-700/30">
+                    <div className="h-7 bg-slate-200/50 px-3 flex items-center gap-1 border-b border-slate-200/40 dark:bg-neutral-800/50 dark:border-reveal-700/30">
                       <div className="h-2 w-2 rounded-full bg-red-400" />
                       <div className="h-2 w-2 rounded-full bg-yellow-400" />
                       <div className="h-2 w-2 rounded-full bg-green-400" />
@@ -316,15 +338,17 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
                         )}
                       </div>
 
-                      {/* Action Links */}
+                      {/* Action Links - Replacing Case Study with Git Repository Link */}
                       <div className="flex items-center justify-between gap-2 border-t border-slate-100/80 pt-4 dark:border-neutral-800/80">
-                        <Link
-                          href={`/projects/${projectSlug}`}
+                        <a
+                          href={project.repoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="inline-flex h-9 items-center justify-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 text-[11px] font-bold text-slate-800 transition hover:bg-slate-100 hover:border-slate-300 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
                         >
-                          <span>Case Study</span>
-                          <ArrowUpRight size={12} />
-                        </Link>
+                          <Github size={12} />
+                          <span>GitHub</span>
+                        </a>
                         <a
                           href={project.liveUrl}
                           target="_blank"
@@ -347,13 +371,13 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
           </motion.div>
         </div>
 
-        {/* Sync Pagination Dots Indicators */}
+        {/* Sync Pagination Dots Indicators - Limited to the scrollable scroll positions */}
         <div className="flex justify-center flex-wrap gap-2 mt-8">
-          {filteredProjects.map((project, idx) => {
+          {Array.from({ length: maxIndex + 1 }).map((_, idx) => {
             const isActive = idx === activeIndex
             return (
               <button
-                key={project.title}
+                key={idx}
                 onClick={() => setActiveIndex(idx)}
                 className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
                   isActive ? '' : 'bg-slate-300 dark:bg-neutral-800'
@@ -362,7 +386,7 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
                   width: isActive ? '24px' : '8px',
                   backgroundColor: isActive ? selectedProject.glowColor : undefined,
                 }}
-                title={`Go to project ${idx + 1}`}
+                title={`Go to slide ${idx + 1}`}
               />
             )
           })}
