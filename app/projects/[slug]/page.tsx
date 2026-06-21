@@ -198,7 +198,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                   href={project.liveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex h-11 items-center justify-center gap-2 rounded-full px-5 text-xs font-bold text-white transition shadow-lg hover:opacity-95 cursor-pointer"
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-full px-5 text-xs font-bold text-white transition shadow-lg hover:opacity-95 cursor-pointer glimmer-btn"
                   style={{
                     backgroundColor: project.glowColor,
                     boxShadow: `0 4px 12px ${project.glowColor}25`,

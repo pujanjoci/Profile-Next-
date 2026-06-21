@@ -340,21 +340,23 @@ export default function PortfolioExperiences({ id = 'experiences' }: { id?: stri
                     </button>
                   ) : (
                     <>
-                      <button
-                        onClick={() => openPreview(exp.url, exp.title)}
-                        className="flex-1 inline-flex h-11 items-center justify-center gap-1.5 rounded-xl bg-orange-500 hover:bg-orange-600 active:scale-95 text-xs font-bold text-white transition-all shadow-md shadow-orange-500/10 cursor-pointer"
-                      >
-                        Launch Preview
-                      </button>
                       <a
                         href={exp.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 hover:border-slate-300 dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/15 active:scale-95 transition-all cursor-pointer"
-                        title="Open in new tab"
+                        className="flex-1 inline-flex h-11 items-center justify-center gap-1.5 rounded-xl bg-orange-500 hover:bg-orange-600 active:scale-95 text-xs font-bold text-white transition-all shadow-md shadow-orange-500/10 cursor-pointer glimmer-btn"
+                        title={`Launch live demo of ${exp.title}`}
                       >
-                        <ExternalLink className="w-4 h-4" />
+                        <ExternalLink size={14} />
+                        <span>Live Demo</span>
                       </a>
+                      <button
+                        onClick={() => openPreview(exp.url, exp.title)}
+                        className="inline-flex h-11 px-4 items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 hover:border-slate-300 dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/15 active:scale-95 transition-all cursor-pointer"
+                        title="Launch Preview"
+                      >
+                        <span>Preview</span>
+                      </button>
                     </>
                   )}
                 </div>

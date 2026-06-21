@@ -102,7 +102,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="relative z-31 flex items-end justify-center w-full h-full pointer-events-auto pb-0"
+            className="relative z-40 flex items-end justify-center w-full h-full pointer-events-auto pb-0"
           >
             {/* Image Wrapper */}
             <div className="relative aspect-[4/5] h-[75%] sm:h-[80%] md:h-[85%] lg:h-[90%] max-w-[650px] w-auto flex-shrink-0">
@@ -157,7 +157,7 @@ export default function Hero() {
               >
                 <Link
                   href="/projects"
-                  className="inline-flex items-center justify-center px-4 py-2 sm:px-6 sm:py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-full font-medium transition-colors gap-2 text-sm whitespace-nowrap shadow-md shadow-orange-500/20"
+                  className="inline-flex items-center justify-center px-4 py-2 sm:px-6 sm:py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-full font-medium transition-colors gap-2 text-sm whitespace-nowrap shadow-md shadow-orange-500/20 glimmer-btn"
                 >
                   Portfolio
                   <ArrowUpRight size={16} />

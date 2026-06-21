@@ -25,6 +25,56 @@ export default function Header() {
   const router = useRouter()
   const pathname = usePathname()
   const isHomePage = pathname === '/'
+  const [activeSection, setActiveSection] = useState('home')
+
+  useEffect(() => {
+    if (!isHomePage) return
+
+    const sections = ['about', 'projects', 'experiences', 'contact']
+    const observerOptions = {
+      root: null,
+      rootMargin: '-30% 0px -65% 0px',
+      threshold: 0,
+    }
+
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id)
+        }
+      })
+    }
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions)
+
+    sections.forEach((id) => {
+      const el = document.getElementById(id)
+      if (el) observer.observe(el)
+    })
+
+    const handleScrollTop = () => {
+      if (window.scrollY < 100) {
+        setActiveSection('home')
+      }
+    }
+    window.addEventListener('scroll', handleScrollTop, { passive: true })
+
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('scroll', handleScrollTop)
+    }
+  }, [isHomePage])
+
+  const isItemActive = (item: typeof navItems[0]) => {
+    if (item.isRoute) {
+      return pathname === item.href
+    }
+    if (isHomePage) {
+      if (item.href === '#') return activeSection === 'home'
+      return activeSection === item.href.replace('#', '')
+    }
+    return false
+  }
 
   // Smooth scroll function
   const smoothScroll = (targetId: string | null) => {
@@ -104,14 +154,12 @@ export default function Header() {
       setMobileMenuOpen(false)
       return
     }
-    e.preventDefault()
-    setMobileMenuOpen(false)
-
-    // Page-route links (e.g. /gallery) — always use router.push
     if (isRoute) {
-      router.push(href)
+      setMobileMenuOpen(false)
       return
     }
+    e.preventDefault()
+    setMobileMenuOpen(false)
 
     // Hash links on the home page — smooth scroll in-place
     if (isHomePage) {
@@ -166,43 +214,57 @@ export default function Header() {
               animate={{ minWidth: showIcons ? '280px' : '480px' }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             >
-              {navItems.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  onClick={(e) => handleNavClick(e, item.href, item.isRoute, item.isExternal)}
-                  target={item.isExternal ? "_blank" : undefined}
-                  rel={item.isExternal ? "noopener noreferrer" : undefined}
-                  className="relative px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors group flex items-center justify-center min-w-[60px] cursor-pointer"
-                >
-                  <AnimatePresence mode="popLayout" initial={false}>
-                    {showIcons ? (
-                      <motion.div
-                        key="icon"
-                        initial={{ opacity: 0, scale: 0.5, y: 10 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.5, y: -10 }}
-                        transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                        className="flex items-center justify-center"
-                      >
-                        <item.icon className="w-5 h-5" />
-                        <span className="sr-only">{item.name}</span>
-                      </motion.div>
-                    ) : (
+              {navItems.map((item) => {
+                const isActive = isItemActive(item)
+                return (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    onClick={(e) => handleNavClick(e, item.href, item.isRoute, item.isExternal)}
+                    target={item.isExternal ? "_blank" : undefined}
+                    rel={item.isExternal ? "noopener noreferrer" : undefined}
+                    className={`relative px-4 py-2 text-sm font-semibold transition-colors flex items-center justify-center min-w-[70px] cursor-pointer ${
+                      isActive 
+                        ? 'text-orange-500 dark:text-orange-400' 
+                        : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
+                    }`}
+                  >
+                    {isActive && (
                       <motion.span
-                        key="text"
-                        initial={{ opacity: 0, scale: 0.9, y: -10 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.9, y: 10 }}
-                        transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                        className="whitespace-nowrap"
-                      >
-                        {item.name}
-                      </motion.span>
+                        layoutId="activeNavBackground"
+                        className="absolute inset-0 bg-slate-100 dark:bg-white/5 border border-slate-200/50 dark:border-white/5 rounded-full -z-10"
+                        transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                      />
                     )}
-                  </AnimatePresence>
-                </a>
-              ))}
+                    <AnimatePresence mode="popLayout" initial={false}>
+                      {showIcons ? (
+                        <motion.div
+                          key="icon"
+                          initial={{ opacity: 0, scale: 0.5, y: 10 }}
+                          animate={{ opacity: 1, scale: 1, y: 0 }}
+                          exit={{ opacity: 0, scale: 0.5, y: -10 }}
+                          transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                          className="flex items-center justify-center"
+                        >
+                          <item.icon className="w-5 h-5" />
+                          <span className="sr-only">{item.name}</span>
+                        </motion.div>
+                      ) : (
+                        <motion.span
+                          key="text"
+                          initial={{ opacity: 0, scale: 0.9, y: -10 }}
+                          animate={{ opacity: 1, scale: 1, y: 0 }}
+                          exit={{ opacity: 0, scale: 0.9, y: 10 }}
+                          transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                          className="whitespace-nowrap"
+                        >
+                          {item.name}
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
+                  </a>
+                )
+              })}
             </motion.nav>
           </div>
 

@@ -654,7 +654,7 @@ function ProjectCarousel() {
                  href={selectedProject.liveUrl}
                  target="_blank"
                  rel="noopener noreferrer"
-                 className="inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-xs font-bold text-white transition shadow-lg active:scale-95 cursor-pointer"
+                 className="inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-xs font-bold text-white transition shadow-lg active:scale-95 cursor-pointer glimmer-btn"
                  style={{ 
                    backgroundColor: selectedProject.glowColor,
                    boxShadow: `0 4px 14px ${selectedProject.glowColor}40`
