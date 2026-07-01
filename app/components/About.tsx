@@ -2,13 +2,14 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { FileText, Star } from 'lucide-react';
 import Link from 'next/link';
+import defaultProfileImage from '@/public/chatgpt-headshot.webp';
 
 export interface AboutProps {
   id?: string;
   name?: string;
   bio?: string;
   skills?: string[];
-  profileImage?: string;
+  profileImage?: any;
 }
 
 export default function About({
@@ -16,7 +17,7 @@ export default function About({
   name = "Pujan",
   bio,
   skills = [],
-  profileImage = "/Pujan(ghandruk-sitting)-profile.webp",
+  profileImage = defaultProfileImage,
 }: AboutProps) {
   const defaultSkills = skills.length > 0 ? skills : [
     'React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'HTML', 'CSS', 'JS',
@@ -107,7 +108,7 @@ export default function About({
                   <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
                 </span>
                 <span className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-                  Available for Projects
+                  Following a <span className="text-emerald-500">Growth Mindset</span>
                 </span>
               </div>
             </motion.div>

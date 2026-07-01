@@ -14,7 +14,6 @@ export default function AboutPage() {
           name="Pujan"
           bio="I am a developer and designer based in Nepal, focused on crafting polished, performant web applications and high-fidelity user experiences. With a background that bridges front-end architecture and visual design, I build interfaces that are clean, responsive, and intuitive."
           skills={['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'HTML', 'CSS', 'JS', 'MySQL', 'Supabase', 'Figma', 'Git/GitHub', 'Canva', 'Photoshop']}
-          profileImage="/Pujan(ghandruk-sitting)-profile.webp"
         />
       </div>
       <Footer />
