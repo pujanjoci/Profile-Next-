@@ -69,7 +69,7 @@
     "title": "White Zebra Consulting",
     "description": "White Zebra Consulting is a modern, responsive web application designed and implemented to support digital operations through a clean, user-friendly interface. It emphasizes performance, scalability, and maintainability.",
     "tech": ["React", "Tailwind CSS", "Netlify", "UI/UX"],
-    "liveUrl": "https://whitezebraconsulting.netlify.app/",
+    "liveUrl": "https://whitezebraconsulting.com/",
     "repoUrl": "https://github.com/pujanjoci/whitezebraconsulting",
     "image": "/projects/whitezebraconsulting.webp",
     "color": "from-purple-500 to-indigo-400",
