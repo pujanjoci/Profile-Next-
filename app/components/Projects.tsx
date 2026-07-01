@@ -14,7 +14,7 @@ import { projects } from '../data/projects'
 import type { Project } from '../data/projects'
 
 export default function Projects({ id = 'projects' }: { id?: string }) {
-  const categories = ['All', 'Web Apps', 'Games', 'UI/UX', 'Designs'] as const
+  const categories = ['All', 'Company Websites', 'Web Apps', 'Games', 'UI/UX', 'Designs'] as const
   const [selectedCategory, setSelectedCategory] = useState<typeof categories[number]>('All')
   const [activeIndex, setActiveIndex] = useState(0)
   const [disableTransition, setDisableTransition] = useState(false)

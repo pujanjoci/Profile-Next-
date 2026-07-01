@@ -63,7 +63,7 @@
     "image": "/projects/Ecommerce.webp",
     "color": "from-amber-500 to-amber-600",
     "glowColor": "#f59e0b",
-    "category": "Web Apps"
+    "category": "UI/UX"
   },
   {
     "title": "White Zebra Consulting",
@@ -74,7 +74,7 @@
     "image": "/projects/whitezebraconsulting.webp",
     "color": "from-purple-500 to-indigo-400",
     "glowColor": "#8b5cf6",
-    "category": "Web Apps"
+    "category": "Company Websites"
   },
   {
     "title": "The Grand",
@@ -85,7 +85,7 @@
     "image": "/projects/thegrand.webp",
     "color": "from-amber-600 to-yellow-500",
     "glowColor": "#d97706",
-    "category": "Web Apps"
+    "category": "UI/UX"
   },
   {
     "title": "SewaYatra",
@@ -96,7 +96,7 @@
     "image": "/projects/SewaYatra.webp",
     "color": "from-emerald-500 to-teal-400",
     "glowColor": "#10b981",
-    "category": "Web Apps"
+    "category": "UI/UX"
   },
   {
     "title": "Professional Edge Global",
@@ -107,7 +107,7 @@
     "image": "/projects/professionaledge.webp",
     "color": "from-blue-600 to-sky-500",
     "glowColor": "#2563eb",
-    "category": "Web Apps"
+    "category": "Company Websites"
   },
   {
     "title": "Everest Claims",
@@ -118,7 +118,7 @@
     "image": "/projects/everestclaims.webp",
     "color": "from-cyan-500 to-blue-400",
     "glowColor": "#06b6d4",
-    "category": "Web Apps"
+    "category": "Company Websites"
   },
   {
     "title": "SSuresh & Associates",
@@ -129,7 +129,7 @@
     "image": "/projects/ssuresh.webp",
     "color": "from-slate-700 to-slate-500",
     "glowColor": "#475569",
-    "category": "Web Apps"
+    "category": "Company Websites"
   },
   {
     "title": "Graphic Designs Projects",
@@ -212,7 +212,7 @@
     "title": "Personal Blog-Site",
     "description": "A light blog site leveraging structured JSON content data to display personal articles, travel logs, and tech updates with simple routing.",
     "tech": ["React", "JSON Data", "CSS", "API Integration"],
-    "liveUrl": "https://pujanjoci.github.io/blog-site/",
+    "liveUrl": "https://blog.pujan-joshi.com.np/",
     "repoUrl": "https://github.com/pujanjoci/blog-site",
     "image": "/projects/blogsite.webp",
     "color": "from-fuchsia-600 to-pink-500",
@@ -228,7 +228,7 @@
     "image": "/projects/houselocater.webp",
     "color": "from-emerald-600 to-green-500",
     "glowColor": "#059669",
-    "category": "Web Apps"
+    "category": "UI/UX"
   },
   {
     "title": "Personal Portfolio",

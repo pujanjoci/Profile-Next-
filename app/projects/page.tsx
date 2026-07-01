@@ -14,13 +14,14 @@ import {
   Gamepad,
   Palette,
   Layers,
+  Briefcase,
 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { projects } from '../data/projects'
 import ThemeToggle from '../components/ThemeToggle'
 
-const CATEGORIES = ['All', 'Web Apps', 'Games', 'UI/UX', 'Designs'] as const
+const CATEGORIES = ['All', 'Company Websites', 'Web Apps', 'Games', 'UI/UX', 'Designs'] as const
 type Category = typeof CATEGORIES[number]
 
 export default function ProjectsPage() {
@@ -66,6 +67,8 @@ export default function ProjectsPage() {
         return <Palette className="w-4 h-4 text-orange-400" />
       case 'Designs':
         return <FolderGit2 className="w-4 h-4" />
+      case 'Company Websites':
+        return <Briefcase className="w-4 h-4" />
       default:
         return <FolderGit2 className="w-4 h-4" />
     }

@@ -9,7 +9,7 @@ export type Project = {
   image: string
   color: string
   glowColor: string
-  category: 'Web Apps' | 'Games' | 'UI/UX' | 'Designs'
+  category: 'Web Apps' | 'Games' | 'UI/UX' | 'Designs' | 'Company Websites'
 }
 
 export const projects = projectsData as Project[]
