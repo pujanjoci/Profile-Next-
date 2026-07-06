@@ -2,14 +2,13 @@
 
 import Header from '../components/Header'
 import Footer from '../components/Footer'
-import { FileText, Download, Briefcase, GraduationCap, Code2, ArrowLeft, Mail, Globe, Sparkles } from 'lucide-react'
+import { FileText, Download, Briefcase, GraduationCap, Code2, ArrowLeft, Mail, Globe, Sparkles, Phone } from 'lucide-react'
 import Link from 'next/link'
 
 export default function ResumePage() {
   const skills = {
-    "Core Stack": ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'JavaScript', 'HTML5', 'CSS3'],
-    "Backend & Database": ['MySQL', 'Supabase', 'Node.js', 'JSON APIs', 'REST APIs', 'Git/GitHub'],
-    "Design & Tools": ['Figma', 'Canva', 'Photoshop', 'UI/UX Design', 'Responsive Layouts']
+    "Professional": ['React', 'PHP', 'Version Control/Git', 'Canva', 'Figma Management', 'HTML/CSS', 'JavaScript', 'Photoshop', 'Database (MySQL)'],
+    "Personal": ['Communication Skills', 'Management Skills', 'Time Management', 'Critical Thinking', 'Recording Skills', 'Team Work', 'Creativity']
   }
 
   const projects = [
@@ -41,24 +40,48 @@ export default function ResumePage() {
 
   const experiences = [
     {
-      role: 'Freelance Web Designer & Developer',
-      company: 'Digital Solutions',
-      period: '2021 - Present',
+      role: 'WEB and Graphic Designer',
+      company: 'Professional Edge Global',
+      period: 'May - November (2025)',
       details: [
-        'Designed and developed custom corporate websites, interactive landing pages, and responsive portals for local and international clients.',
-        'Built full-fidelity design mockups and structured design systems in Figma to ensure consistent layout grids and typography.',
-        'Optimized client platforms to improve Core Web Vitals, increasing PageSpeed rankings and user session engagement metrics.',
-        'Integrated technical SEO best practices, structural schemas, meta tag flows, and clean semantic structures across websites.'
+        'Developed and maintained company websites, including for the main business and its sister company.',
+        'Designed engaging graphics for social media platforms to support marketing campaigns.',
+        'Managed all IT operations, serving as the sole point of contact for technical support and system maintenance.'
+      ]
+    },
+    {
+      role: 'Graphic Designer & Motion Graphic Designer (Intern)',
+      company: 'Chainge Digital',
+      period: 'Nov 2024 - Feb 2025',
+      details: [
+        'Created graphics and promotional materials for digital campaigns, social media posts, and website content.',
+        'Edited and produced engaging video content for online platforms, ensuring visual quality and alignment with the brand\'s messaging.',
+        'Worked collaboratively with the creative team to develop innovative designs that effectively communicated the brand’s identity.',
+        'Gained hands-on experience in design tools such as Adobe Photoshop, Illustrator, Premiere Pro, and After Effects.'
+      ]
+    },
+    {
+      role: 'Web Designer (Internship)',
+      company: 'Bisava Technology',
+      period: 'July - Sep (2024)',
+      details: [
+        'Designed framework for the website layout and developed brand guidelines to maintain the consistency in colours, fonts, and style across the website.'
       ]
     }
   ]
 
   const education = [
     {
-      degree: 'Bachelor of Science in Computer Science & Information Technology (B.Sc. CSIT)',
-      institution: 'Tribhuvan University',
-      period: 'Graduated',
-      details: 'Focused on software engineering, database architectures, algorithmic logic, computer systems, and web programming.'
+      degree: 'Bachelors in Information Management',
+      institution: 'Nepal Commerce Campus',
+      period: '2019-2024',
+      details: 'Studied a Bachelor’s degree focused on Information Technology, Database Management, Systems Analysis, and Software Development.'
+    },
+    {
+      degree: '+2 Computer Major',
+      institution: 'VS Niketan School',
+      period: '2017-2018',
+      details: 'Focused on Computer Science, including subjects such as Programming, Computer Networks, Database Management, and Web Development.'
     }
   ]
 
@@ -120,17 +143,21 @@ export default function ResumePage() {
               </p>
             </div>
             <div className="flex flex-col gap-2.5 text-sm text-slate-600 dark:text-slate-400 print:text-slate-800">
-              <a href="mailto:contact@pujan-joshi.com.np" className="flex items-center gap-2 hover:text-orange-500 dark:hover:text-white print:hover:text-black">
+              <a href="mailto:pujanjoci01@gmail.com" className="flex items-center gap-2 hover:text-orange-500 dark:hover:text-white print:hover:text-black">
                 <Mail size={16} className="text-orange-500 print:text-orange-600" />
-                <span>contact@pujan-joshi.com.np</span>
+                <span>pujanjoci01@gmail.com</span>
+              </a>
+              <a href="tel:+9779860928584" className="flex items-center gap-2 hover:text-orange-500 dark:hover:text-white print:hover:text-black">
+                <Phone size={16} className="text-orange-500 print:text-orange-600" />
+                <span>+977 9860928584</span>
+              </a>
+              <a href="https://www.pujan-joshi.com.np" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-orange-500 dark:hover:text-white print:hover:text-black">
+                <Globe size={16} className="text-orange-500 print:text-orange-600" />
+                <span>www.pujan-joshi.com.np</span>
               </a>
               <div className="flex items-center gap-2">
-                <Globe size={16} className="text-orange-500 print:text-orange-600" />
-                <span>https://pujan-joshi.com.np</span>
-              </div>
-              <div className="flex items-center gap-2">
                 <Sparkles size={16} className="text-orange-500 print:text-orange-600" />
-                <span>Kathmandu, Nepal</span>
+                <span>Bhaktapur, Katunje, Nepal</span>
               </div>
             </div>
           </div>
@@ -150,7 +177,7 @@ export default function ResumePage() {
             <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 mb-6 print:text-slate-500">
               Skills & Expertise
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {Object.entries(skills).map(([category, items]) => (
                 <div key={category} className="space-y-3">
                   <h4 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2 print:text-black">
