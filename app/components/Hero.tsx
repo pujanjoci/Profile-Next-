@@ -67,15 +67,15 @@ export default function Hero() {
         <h1 className="sr-only">Pujan Joshi — Web Designer & Developer</h1>
 
         <motion.div
-          className="text-center tracking-tight text-neutral-900 dark:text-neutral-50 drop-shadow-sm md:drop-shadow-none font-bold"
+          className="text-center tracking-tight text-neutral-900 dark:text-neutral-50 drop-shadow-sm md:drop-shadow-none"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <span className="block text-6xl sm:text-7xl md:text-7xl lg:text-8xl mb-2">
+          <span className="block text-6xl sm:text-7xl md:text-7xl lg:text-8xl mb-2 font-bold">
             I&apos;m <span className="text-orange-500">Pujan</span>,
           </span>
-          <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-neutral-800 dark:text-neutral-200">
+          <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-neutral-800 dark:text-neutral-200 bangers-regular">
             {displayText}
             <span className="animate-pulse">|</span> {/* Blinking cursor */}
           </span>

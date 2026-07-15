@@ -74,12 +74,12 @@ export default function Footer() {
             </p>
 
             {/* Availability Dot Badge */}
-            <div className="flex items-center gap-2 bg-emerald-500/5 border border-emerald-500/20 rounded-full px-3 py-1 mt-2">
+            <div className="flex items-center gap-2 bg-purple-500/5 border border-purple-500/20 rounded-full px-3 py-1 mt-2">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-purple-500" />
               </span>
-              <span className="text-xs font-medium text-emerald-400">Available for projects</span>
+              <span className="text-xs font-medium text-purple-400">Building New Projects</span>
             </div>
           </div>
 

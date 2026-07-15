@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter, Poppins } from 'next/font/google'
+import { Inter, Poppins, Bangers } from 'next/font/google'
 import { createPageMetadata, siteConfig } from './seo'
 import './globals.css'
 
@@ -11,6 +11,15 @@ const poppins = Poppins({
   weight: ['400', '500', '600', '700'],
   display: 'swap',
 })
+
+const bangers = Bangers({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-bangers',
+  display: 'swap',
+})
+
+
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -76,7 +85,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.variable} ${poppins.variable} scroll-smooth`}
+      className={`${inter.variable} ${poppins.variable} ${bangers.variable} scroll-smooth`}
     >
       <head>
         <script

@@ -370,7 +370,7 @@ export default function ContactSection({ id = 'contact' }: { id?: string }) {
                 <span className="relative inline-flex h-3 w-3 rounded-full bg-emerald-500" />
               </span>
               <div>
-                <p className="text-sm font-semibold text-emerald-400">Available for projects</p>
+                <p className="text-sm font-semibold text-emerald-400">Contact Me on for various project building purposes!</p>
                 <p className="text-xs text-slate-400 mt-0.5">
                   Currently open to freelance and collaboration
                 </p>

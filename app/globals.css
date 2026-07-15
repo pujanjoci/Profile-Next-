@@ -96,3 +96,10 @@ a[class*="bg-gradient-to-r"]::after,
   pointer-events: none !important;
   z-index: 10 !important;
 }
+
+.bangers-regular {
+  font-family: var(--font-bangers), "Bangers", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
