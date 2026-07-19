@@ -315,7 +315,7 @@ export default function Header() {
             initial="closed"
             animate="open"
             exit="closed"
-            className="fixed inset-0 z-40 bg-white/95 dark:bg-black/95 backdrop-blur-2xl flex flex-col justify-center items-center pointer-events-auto"
+            className="fixed inset-0 z-[45] bg-white/95 dark:bg-black/95 backdrop-blur-2xl flex flex-col justify-center items-center pointer-events-auto"
           >
             <ul className="flex flex-col items-center space-y-8">
               {navItems.map((item) => (

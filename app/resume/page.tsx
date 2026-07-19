@@ -2,7 +2,7 @@
 
 import Header from '../components/Header'
 import Footer from '../components/Footer'
-import { FileText, Download, Briefcase, GraduationCap, Code2, ArrowLeft, Mail, Globe, Sparkles, Phone } from 'lucide-react'
+import { Download, Code2, ArrowLeft, Mail, Globe, Sparkles, Phone, Github, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 
 export default function ResumePage() {
@@ -16,25 +16,33 @@ export default function ResumePage() {
       title: 'Windows 11 Simulation',
       role: 'Frontend Developer & UI Designer',
       description: 'Built a high-fidelity interactive browser-based Windows 11 simulation using React, Framer Motion, and Zustand, demonstrating advanced state management and layout handling.',
-      tech: ['React', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Zustand']
+      tech: ['React', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Zustand'],
+      liveUrl: 'https://window.pujan-joshi.com.np/',
+      repoUrl: 'https://github.com/pujanjoci/windows'
     },
     {
       title: 'Modern E-Commerce Storefront',
       role: 'Full-Stack Developer',
       description: 'Developed a high-performance custom e-commerce web platform integrating a dynamic cart system, checkout integrations with Stripe API, catalog searches, and PostgreSQL database connections via Prisma.',
-      tech: ['Next.js', 'React', 'Tailwind CSS', 'Stripe API', 'Prisma', 'PostgreSQL']
+      tech: ['Next.js', 'React', 'Tailwind CSS', 'Stripe API', 'Prisma', 'PostgreSQL'],
+      liveUrl: 'https://e-commerce-phi-rust-72.vercel.app/',
+      repoUrl: 'https://github.com/pujanjoci/E-Commerce'
     },
     {
       title: 'Imposter Game',
       role: 'Game Developer & UI Designer',
       description: 'Implemented a suspenseful real-time multiplayer social deduction web game with Socket.io for low-latency state synchronization across client sessions.',
-      tech: ['Next.js', 'React', 'Socket.io', 'Tailwind CSS', 'Framer Motion']
+      tech: ['Next.js', 'React', 'Socket.io', 'Tailwind CSS', 'Framer Motion'],
+      liveUrl: 'https://imposter-game-ten-kappa.vercel.app/',
+      repoUrl: 'https://github.com/pujanjoci/imposter-game'
     },
     {
       title: 'Retro CLI Terminal',
       role: 'Frontend Engineer',
       description: 'Developed an interactive retro developer portfolio navigating directories, loading easter eggs, and launching processes via terminal keyboard command inputs.',
-      tech: ['React', 'Tailwind CSS', 'CSS Scanlines', 'JavaScript']
+      tech: ['React', 'Tailwind CSS', 'CSS Scanlines', 'JavaScript'],
+      liveUrl: 'https://terminal.pujan-joshi.com.np/',
+      repoUrl: 'https://github.com/pujanjoci/Resume'
     }
   ]
 
@@ -247,6 +255,33 @@ export default function ResumePage() {
                   <p className="text-xs text-slate-600 dark:text-slate-450 leading-relaxed mb-4 print:text-slate-800">
                     {proj.description}
                   </p>
+                  
+                  {/* Action Links */}
+                  <div className="flex items-center gap-4 mb-4 print:hidden text-xs">
+                    {proj.liveUrl && (
+                      <a
+                        href={proj.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 font-bold text-orange-500 hover:text-orange-600 transition-colors group cursor-pointer"
+                      >
+                        <ExternalLink size={12} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                        Live Demo
+                      </a>
+                    )}
+                    {proj.repoUrl && (
+                      <a
+                        href={proj.repoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors group cursor-pointer"
+                      >
+                        <Github size={12} />
+                        GitHub
+                      </a>
+                    )}
+                  </div>
+
                   <div className="flex flex-wrap gap-1">
                     {proj.tech.map((t) => (
                       <span key={t} className="px-2 py-0.5 border border-slate-200 rounded-md text-[10px] font-medium text-slate-500 dark:border-white/5 dark:bg-white/5 dark:text-slate-400 print:border-slate-300 print:text-slate-800">
