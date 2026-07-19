@@ -82,13 +82,11 @@ export default function ResumePage() {
     {
       degree: 'Bachelors in Information Management',
       institution: 'Nepal Commerce Campus',
-      period: '2019-2024',
       details: 'Studied a Bachelor’s degree focused on Information Technology, Database Management, Systems Analysis, and Software Development.'
     },
     {
       degree: '+2 Computer Major',
       institution: 'VS Niketan School',
-      period: '2017-2018',
       details: 'Focused on Computer Science, including subjects such as Programming, Computer Networks, Database Management, and Web Development.'
     }
   ]
@@ -302,18 +300,13 @@ export default function ResumePage() {
             <div className="space-y-4">
               {education.map((edu, index) => (
                 <div key={index} className="space-y-2">
-                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                    <div>
-                      <h4 className="text-base font-bold text-slate-950 dark:text-white print:text-black">
-                        {edu.degree}
-                      </h4>
-                      <p className="text-xs font-semibold text-orange-500 dark:text-orange-400 uppercase tracking-wider print:text-orange-600">
-                        {edu.institution}
-                      </p>
-                    </div>
-                    <span className="px-3 py-1 bg-slate-50 border border-slate-250/50 rounded-full text-xs font-semibold text-slate-500 dark:bg-white/5 dark:border-white/10 dark:text-slate-400 print:border-slate-300 print:text-slate-800">
-                      {edu.period}
-                    </span>
+                  <div>
+                    <h4 className="text-base font-bold text-slate-950 dark:text-white print:text-black">
+                      {edu.degree}
+                    </h4>
+                    <p className="text-xs font-semibold text-orange-500 dark:text-orange-400 uppercase tracking-wider print:text-orange-600">
+                      {edu.institution}
+                    </p>
                   </div>
                   <p className="text-sm text-slate-655 dark:text-slate-400 leading-relaxed print:text-slate-800">
                     {edu.details}

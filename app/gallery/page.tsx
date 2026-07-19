@@ -5,8 +5,24 @@ import Header from '../components/Header'
 import styles from './book.module.css'
 
 function BookFlip() {
+  const images = [
+    '/projects/window.webp',
+    '/projects/Ecommerce.webp',
+    '/projects/imposter.webp',
+    '/projects/novel.webp',
+    '/projects/SewaYatra.webp'
+  ]
+
+  const style = {
+    '--img-1': `url('${images[0]}')`,
+    '--img-2': `url('${images[1]}')`,
+    '--img-3': `url('${images[2]}')`,
+    '--img-4': `url('${images[3]}')`,
+    '--img-5': `url('${images[4]}')`,
+  } as React.CSSProperties
+
   return (
-    <div className={styles.bookScene}>
+    <div className={styles.bookScene} style={style}>
       <div className={styles.imgLoader} aria-hidden="true" />
       <div className={styles.container}>
         <div className={styles.book}>
@@ -43,7 +59,6 @@ function BookFlip() {
 export default function GalleryPage() {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-950 overflow-x-hidden transition-colors duration-300 dark:bg-neutral-950 dark:text-white">
-      {/* Shared site header */}
       <Header />
 
       {/* Hero */}

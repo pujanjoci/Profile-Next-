@@ -180,10 +180,6 @@ export default function PortfolioExperiences({ id = 'experiences' }: { id?: stri
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <span className="mb-3 inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-orange-500">
-            <Sparkles size={12} className="text-orange-500 animate-pulse" />
-            02 / Portfolio Views
-          </span>
           <h2 className="mb-4 text-4xl font-extrabold text-slate-950 dark:text-white md:text-5xl tracking-tight">
             Alternative Experiences
           </h2>
@@ -204,7 +200,7 @@ export default function PortfolioExperiences({ id = 'experiences' }: { id?: stri
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-50px' }}
                 transition={{ duration: 0.5, delay: index * 0.15 }}
-                className="group relative flex flex-col justify-between rounded-3xl border border-slate-200 bg-white p-6 dark:border-white/10 dark:bg-neutral-900 shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden"
+                className="group relative flex flex-col justify-between rounded-sm border border-slate-200 bg-white p-6 dark:border-white/10 dark:bg-neutral-900 shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden"
               >
                 {/* Glow Background behind the active card */}
                 <div
@@ -216,7 +212,7 @@ export default function PortfolioExperiences({ id = 'experiences' }: { id?: stri
                 <div className="relative z-10">
                   {/* Badge & Icon Row */}
                   <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-slate-50 border border-slate-200 dark:bg-white/5 dark:border-white/10 text-slate-800 dark:text-white">
+                    <div className="flex items-center justify-center w-12 h-12 rounded-sm bg-slate-50 border border-slate-200 dark:bg-white/5 dark:border-white/10 text-slate-800 dark:text-white">
                       <Icon className="w-6 h-6 text-orange-500" />
                     </div>
                     {exp.badge && (
@@ -235,7 +231,7 @@ export default function PortfolioExperiences({ id = 'experiences' }: { id?: stri
                   <p className="text-xs font-mono text-slate-400 mb-4">{exp.subtitle}</p>
                   
                   {/* Visual Mockups */}
-                  <div className="relative aspect-video rounded-xl bg-slate-100 dark:bg-black/40 border border-slate-200/60 dark:border-white/5 overflow-hidden mb-6 flex flex-col justify-between">
+                  <div className="relative aspect-video rounded-sm bg-slate-100 dark:bg-black/40 border border-slate-200/60 dark:border-white/5 overflow-hidden mb-6 flex flex-col justify-between">
                     {exp.id === 'standard' && (
                       <div className="w-full h-full p-4 flex flex-col gap-2 relative">
                         {/* Simulated Current Portfolio Wireframe layout */}
@@ -334,7 +330,7 @@ export default function PortfolioExperiences({ id = 'experiences' }: { id?: stri
                   {exp.id === 'standard' ? (
                     <button
                       disabled
-                      className="w-full inline-flex h-11 items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-slate-100 dark:bg-white/5 dark:border-white/5 text-xs font-bold text-slate-400 dark:text-slate-500 cursor-default"
+                      className="w-full inline-flex h-11 items-center justify-center gap-1.5 rounded-sm border border-slate-200 bg-slate-100 dark:bg-white/5 dark:border-white/5 text-xs font-bold text-slate-400 dark:text-slate-500 cursor-default"
                     >
                       Currently Active
                     </button>
@@ -344,7 +340,7 @@ export default function PortfolioExperiences({ id = 'experiences' }: { id?: stri
                         href={exp.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 inline-flex h-11 items-center justify-center gap-1.5 rounded-xl bg-orange-500 hover:bg-orange-600 active:scale-95 text-xs font-bold text-white transition-all shadow-md shadow-orange-500/10 cursor-pointer glimmer-btn"
+                        className="flex-1 inline-flex h-11 items-center justify-center gap-1.5 rounded-sm bg-orange-500 hover:bg-orange-600 active:scale-95 text-xs font-bold text-white transition-all shadow-md shadow-orange-500/10 cursor-pointer glimmer-btn"
                         title={`Launch live demo of ${exp.title}`}
                       >
                         <ExternalLink size={14} />
@@ -352,7 +348,7 @@ export default function PortfolioExperiences({ id = 'experiences' }: { id?: stri
                       </a>
                       <button
                         onClick={() => openPreview(exp.url, exp.title)}
-                        className="inline-flex h-11 px-4 items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 hover:border-slate-300 dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/15 active:scale-95 transition-all cursor-pointer"
+                        className="inline-flex h-11 px-4 items-center justify-center gap-1.5 rounded-sm border border-slate-200 bg-slate-50 hover:bg-slate-100 hover:border-slate-300 dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/15 active:scale-95 transition-all cursor-pointer"
                         title="Launch Preview"
                       >
                         <span>Preview</span>
@@ -380,7 +376,7 @@ export default function PortfolioExperiences({ id = 'experiences' }: { id?: stri
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 20 }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              className="w-full max-w-6xl h-[85vh] rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-neutral-900 shadow-2xl flex flex-col overflow-hidden"
+              className="w-full max-w-6xl h-[85vh] rounded-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-neutral-900 shadow-2xl flex flex-col overflow-hidden"
             >
               {/* Window TitleBar controls */}
               <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-neutral-950">
@@ -398,7 +394,7 @@ export default function PortfolioExperiences({ id = 'experiences' }: { id?: stri
                 </div>
 
                 {/* Center Title */}
-                <div className="flex items-center gap-2 text-xs font-bold text-slate-700 dark:text-slate-300 font-mono tracking-tight bg-slate-200/50 dark:bg-white/5 px-4 py-1.5 rounded-full border border-slate-350/10">
+                <div className="flex items-center gap-2 text-xs font-bold text-slate-700 dark:text-slate-300 font-mono tracking-tight bg-slate-200/50 dark:bg-white/5 px-4 py-1.5 rounded-sm border border-slate-350/10">
                   <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                   <span>Simulator: {iframeTitle}</span>
                 </div>
@@ -409,14 +405,14 @@ export default function PortfolioExperiences({ id = 'experiences' }: { id?: stri
                     href={activeIframeUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 dark:border-white/10 dark:hover:bg-white/10 text-slate-600 dark:text-slate-400 transition-colors"
+                    className="p-1.5 rounded-sm border border-slate-200 hover:bg-slate-100 dark:border-white/10 dark:hover:bg-white/10 text-slate-600 dark:text-slate-400 transition-colors"
                     title="Open full page"
                   >
                     <ExternalLink className="w-4 h-4" />
                   </a>
                   <button
                     onClick={() => setActiveIframeUrl(null)}
-                    className="p-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 dark:border-white/10 dark:hover:bg-white/10 text-slate-600 dark:text-slate-400 transition-colors"
+                    className="p-1.5 rounded-sm border border-slate-200 hover:bg-slate-100 dark:border-white/10 dark:hover:bg-white/10 text-slate-600 dark:text-slate-400 transition-colors"
                     title="Close"
                   >
                     <X className="w-4 h-4" />

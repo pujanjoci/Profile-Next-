@@ -106,7 +106,7 @@ export default function ServicesSection({ id = 'services' }: ServicesProps) {
               <motion.div
                 key={index}
                 variants={itemVariants}
-                className="group relative flex flex-col justify-between rounded-3xl border border-slate-200 bg-white p-8 dark:border-white/10 dark:bg-neutral-900 shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden hover:-translate-y-1"
+                className="group relative flex flex-col justify-between rounded-sm border border-slate-200 bg-white p-8 dark:border-white/10 dark:bg-neutral-900 shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden hover:-translate-y-1"
               >
                 {/* Glow Background effect */}
                 <div
@@ -116,7 +116,7 @@ export default function ServicesSection({ id = 'services' }: ServicesProps) {
 
                 <div className="space-y-4">
                   {/* Icon Block */}
-                  <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-slate-50 border border-slate-200 dark:bg-white/5 dark:border-white/10 text-slate-800 dark:text-white transition-colors duration-350">
+                  <div className="flex items-center justify-center w-12 h-12 rounded-sm bg-slate-50 border border-slate-200 dark:bg-white/5 dark:border-white/10 text-slate-800 dark:text-white transition-colors duration-350">
                     <Icon className="w-6 h-6 text-orange-500" />
                   </div>
 
@@ -157,13 +157,13 @@ export default function ServicesSection({ id = 'services' }: ServicesProps) {
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-orange-500 to-amber-400 text-black font-bold rounded-full shadow-lg shadow-orange-500/20 hover:opacity-95 transition-all duration-300 active:scale-95 cursor-pointer text-sm"
+              className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-orange-500 to-amber-400 text-black font-bold rounded-sm shadow-lg shadow-orange-500/20 hover:opacity-95 transition-all duration-300 active:scale-95 cursor-pointer text-sm"
             >
               Get in touch
             </Link>
             <Link
               href="/services"
-              className="inline-flex items-center justify-center px-6 py-3 border border-slate-200 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-white/5 rounded-full font-semibold text-slate-800 dark:text-slate-300 transition-colors text-sm cursor-pointer"
+              className="inline-flex items-center justify-center px-6 py-3 border border-slate-200 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-white/5 rounded-sm font-semibold text-slate-800 dark:text-slate-300 transition-colors text-sm cursor-pointer"
             >
               View detailed services
             </Link>

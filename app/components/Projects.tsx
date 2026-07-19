@@ -225,14 +225,14 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
-          <div className="flex flex-wrap gap-1.5 p-1.5 rounded-full border border-slate-200 bg-white/80 backdrop-blur-md shadow-sm dark:border-white/5 dark:bg-neutral-900/80">
+          <div className="flex flex-wrap gap-1.5 p-1.5 rounded-sm border border-slate-200 bg-white/80 backdrop-blur-md shadow-sm dark:border-white/5 dark:bg-neutral-900/80">
             {categories.map((category) => {
               const isActive = selectedCategory === category
               return (
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`relative px-4 py-2 text-xs sm:text-sm font-bold rounded-full cursor-pointer transition-colors duration-300 z-10 ${
+                  className={`relative px-4 py-2 text-xs sm:text-sm font-bold rounded-sm cursor-pointer transition-colors duration-300 z-10 ${
                     isActive 
                       ? 'text-white' 
                       : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100'
@@ -242,7 +242,7 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
                   {isActive && (
                     <motion.div
                       layoutId="activeCategoryTab"
-                      className="absolute inset-0 bg-gradient-to-r from-orange-500 to-amber-400 rounded-full -z-10 shadow-sm"
+                      className="absolute inset-0 bg-gradient-to-r from-orange-500 to-amber-400 rounded-sm -z-10 shadow-sm"
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -260,7 +260,7 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
             <button
               type="button"
               onClick={handlePrev}
-              className="absolute -left-2 sm:-left-6 lg:-left-7 top-1/2 -translate-y-1/2 z-30 inline-flex h-12 w-12 items-center justify-center rounded-full border border-slate-200/80 bg-white/90 text-slate-800 backdrop-blur-md shadow-lg transition-all duration-300 hover:bg-slate-50 hover:scale-110 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-neutral-900/90 dark:text-white dark:hover:bg-neutral-800"
+              className="absolute -left-2 sm:-left-6 lg:-left-7 top-1/2 -translate-y-1/2 z-30 inline-flex h-12 w-12 items-center justify-center rounded-sm border border-slate-200/80 bg-white/90 text-slate-800 backdrop-blur-md shadow-lg transition-all duration-300 hover:bg-slate-50 hover:scale-110 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-neutral-900/90 dark:text-white dark:hover:bg-neutral-800"
               aria-label="Previous slide"
             >
               <ChevronLeft size={20} />
@@ -298,7 +298,7 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
                   <motion.div
                     key={key}
                     ref={idx === (isLoopNeeded ? cloneCount : 0) ? cardRef : undefined}
-                    className={`w-[290px] xs:w-[320px] sm:w-[360px] flex-shrink-0 flex flex-col justify-between rounded-[2rem] border overflow-hidden transition-all duration-500 bg-white/80 backdrop-blur-md shadow-lg group select-none dark:bg-neutral-900/80 ${
+                    className={`w-[290px] xs:w-[320px] sm:w-[360px] flex-shrink-0 flex flex-col justify-between rounded-sm border overflow-hidden transition-all duration-500 bg-white/80 backdrop-blur-md shadow-lg group select-none dark:bg-neutral-900/80 ${
                       isActive
                         ? 'border-slate-300 scale-[1.01] dark:border-neutral-700'
                         : 'border-slate-200/60 opacity-60 scale-95 dark:border-neutral-800/60'
@@ -419,7 +419,7 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
             <button
               type="button"
               onClick={handleNext}
-              className="absolute -right-2 sm:-right-6 lg:-right-7 top-1/2 -translate-y-1/2 z-30 inline-flex h-12 w-12 items-center justify-center rounded-full border border-slate-200/80 bg-white/90 text-slate-800 backdrop-blur-md shadow-lg transition-all duration-300 hover:bg-slate-50 hover:scale-110 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-neutral-900/90 dark:text-white dark:hover:bg-neutral-800"
+              className="absolute -right-2 sm:-right-6 lg:-right-7 top-1/2 -translate-y-1/2 z-30 inline-flex h-12 w-12 items-center justify-center rounded-sm border border-slate-200/80 bg-white/90 text-slate-800 backdrop-blur-md shadow-lg transition-all duration-300 hover:bg-slate-50 hover:scale-110 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-neutral-900/90 dark:text-white dark:hover:bg-neutral-800"
               aria-label="Next slide"
             >
               <ChevronRight size={20} />
@@ -440,7 +440,7 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
                     if (disableTransition) return
                     setActiveIndex(idx)
                   }}
-                  className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                  className={`h-2 rounded-sm transition-all duration-300 cursor-pointer ${
                     isActive ? '' : 'bg-slate-300 dark:bg-neutral-800'
                   }`}
                   style={{
@@ -464,7 +464,7 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
         >
           <Link
             href="/projects"
-            className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-orange-500 to-amber-400 px-6 py-3 font-bold text-black shadow-lg shadow-orange-500/20 hover:opacity-95 transition-all duration-300 active:scale-95 cursor-pointer"
+            className="inline-flex items-center gap-2 rounded-sm bg-gradient-to-r from-orange-500 to-amber-400 px-6 py-3 font-bold text-black shadow-lg shadow-orange-500/20 hover:opacity-95 transition-all duration-300 active:scale-95 cursor-pointer"
           >
             View all projects
             <ArrowUpRight size={16} />
@@ -473,7 +473,7 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
             href="https://github.com/pujanjoci"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-6 py-3 font-semibold text-slate-800 shadow-lg backdrop-blur-sm transition-colors hover:bg-slate-100 active:scale-95 cursor-pointer dark:border-white/20 dark:text-white dark:hover:bg-white/10"
+            className="inline-flex items-center gap-2 rounded-sm border border-slate-200 px-6 py-3 font-semibold text-slate-800 shadow-lg backdrop-blur-sm transition-colors hover:bg-slate-100 active:scale-95 cursor-pointer dark:border-white/20 dark:text-white dark:hover:bg-white/10"
           >
             <Github size={18} />
             View on GitHub
