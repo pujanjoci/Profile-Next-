@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { Menu, X, Home, User, FolderGit2, Mail, BookOpen, FileText, Monitor } from 'lucide-react'
+import { Menu, X, Home, User, FolderGit2, Mail, BookOpen, FileText, Monitor, Quote } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useRouter, usePathname } from 'next/navigation'
 import ThemeToggle from './ThemeToggle'
@@ -11,6 +11,7 @@ const navItems = [
   { name: 'About', href: '#about', icon: User, isRoute: false },
   { name: 'Projects', href: '#projects', icon: FolderGit2, isRoute: false },
   { name: 'Views', href: '#experiences', icon: Monitor, isRoute: false },
+  { name: 'Reviews', href: '#testimonials', icon: Quote, isRoute: false },
   { name: 'Contact', href: '#contact', icon: Mail, isRoute: false },
   { name: 'Gallery', href: '/gallery', icon: BookOpen, isRoute: true },
   { name: 'Resume', href: '/resume', icon: FileText, isRoute: true, isExternal: false },
@@ -30,7 +31,7 @@ export default function Header() {
   useEffect(() => {
     if (!isHomePage) return
 
-    const sections = ['about', 'projects', 'experiences', 'contact']
+    const sections = ['about', 'projects', 'experiences', 'testimonials', 'contact']
     const observerOptions = {
       root: null,
       rootMargin: '-30% 0px -65% 0px',

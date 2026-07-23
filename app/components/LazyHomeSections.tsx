@@ -4,6 +4,7 @@ import About from './About'
 import Projects from './Projects'
 import ServicesSection from './ServicesSection'
 import PortfolioExperiences from './PortfolioExperiences'
+import Testimonials from './Testimonials'
 import Contact from './Contact'
 import Footer from './Footer'
 
@@ -22,6 +23,8 @@ export default function LazyHomeSections() {
       <ServicesSection id="services" />
 
       <PortfolioExperiences id="experiences" />
+
+      <Testimonials id="testimonials" />
 
       <Contact id="contact" />
 
