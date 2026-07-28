@@ -63,8 +63,8 @@ export default function ResumePage() {
       period: '',
       details: [
         'WhiteZebra Consulting Pvt Ltd — Designed and developed corporate website and digital brand system (https://whitezebraconsulting.com/).',
-        'Credit Scoring Web App — Built interactive Credit Scoring Appraisal Web Application (https://las-credit-appraisal.vercel.app/). (Internal company project — initial template viewable).',
-        'Inventory & VAT Calculation — Developed fullstack inventory management and automated VAT calculation system dashboard (https://vat-inventory.vercel.app/dashboard). (Internal company project — initial template viewable).'
+        'Credit Scoring Web App — Built interactive Credit Scoring Appraisal Web Application (https://las-credit-appraisal.vercel.app/). (Internal company project — showing initial templates only).',
+        'Inventory & VAT Calculation — Developed fullstack inventory management and automated VAT calculation system dashboard (https://vat-inventory.vercel.app/dashboard). (Internal company project — showing initial templates only).'
       ]
     },
     {
