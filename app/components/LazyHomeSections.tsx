@@ -5,8 +5,7 @@ import Projects from './Projects'
 import ServicesSection from './ServicesSection'
 import PortfolioExperiences from './PortfolioExperiences'
 import Testimonials from './Testimonials'
-import Contact from './Contact'
-import Footer from './Footer'
+import DepthFooterWrapper from './DepthFooterWrapper'
 
 export default function LazyHomeSections() {
   return (
@@ -26,10 +25,7 @@ export default function LazyHomeSections() {
 
       <Testimonials id="testimonials" />
 
-      <Contact id="contact" />
-
-      <Footer />
+      <DepthFooterWrapper contactId="contact" />
     </>
   )
 }
-
