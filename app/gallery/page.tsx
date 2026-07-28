@@ -77,7 +77,7 @@ export default function GalleryPage() {
             Creative Lab
           </span>
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-4 text-slate-950 dark:text-white">Gallery</h1>
-          <div className="w-24 h-1 bg-gradient-to-r from-purple-500 to-orange-400 mx-auto rounded-full mb-6" />
+          <div className="w-24 h-1 bg-orange-500 mx-auto rounded-full mb-6" />
           <p className="text-lg text-slate-600 dark:text-slate-400 max-w-xl mx-auto">
             A space for interactive experiments, animations, and visual ideas.
           </p>

@@ -145,7 +145,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             </div>
 
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight">
-              <span className={`bg-gradient-to-r ${project.color} bg-clip-text text-transparent`}>
+              <span className="text-orange-500">
                 {project.title}
               </span>
             </h1>

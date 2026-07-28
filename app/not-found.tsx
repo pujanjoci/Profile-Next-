@@ -23,7 +23,7 @@ export default function NotFound() {
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="relative select-none"
         >
-          <span className="text-[120px] sm:text-[150px] font-black tracking-tighter leading-none bg-gradient-to-b from-orange-400 to-amber-300 dark:from-orange-500 dark:to-yellow-500 bg-clip-text text-transparent filter drop-shadow-sm">
+          <span className="text-[120px] sm:text-[150px] font-black tracking-tighter leading-none text-orange-500 filter drop-shadow-sm">
             404
           </span>
           <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-neutral-950 to-transparent opacity-10 pointer-events-none" />
@@ -34,7 +34,7 @@ export default function NotFound() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="text-2xl sm:text-3xl font-extrabold tracking-tight mt-6 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent"
+          className="text-2xl sm:text-3xl font-extrabold tracking-tight mt-6 text-gray-900 dark:text-white"
         >
           Page Not Found
         </motion.h1>

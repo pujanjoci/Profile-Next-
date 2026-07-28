@@ -283,12 +283,9 @@ export default function ContactSection({ id = 'contact' }: { id?: string }) {
             Get In Touch
           </span>
           <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-950 dark:text-white mb-4">
-            Contact{' '}
-            <span className="bg-gradient-to-r from-orange-400 to-amber-300 bg-clip-text text-transparent">
-              Me
-            </span>
+            Contact <span className="text-orange-500">Me</span>
           </h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-orange-500 to-amber-400 mx-auto rounded-full mb-5" />
+          <div className="w-20 h-1 bg-orange-500 mx-auto rounded-full mb-5" />
           <p className="text-lg text-slate-600 dark:text-slate-400 max-w-xl mx-auto leading-relaxed">
             Have a project in mind, want to collaborate, or just want to say hello?
             I&apos;d love to hear from you.

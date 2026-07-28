@@ -60,7 +60,7 @@ export default function Footer() {
               viewport={{ once: true }}
               className="flex items-center gap-2.5"
             >
-              <span className="text-2xl font-black bg-gradient-to-r from-orange-400 to-amber-300 bg-clip-text text-transparent tracking-tight">
+              <span className="text-2xl font-black text-orange-500 tracking-tight">
                 Pujan
               </span>
               <span className="text-slate-300 text-xl font-light dark:text-white/20">/</span>

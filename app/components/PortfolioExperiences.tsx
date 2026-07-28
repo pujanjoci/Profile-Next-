@@ -186,7 +186,7 @@ export default function PortfolioExperiences({ id = 'experiences' }: { id?: stri
           <p className="mx-auto max-w-2xl text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed">
             I explore multiple layouts and interactive paradigms. Choose the aesthetic that fits your style, or preview my other full-fledged portfolios right here.
           </p>
-          <div className="mx-auto mt-6 h-1 w-24 rounded-full bg-gradient-to-r from-orange-500 to-amber-400" />
+          <div className="mx-auto mt-6 h-1 w-24 rounded-full bg-orange-500" />
         </motion.div>
 
         {/* 3-Column Experience Selector Grid */}
@@ -224,7 +224,7 @@ export default function PortfolioExperiences({ id = 'experiences' }: { id?: stri
 
                   {/* Title & Subtitle */}
                   <h3 className="text-xl font-bold tracking-tight text-slate-950 dark:text-white mb-1">
-                    <span className={`bg-gradient-to-r ${exp.color} bg-clip-text text-transparent`}>
+                    <span className="text-orange-500">
                       {exp.title}
                     </span>
                   </h3>

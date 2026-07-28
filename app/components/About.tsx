@@ -148,7 +148,7 @@ export default function About({
               <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950 dark:text-white font-sans">
                 My Journey
               </h2>
-              <div className="h-1 w-20 bg-gradient-to-r from-orange-500 to-amber-400 mt-4 rounded-full" />
+              <div className="h-1 w-20 bg-orange-500 mt-4 rounded-full" />
             </motion.div>
 
             <motion.div variants={itemVariants} className="text-slate-600 dark:text-slate-300 space-y-5 text-base sm:text-lg leading-relaxed font-normal">

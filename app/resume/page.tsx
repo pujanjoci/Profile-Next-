@@ -58,6 +58,16 @@ export default function ResumePage() {
       ]
     },
     {
+      role: 'Freelance Web Developer & Designer',
+      company: 'Freelance Projects',
+      period: '',
+      details: [
+        'WhiteZebra Consulting Pvt Ltd — Designed and developed corporate website and digital brand system (https://whitezebraconsulting.com/).',
+        'Credit Scoring Web App — Built interactive Credit Scoring Appraisal Web Application (https://las-credit-appraisal.vercel.app/). (Internal company project — initial template viewable).',
+        'Inventory & VAT Calculation — Developed fullstack inventory management and automated VAT calculation system dashboard (https://vat-inventory.vercel.app/dashboard). (Internal company project — initial template viewable).'
+      ]
+    },
+    {
       role: 'Graphic Designer & Motion Graphic Designer (Intern)',
       company: 'Chainge Digital',
       period: 'Nov 2024 - Feb 2025',
@@ -115,7 +125,7 @@ export default function ResumePage() {
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-6">
             Resume / CV
           </h1>
-          <div className="mx-auto h-[3px] w-24 rounded-full bg-gradient-to-r from-orange-500 to-amber-400 mb-6" />
+          <div className="mx-auto h-[3px] w-24 rounded-full bg-orange-500 mb-6" />
           <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 max-w-xl mx-auto leading-relaxed">
             Pujan Joshi — Web Designer & Developer from Nepal. View my professional background or download the printable PDF version.
           </p>
@@ -125,7 +135,7 @@ export default function ResumePage() {
               href="/resume/Resume_Pujan-Joshi.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-orange-500 to-amber-400 text-black font-bold rounded-full shadow-lg shadow-orange-500/20 hover:opacity-95 transition-all duration-300 active:scale-95 cursor-pointer text-sm gap-2"
+              className="inline-flex items-center justify-center px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-full shadow-lg shadow-orange-500/20 transition-all duration-300 active:scale-95 cursor-pointer text-sm gap-2"
             >
               <Download size={16} />
               Download PDF Resume
@@ -222,13 +232,39 @@ export default function ResumePage() {
                         {exp.company}
                       </p>
                     </div>
-                    <span className="px-3 py-1 bg-slate-50 border border-slate-250/50 rounded-full text-xs font-semibold text-slate-500 dark:bg-white/5 dark:border-white/10 dark:text-slate-400 print:border-slate-300 print:text-slate-800">
-                      {exp.period}
-                    </span>
+                    {exp.period && (
+                      <span className="px-3 py-1 bg-slate-50 border border-slate-250/50 rounded-full text-xs font-semibold text-slate-500 dark:bg-white/5 dark:border-white/10 dark:text-slate-400 print:border-slate-300 print:text-slate-800">
+                        {exp.period}
+                      </span>
+                    )}
                   </div>
                   <ul className="space-y-2 text-sm text-slate-650 dark:text-slate-300 leading-relaxed print:text-slate-800 list-disc pl-5">
                     {exp.details.map((item, dIdx) => (
-                      <li key={dIdx}>{item}</li>
+                      <li key={dIdx}>
+                        {item.split(/(https?:\/\/[^\s\)]+|\(Internal company project[^\)]*\))/g).map((part, pIdx) => {
+                          if (part.startsWith('http')) {
+                            return (
+                              <a
+                                key={pIdx}
+                                href={part}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-orange-500 hover:underline font-medium print:text-slate-900"
+                              >
+                                {part}
+                              </a>
+                            )
+                          }
+                          if (part.includes('Internal company project')) {
+                            return (
+                              <span key={pIdx} className="text-red-500 dark:text-red-300 font-semibold">
+                                {part}
+                              </span>
+                            )
+                          }
+                          return part
+                        })}
+                      </li>
                     ))}
                   </ul>
                 </div>

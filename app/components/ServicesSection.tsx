@@ -89,7 +89,7 @@ export default function ServicesSection({ id = 'services' }: ServicesProps) {
           <p className="mx-auto max-w-2xl text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed">
             I deliver high-fidelity digital interfaces and optimized fullstack web systems that combine creative design aesthetics with modern frontend technologies.
           </p>
-          <div className="mx-auto mt-6 h-1 w-24 rounded-full bg-gradient-to-r from-orange-500 to-amber-400" />
+          <div className="mx-auto mt-6 h-1 w-24 rounded-full bg-orange-500" />
         </motion.div>
 
         {/* Services Grid */}
@@ -122,7 +122,7 @@ export default function ServicesSection({ id = 'services' }: ServicesProps) {
 
                   {/* Title & Description */}
                   <h3 className="text-xl font-extrabold tracking-tight text-slate-950 dark:text-white">
-                    <span className={`bg-gradient-to-r ${service.color} bg-clip-text text-transparent`}>
+                    <span className="text-orange-500">
                       {service.title}
                     </span>
                   </h3>
@@ -157,7 +157,7 @@ export default function ServicesSection({ id = 'services' }: ServicesProps) {
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-orange-500 to-amber-400 text-black font-bold rounded-sm shadow-lg shadow-orange-500/20 hover:opacity-95 transition-all duration-300 active:scale-95 cursor-pointer text-sm"
+              className="inline-flex items-center justify-center px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-sm shadow-lg shadow-orange-500/20 transition-all duration-300 active:scale-95 cursor-pointer text-sm"
             >
               Get in touch
             </Link>

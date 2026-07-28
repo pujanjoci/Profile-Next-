@@ -131,7 +131,7 @@ export default function ProjectsPage() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight"
           >
-            <span className="bg-gradient-to-r from-orange-400 via-amber-300 to-yellow-400 bg-clip-text text-transparent">
+            <span className="text-orange-500">
               All Creations
             </span>
           </motion.h1>
@@ -140,7 +140,7 @@ export default function ProjectsPage() {
             initial={{ opacity: 0, scaleX: 0 }}
             animate={{ opacity: 1, scaleX: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="mx-auto h-[3px] w-28 rounded-full bg-gradient-to-r from-orange-500 to-amber-400 mt-6"
+            className="mx-auto h-[3px] w-28 rounded-full bg-orange-500 mt-6"
           />
           
           <motion.p
@@ -167,7 +167,7 @@ export default function ProjectsPage() {
                     onClick={() => setSelectedCategory(cat)}
                     className={`flex items-center gap-2 rounded-full px-4 py-2.5 text-xs sm:text-sm font-semibold transition-all duration-300 cursor-pointer border active:scale-95 ${
                       isActive
-                        ? 'bg-gradient-to-r from-orange-500 to-amber-400 text-black border-transparent shadow-lg shadow-orange-500/20'
+                        ? 'bg-orange-500 text-white border-transparent shadow-lg shadow-orange-500/20'
                         : 'bg-white/80 border-slate-200 text-slate-600 hover:text-slate-950 hover:bg-white hover:border-slate-300 dark:bg-neutral-900/60 dark:border-white/5 dark:text-slate-400 dark:hover:text-white dark:hover:bg-neutral-800/80 dark:hover:border-white/10'
                     }`}
                   >

@@ -193,7 +193,7 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
             <h2 className="text-4xl font-extrabold text-slate-950 dark:text-white md:text-5xl">
               Projects
             </h2>
-            <div className="h-1 w-20 mt-3 rounded-full bg-gradient-to-r from-orange-500 to-amber-400" />
+            <div className="h-1 w-20 mt-3 rounded-full bg-orange-500" />
           </motion.div>
 
           {/* Top Panel Index Display */}

@@ -81,7 +81,7 @@ export default function ServicesPage() {
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-6">
             Detailed Services
           </h1>
-          <div className="mx-auto h-[3px] w-24 rounded-full bg-gradient-to-r from-orange-500 to-amber-400 mb-6" />
+          <div className="mx-auto h-[3px] w-24 rounded-full bg-orange-500 mb-6" />
           <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 max-w-xl mx-auto leading-relaxed">
             I build bespoke frontend experiences and full-stack solutions. Explore the specifics of my design and programming services.
           </p>

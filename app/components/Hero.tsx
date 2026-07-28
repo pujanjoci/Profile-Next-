@@ -48,7 +48,7 @@ export default function Hero() {
   }, [displayText, isDeleting, roleIndex, roles, typingSpeed])
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-white dark:bg-neutral-950 flex flex-col items-center justify-start md:block pt-[15vh] md:pt-0">
+    <section className="relative min-h-screen min-h-[100dvh] w-full overflow-hidden bg-white dark:bg-neutral-950 flex flex-col items-center justify-start md:block pt-[12vh] sm:pt-[15vh] md:pt-0">
       
       {/* Text Content - Mobile: top padding, Desktop: absolute */}
       <div className="relative z-30 w-full px-4 text-center md:absolute md:left-0 md:right-0 md:top-[22%] md:block pointer-events-none">
@@ -56,7 +56,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="mb-6 pointer-events-auto"
+          className="mb-4 sm:mb-6 pointer-events-auto"
         >
           <span className="inline-block px-6 py-2 rounded-full border border-gray-900/10 dark:border-white/20 text-sm font-medium bg-white/50 backdrop-blur-sm dark:bg-white/5 shadow-sm">
             Hello!
@@ -72,10 +72,10 @@ export default function Hero() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <span className="block text-6xl sm:text-7xl md:text-7xl lg:text-8xl mb-2 font-bold">
+          <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl mb-2 font-bold">
             I&apos;m <span className="text-orange-500">Pujan</span>,
           </span>
-          <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-neutral-800 dark:text-neutral-200 bangers-regular">
+          <span className="block text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-neutral-800 dark:text-neutral-200 bangers-regular">
             {displayText}
             <span className="animate-pulse">|</span> {/* Blinking cursor */}
           </span>
@@ -87,15 +87,15 @@ export default function Hero() {
         </p>
       </div>
 
-      {/* Image Container - always at bottom (unchanged) */}
+      {/* Image Container - 10% larger & 5% uplifted */}
       <div className="absolute bottom-0 left-0 right-0 flex justify-center w-full overflow-visible pointer-events-none">
         <div className="relative w-full flex justify-center items-end 
-                        h-[80vh] md:h-[65vh] lg:h-[75vh] 
-                        max-h-[900px]">
+                        h-[84vh] sm:h-[88vh] md:h-[70vh] lg:h-[80vh] 
+                        max-h-[1020px]">
                         
-          {/* Background Shape */}
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 aspect-square rounded-full bg-orange-100/80 dark:bg-orange-900/20 translate-y-1/3 blur-xl md:blur-0
-                          w-[180%] md:w-[900px]" />
+          {/* Background Shape Accent */}
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 aspect-square rounded-full bg-orange-200/90 dark:bg-orange-600/20 translate-y-1/4 blur-2xl md:blur-3xl
+                          w-[220%] md:w-[1000px]" />
 
           {/* Profile Image & Buttons */}
           <motion.div
@@ -104,15 +104,15 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="relative z-40 flex items-end justify-center w-full h-full pointer-events-auto pb-0"
           >
-            {/* Image Wrapper */}
-            <div className="relative aspect-[4/5] h-[75%] sm:h-[80%] md:h-[85%] lg:h-[90%] max-w-[650px] w-auto flex-shrink-0">
+            {/* Image Wrapper - 10% larger */}
+            <div className="relative aspect-[4/5] h-[96%] sm:h-[98%] md:h-[90%] lg:h-[95%] max-w-[760px] w-auto flex-shrink-0">
               <Image
                 src="/Pujan(Profile)-hero.webp"
                 alt="Pujan Profile"
                 fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 600px, 650px"
-                quality={75}
-                className="object-contain object-bottom drop-shadow-2xl"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 750px, 800px"
+                quality={90}
+                className="object-contain object-bottom drop-shadow-[0_20px_35px_rgba(0,0,0,0.35)]"
                 priority
               />
 
@@ -148,39 +148,36 @@ export default function Hero() {
                 </svg>
               </motion.div>
 
-              {/* Floating Buttons - smaller on mobile */}
+              {/* Floating Buttons - 5% uplifted on mobile */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.8 }}
-                className="absolute bottom-8 left-1/2 -translate-x-1/2 w-auto p-1 bg-white/20 dark:bg-black/40 backdrop-blur-md border border-white/30 dark:border-white/10 rounded-full shadow-lg flex items-center justify-center gap-1 overflow-hidden"
+                className="absolute bottom-20 sm:bottom-22 md:bottom-8 left-1/2 -translate-x-1/2 w-auto p-1 bg-white/20 dark:bg-black/40 backdrop-blur-md border border-white/30 dark:border-white/10 rounded-full shadow-lg flex items-center justify-center gap-1 overflow-hidden"
               >
                 <Link
                   href="/projects"
-                  className="inline-flex items-center justify-center px-4 py-2 sm:px-6 sm:py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-full font-medium transition-colors gap-2 text-sm whitespace-nowrap shadow-md shadow-orange-500/20 glimmer-btn"
+                  className="inline-flex items-center justify-center px-3.5 py-1.5 sm:px-6 sm:py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-full font-medium transition-colors gap-1.5 sm:gap-2 text-xs sm:text-sm whitespace-nowrap shadow-md shadow-orange-500/20 glimmer-btn"
                 >
                   Portfolio
-                  <ArrowUpRight size={16} />
+                  <ArrowUpRight size={14} className="sm:w-4 sm:h-4" />
                 </Link>
                 <Link
                   href="/resume"
-                  className="inline-flex items-center justify-center px-4 py-2 sm:px-6 sm:py-3 text-neutral-800 dark:text-neutral-200 hover:bg-white/20 dark:hover:bg-white/10 rounded-full font-medium transition-colors text-sm whitespace-nowrap gap-1.5"
+                  className="inline-flex items-center justify-center px-3.5 py-1.5 sm:px-6 sm:py-3 text-neutral-800 dark:text-neutral-200 hover:bg-white/20 dark:hover:bg-white/10 rounded-full font-medium transition-colors text-xs sm:text-sm whitespace-nowrap gap-1 sm:gap-1.5"
                 >
-                  <FileText size={16} className="text-orange-500 dark:text-orange-400" />
+                  <FileText size={14} className="text-orange-500 dark:text-orange-400 sm:w-4 sm:h-4" />
                   Resume
                 </Link>
                 <Link
                   href="/contact"
-                  className="inline-flex items-center justify-center px-4 py-2 sm:px-6 sm:py-3 text-neutral-800 dark:text-neutral-200 hover:bg-white/20 dark:hover:bg-white/10 rounded-full font-medium transition-colors text-sm whitespace-nowrap"
+                  className="inline-flex items-center justify-center px-3.5 py-1.5 sm:px-6 sm:py-3 text-neutral-800 dark:text-neutral-200 hover:bg-white/20 dark:hover:bg-white/10 rounded-full font-medium transition-colors text-xs sm:text-sm whitespace-nowrap"
                 >
                   Hire me
                 </Link>
-
-                
               </motion.div>
             </div>
           </motion.div>
-
         </div>
       </div>
     </section>
