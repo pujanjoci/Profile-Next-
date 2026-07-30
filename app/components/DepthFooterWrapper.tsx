@@ -40,7 +40,7 @@ export default function DepthFooterWrapper({ contactId = 'contact' }: DepthFoote
          Just like the classic footer before depth view effect!
       ───────────────────────────────────────────────────────────── */}
       <div className="block md:hidden w-full bg-slate-950 text-white">
-        <ContactSection id={contactId} />
+        <ContactSection id={`${contactId}-mobile`} />
         <Footer />
       </div>
 

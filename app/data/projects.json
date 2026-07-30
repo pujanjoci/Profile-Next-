@@ -240,5 +240,16 @@
     "color": "from-orange-600 to-amber-500",
     "glowColor": "#ea580c",
     "category": "UI/UX"
+  },
+  {
+    "title": "Archio Designs",
+    "description": "A modern architectural and interior design showcase platform featuring high-resolution portfolio galleries, project case studies, and interactive design services.",
+    "tech": ["Next.js", "React", "Tailwind CSS", "Framer Motion", "UI/UX"],
+    "liveUrl": "https://archiodesigns.vercel.app/",
+    "repoUrl": "https://github.com/pujanjoci/archiodesigns",
+    "image": "/projects/archiodesigns.webp",
+    "color": "from-amber-600 to-orange-500",
+    "glowColor": "#d97706",
+    "category": "Company Websites"
   }
 ]

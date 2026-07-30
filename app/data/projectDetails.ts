@@ -96,6 +96,18 @@ export const customDetails: Record<string, ProjectDetail> = {
       "Google Maps location pins",
       "Premium typographic styling"
     ]
+  },
+  "Archio Designs": {
+    role: "Full-Stack Developer & UI/UX Designer",
+    whatWasBuilt: "A modern architectural and interior design showcase platform featuring high-resolution portfolio galleries, project case studies, and interactive design services.",
+    problemSolved: "Architectural portfolios require showcasing heavy visual media without sacrificing load speed or responsive aesthetics. Built with Next.js and Tailwind CSS to deliver fast page loads, fluid image galleries, and elegant typography.",
+    features: [
+      "High-resolution interactive image galleries",
+      "Clean responsive architectural layout",
+      "Case study detail pages for design projects",
+      "Lightweight fast-loading page transitions",
+      "Mobile-optimized showcase design"
+    ]
   }
 }
 

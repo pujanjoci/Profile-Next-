@@ -28,53 +28,89 @@ export default function Header() {
   const isHomePage = pathname === '/'
   const [activeSection, setActiveSection] = useState('home')
 
+  // Absolute pageY section position calculation engine
   useEffect(() => {
     if (!isHomePage) return
 
-    const sections = ['about', 'projects', 'experiences', 'testimonials', 'contact']
-    const observerOptions = {
-      root: null,
-      rootMargin: '-30% 0px -65% 0px',
-      threshold: 0,
-    }
-
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id)
-        }
-      })
-    }
-
-    const observer = new IntersectionObserver(observerCallback, observerOptions)
-
-    sections.forEach((id) => {
-      const el = document.getElementById(id)
-      if (el) observer.observe(el)
-    })
-
-    const handleScrollTop = () => {
-      if (window.scrollY < 100) {
-        setActiveSection('home')
+    const getElementPageY = (el: HTMLElement) => {
+      let y = 0
+      let current: HTMLElement | null = el
+      while (current) {
+        y += current.offsetTop
+        current = current.offsetParent as HTMLElement | null
       }
+      return y
     }
-    window.addEventListener('scroll', handleScrollTop, { passive: true })
+
+    const sectionMap = [
+      { id: 'about', name: 'about' },
+      { id: 'projects', name: 'projects' },
+      { id: 'services', name: 'projects' },
+      { id: 'experiences', name: 'experiences' },
+      { id: 'testimonials', name: 'testimonials' },
+      { id: 'contact', name: 'contact' },
+    ]
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY
+      const viewportHeight = window.innerHeight
+      const documentHeight = document.documentElement.scrollHeight
+
+      // 1. Top of page threshold (Hero section)
+      if (scrollY < 150) {
+        setActiveSection('home')
+        return
+      }
+
+      // 2. Bottom of document threshold (Footer / Contact)
+      if (viewportHeight + scrollY >= documentHeight - 80) {
+        setActiveSection('contact')
+        return
+      }
+
+      // 3. Focal point 35% down the screen
+      const focusY = scrollY + viewportHeight * 0.35
+      let matchedName = 'home'
+
+      for (const section of sectionMap) {
+        const elements = Array.from(document.querySelectorAll<HTMLElement>(`#${section.id}`))
+        const visibleEl = elements.find((el) => el.offsetWidth > 0 && el.offsetHeight > 0)
+
+        if (visibleEl) {
+          const pageY = getElementPageY(visibleEl)
+          if (focusY >= pageY) {
+            matchedName = section.name
+          }
+        }
+      }
+
+      setActiveSection(matchedName)
+    }
+
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('resize', handleScroll, { passive: true })
 
     return () => {
-      observer.disconnect()
-      window.removeEventListener('scroll', handleScrollTop)
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleScroll)
     }
   }, [isHomePage])
 
   const isItemActive = (item: typeof navItems[0]) => {
-    if (item.isRoute) {
-      return pathname === item.href
+    if (!isHomePage) {
+      if (item.href === pathname) return true
+      if (item.href === `#${pathname.replace('/', '')}`) return true
+      if (pathname.startsWith('/projects') && item.name === 'Projects') return true
+      if (pathname.startsWith('/about') && item.name === 'About') return true
+      if (pathname.startsWith('/contact') && item.name === 'Contact') return true
+      if (pathname.startsWith('/services') && item.name === 'Projects') return true
+      return false
     }
-    if (isHomePage) {
-      if (item.href === '#') return activeSection === 'home'
-      return activeSection === item.href.replace('#', '')
-    }
-    return false
+
+    if (item.href === '#') return activeSection === 'home'
+    const targetSection = item.href.replace('#', '')
+    return activeSection === targetSection
   }
 
   // Smooth scroll function
@@ -86,8 +122,6 @@ export default function Header() {
     const element = document.getElementById(targetId)
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    } else {
-      console.warn(`Element with id "${targetId}" not found`)
     }
   }
 
@@ -95,10 +129,7 @@ export default function Header() {
   useEffect(() => {
     if (window.location.hash) {
       const id = window.location.hash.replace('#', '')
-      // Small delay to ensure DOM is ready
       setTimeout(() => smoothScroll(id), 100)
-    } else {
-      window.scrollTo(0, 0)
     }
   }, [])
 
@@ -151,26 +182,22 @@ export default function Header() {
 
   // Handle navigation click
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string, isRoute: boolean, isExternal?: boolean) => {
-    if (isExternal) {
-      setMobileMenuOpen(false)
-      return
-    }
-    if (isRoute) {
+    if (isExternal || isRoute) {
       setMobileMenuOpen(false)
       return
     }
     e.preventDefault()
     setMobileMenuOpen(false)
 
-    // Hash links on the home page — smooth scroll in-place
     if (isHomePage) {
       const targetId = href === '#' ? null : href.replace('#', '')
+      const sectionName = targetId === 'experiences' ? 'experiences' : targetId === 'testimonials' ? 'testimonials' : targetId || 'home'
+      setActiveSection(sectionName)
       smoothScroll(targetId)
       return
     }
 
-    // Hash links on any OTHER page — navigate home first, then scroll via hash
-    const hash = href === '#' ? '' : href  // e.g. '#about'
+    const hash = href === '#' ? '' : href
     router.push(`/${hash}`)
   }
 
@@ -201,18 +228,18 @@ export default function Header() {
   return (
     <>
       <header className="fixed top-0 left-0 w-full z-50 pointer-events-none">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-6 flex items-center justify-between md:justify-center">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-5 flex items-center justify-between md:justify-center">
           <div className="md:hidden pointer-events-auto z-50">
             <ThemeToggle />
           </div>
 
-          {/* Desktop Navigation Pill */}
+          {/* Desktop Floating Navigation Pill */}
           <div className="hidden md:block pointer-events-auto">
             <motion.nav
               layout
-              className="flex items-center gap-1 border border-gray-200/50 dark:border-gray-800/50 rounded-full p-2 bg-white/70 dark:bg-gray-950/70 backdrop-blur-xl shadow-lg shadow-gray-200/10 dark:shadow-black/20"
+              className="flex items-center gap-1 border border-slate-200/80 dark:border-white/10 rounded-full p-1.5 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-2xl shadow-xl shadow-slate-900/5 dark:shadow-black/40"
               initial={false}
-              animate={{ minWidth: showIcons ? '280px' : '480px' }}
+              animate={{ minWidth: showIcons ? '280px' : '520px' }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             >
               {navItems.map((item) => {
@@ -224,38 +251,38 @@ export default function Header() {
                     onClick={(e) => handleNavClick(e, item.href, item.isRoute, item.isExternal)}
                     target={item.isExternal ? "_blank" : undefined}
                     rel={item.isExternal ? "noopener noreferrer" : undefined}
-                    className={`relative px-4 py-2 text-sm font-semibold transition-colors flex items-center justify-center min-w-[70px] cursor-pointer ${
+                    className={`relative px-4 py-2 text-xs sm:text-sm font-bold tracking-tight transition-colors flex items-center justify-center min-w-[72px] cursor-pointer rounded-full ${
                       isActive 
-                        ? 'text-orange-500 dark:text-orange-400' 
-                        : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
+                        ? 'text-orange-500 dark:text-orange-400 font-extrabold' 
+                        : 'text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white'
                     }`}
                   >
                     {isActive && (
                       <motion.span
                         layoutId="activeNavBackground"
-                        className="absolute inset-0 bg-slate-100 dark:bg-white/5 border border-slate-200/50 dark:border-white/5 rounded-full -z-10"
-                        transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                        className="absolute inset-0 bg-orange-500/10 dark:bg-orange-500/15 border border-orange-500/30 rounded-full -z-10 shadow-sm"
+                        transition={{ type: "spring", stiffness: 380, damping: 28 }}
                       />
                     )}
                     <AnimatePresence mode="popLayout" initial={false}>
                       {showIcons ? (
                         <motion.div
                           key="icon"
-                          initial={{ opacity: 0, scale: 0.5, y: 10 }}
+                          initial={{ opacity: 0, scale: 0.5, y: 8 }}
                           animate={{ opacity: 1, scale: 1, y: 0 }}
-                          exit={{ opacity: 0, scale: 0.5, y: -10 }}
+                          exit={{ opacity: 0, scale: 0.5, y: -8 }}
                           transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                           className="flex items-center justify-center"
                         >
-                          <item.icon className="w-5 h-5" />
+                          <item.icon className="w-4 h-4" />
                           <span className="sr-only">{item.name}</span>
                         </motion.div>
                       ) : (
                         <motion.span
                           key="text"
-                          initial={{ opacity: 0, scale: 0.9, y: -10 }}
+                          initial={{ opacity: 0, scale: 0.9, y: -8 }}
                           animate={{ opacity: 1, scale: 1, y: 0 }}
-                          exit={{ opacity: 0, scale: 0.9, y: 10 }}
+                          exit={{ opacity: 0, scale: 0.9, y: 8 }}
                           transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                           className="whitespace-nowrap"
                         >
@@ -275,7 +302,7 @@ export default function Header() {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden pointer-events-auto relative z-50 p-3 rounded-full bg-white/10 backdrop-blur-sm border border-transparent hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+            className="md:hidden pointer-events-auto relative z-50 p-3 rounded-full bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md border border-slate-200/80 dark:border-white/10 shadow-md text-slate-800 dark:text-white cursor-pointer"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -287,9 +314,8 @@ export default function Header() {
                   animate={{ rotate: 0, opacity: 1 }}
                   exit={{ rotate: 90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
-                  className="text-gray-900 dark:text-white"
                 >
-                  <X className="w-6 h-6" />
+                  <X className="w-5 h-5" />
                 </motion.div>
               ) : (
                 <motion.div
@@ -298,9 +324,8 @@ export default function Header() {
                   animate={{ rotate: 0, opacity: 1 }}
                   exit={{ rotate: -90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
-                  className="text-gray-800 dark:text-gray-200"
                 >
-                  <Menu className="w-6 h-6" />
+                  <Menu className="w-5 h-5" />
                 </motion.div>
               )}
             </AnimatePresence>
@@ -316,23 +341,30 @@ export default function Header() {
             initial="closed"
             animate="open"
             exit="closed"
-            className="fixed inset-0 z-[45] bg-white/95 dark:bg-black/95 backdrop-blur-2xl flex flex-col justify-center items-center pointer-events-auto"
+            className="fixed inset-0 z-[45] bg-white/95 dark:bg-neutral-950/95 backdrop-blur-2xl flex flex-col justify-center items-center pointer-events-auto"
           >
-            <ul className="flex flex-col items-center space-y-8">
-              {navItems.map((item) => (
-                <motion.li key={item.name} variants={itemVariants}>
-                  <a
-                    href={item.href}
-                    onClick={(e) => handleNavClick(e, item.href, item.isRoute, item.isExternal)}
-                    target={item.isExternal ? "_blank" : undefined}
-                    rel={item.isExternal ? "noopener noreferrer" : undefined}
-                    className="flex items-center gap-4 text-3xl font-light text-gray-900 dark:text-white hover:text-gray-500 dark:hover:text-gray-300 transition-colors tracking-tight cursor-pointer"
-                  >
-                    <item.icon className="w-6 h-6 opacity-70" />
-                    {item.name}
-                  </a>
-                </motion.li>
-              ))}
+            <ul className="flex flex-col items-center space-y-6">
+              {navItems.map((item) => {
+                const isActive = isItemActive(item)
+                return (
+                  <motion.li key={item.name} variants={itemVariants}>
+                    <a
+                      href={item.href}
+                      onClick={(e) => handleNavClick(e, item.href, item.isRoute, item.isExternal)}
+                      target={item.isExternal ? "_blank" : undefined}
+                      rel={item.isExternal ? "noopener noreferrer" : undefined}
+                      className={`flex items-center gap-4 text-2xl font-bold transition-colors cursor-pointer ${
+                        isActive
+                          ? 'text-orange-500 dark:text-orange-400 scale-105'
+                          : 'text-slate-800 dark:text-slate-200 hover:text-slate-500'
+                      }`}
+                    >
+                      <item.icon className="w-6 h-6 opacity-80" />
+                      {item.name}
+                    </a>
+                  </motion.li>
+                )
+              })}
             </ul>
           </motion.div>
         )}

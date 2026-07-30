@@ -33,6 +33,7 @@ const slugMap: Record<string, string> = {
   'sudoku-game': 'Sudoku Game',
   'tictactoe-game': 'TicTacToe Game',
   'personal-blog-site': 'Personal Blog-Site',
+  'archio-designs': 'Archio Designs',
 }
 
 function getProjectBySlug(slug: string) {

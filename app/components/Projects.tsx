@@ -25,7 +25,6 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
   const cardRef = useRef<HTMLDivElement>(null)
 
   const [cardWidth, setCardWidth] = useState(360)
-  const [maxScroll, setMaxScroll] = useState(0)
 
   // Track viewport sizes to determine number of visible cards
   useEffect(() => {
@@ -57,37 +56,38 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
 
   // Determine if infinite loop is needed (only if content overflows the visible viewport)
   const isLoopNeeded = filteredProjects.length > visibleCards
-  const cloneCount = 3
+  const cloneCount = isLoopNeeded ? 5 * filteredProjects.length : 0
 
-  // Construct extended projects array with clones for seamless looping
+  // Construct extended projects array with 5 stacks to the left and 5 stacks to the right for seamless infinite scrolling
   const extendedProjects = useMemo(() => {
     if (!isLoopNeeded) return filteredProjects
     return [
-      ...filteredProjects.slice(-cloneCount),
       ...filteredProjects,
-      ...filteredProjects.slice(0, cloneCount)
+      ...filteredProjects,
+      ...filteredProjects,
+      ...filteredProjects,
+      ...filteredProjects,
+      ...filteredProjects, // Main center set (starts at index 5 * N)
+      ...filteredProjects,
+      ...filteredProjects,
+      ...filteredProjects,
+      ...filteredProjects,
+      ...filteredProjects
     ]
   }, [filteredProjects, isLoopNeeded])
 
-  const maxIndex = filteredProjects.length - 1
-  const normalizedActiveIndex = (activeIndex + filteredProjects.length) % filteredProjects.length
+  const normalizedActiveIndex = ((activeIndex % filteredProjects.length) + filteredProjects.length) % filteredProjects.length
   const selectedProject = filteredProjects[normalizedActiveIndex] || filteredProjects[0] || projects[0]
 
-  // Update card width and max scroll constraints dynamically
+  // Update card width dynamically
   const updateConstraints = () => {
     if (cardRef.current) {
       setCardWidth(cardRef.current.offsetWidth)
-    }
-    if (containerRef.current && trackRef.current) {
-      const containerWidth = containerRef.current.offsetWidth
-      const trackWidth = trackRef.current.scrollWidth
-      setMaxScroll(Math.max(0, trackWidth - containerWidth))
     }
   }
 
   useEffect(() => {
     updateConstraints()
-    // Set a short timeout to let layout settle
     const timer = setTimeout(updateConstraints, 150)
     window.addEventListener('resize', updateConstraints)
     return () => {
@@ -106,20 +106,19 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
     setActiveIndex((prev) => prev - 1)
   }
 
+  const cardStep = cardWidth + 24
   const activeTranslation = isLoopNeeded
-    ? -(activeIndex + cloneCount) * (cardWidth + 24)
+    ? -(activeIndex + cloneCount) * cardStep
     : 0
 
   // Snap back instantly to original items when reaching cloned boundaries
   const handleAnimationComplete = () => {
     if (!isLoopNeeded) return
-
-    if (activeIndex < 0) {
+    const len = filteredProjects.length
+    if (activeIndex < 0 || activeIndex >= len) {
+      const wrappedIndex = ((activeIndex % len) + len) % len
       setDisableTransition(true)
-      setActiveIndex(filteredProjects.length + activeIndex)
-    } else if (activeIndex >= filteredProjects.length) {
-      setDisableTransition(true)
-      setActiveIndex(activeIndex - filteredProjects.length)
+      setActiveIndex(wrappedIndex)
     }
   }
 
@@ -136,23 +135,20 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
   // Magnetic snap logic on drag release
   const handleDragEnd = (event: any, info: any) => {
     if (!isLoopNeeded || disableTransition) return
-    
-    const step = cardWidth + 24 // cardStep
+
     const offset = info.offset.x
     const velocity = info.velocity.x
 
-    // Determine target slide based on drag distance and velocity
-    const draggedOffset = -activeTranslation - offset
-    let targetIndex = Math.round(draggedOffset / step) - cloneCount
-
-    // Adjust snap index based on swipe speed / velocity
-    if (velocity < -400) {
-      targetIndex = Math.ceil(draggedOffset / step) - cloneCount
-    } else if (velocity > 400) {
-      targetIndex = Math.floor(draggedOffset / step) - cloneCount
+    let delta = 0
+    if (Math.abs(velocity) > 300) {
+      delta = velocity < 0 ? 1 : -1
+    } else if (Math.abs(offset) > cardStep / 3) {
+      delta = offset < 0 ? 1 : -1
     }
 
-    setActiveIndex(targetIndex)
+    if (delta !== 0) {
+      setActiveIndex((prev) => prev + delta)
+    }
   }
 
   // Resolve project case study slug
@@ -276,8 +272,15 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
             <motion.div
               ref={trackRef}
               drag={isLoopNeeded ? "x" : false}
-              dragConstraints={{ left: -maxScroll, right: 0 }}
-              dragElastic={0.25}
+              dragConstraints={
+                isLoopNeeded
+                  ? {
+                      left: activeTranslation - cardStep * 5 * filteredProjects.length,
+                      right: activeTranslation + cardStep * 5 * filteredProjects.length
+                    }
+                  : undefined
+              }
+              dragElastic={0.2}
               onDragEnd={isLoopNeeded ? handleDragEnd : undefined}
               animate={{ x: activeTranslation }}
               transition={disableTransition ? { duration: 0 } : { type: 'spring', stiffness: 150, damping: 24 }}
