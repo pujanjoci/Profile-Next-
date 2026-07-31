@@ -71,7 +71,7 @@ export default function Footer({ scrollProgress }: FooterProps) {
   ]
 
   return (
-    <footer className="relative bg-slate-950 text-white pt-10 pb-8 sm:pt-12 sm:pb-10 px-6 sm:px-12 md:px-16 overflow-hidden transition-colors duration-300 border-t border-white/10 rounded-t-[24px] sm:rounded-t-[32px] md:rounded-t-[40px] shadow-[0_-30px_80px_rgba(0,0,0,0.95)] h-auto md:h-[80vh] md:min-h-[80vh] flex flex-col justify-between">
+    <footer className="relative bg-slate-950 text-white pt-10 pb-8 sm:pt-12 sm:pb-10 px-6 sm:px-12 md:px-16 overflow-hidden transition-colors duration-300 border-t border-white/10 rounded-t-none shadow-[0_-30px_80px_rgba(0,0,0,0.95)] h-auto md:h-[80vh] md:min-h-[80vh] flex flex-col justify-between">
       
       {/* ─────────────────────────────────────────────────────────────
          Plane 1: Far Depth Background Plane (Watermark & Subtle Overlay)

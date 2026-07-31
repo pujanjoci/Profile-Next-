@@ -76,6 +76,17 @@ export default function ResumePage() {
 
   const experiences = [
     {
+      role: 'Freelance Web Developer & UI Designer',
+      company: 'Freelance Client Solutions',
+      period: '',
+      location: 'Remote',
+      details: [
+        'WhiteZebra Consulting Pvt Ltd — Designed and engineered corporate web application & brand system (https://whitezebraconsulting.com/).',
+        'Credit Scoring Web App — Developed interactive Credit Scoring Appraisal Web Application (https://las-credit-appraisal.vercel.app/). (Internal company project — showing initial templates only).',
+        'VAT & Inventory Dashboard — Architected fullstack inventory management and automated VAT calculation system (https://vat-inventory.vercel.app/dashboard). (Internal company project — showing initial templates only).'
+      ]
+    },
+    {
       role: 'WEB & Graphic Designer',
       company: 'Professional Edge Global',
       period: 'May 2025 – Nov 2025',
@@ -84,17 +95,6 @@ export default function ResumePage() {
         'Designed, developed, and maintained core corporate web portals for main enterprise and sister companies.',
         'Engineered responsive marketing collateral and visual campaign assets driving digital branding consistency.',
         'Managed internal IT infrastructure, serving as primary point of contact for system maintenance and technical operations.'
-      ]
-    },
-    {
-      role: 'Freelance Web Developer & UI Designer',
-      company: 'Freelance Client Solutions',
-      period: '2023 – Present',
-      location: 'Remote',
-      details: [
-        'WhiteZebra Consulting Pvt Ltd — Designed and engineered corporate web application & brand system (https://whitezebraconsulting.com/).',
-        'Credit Scoring Web App — Developed interactive Credit Scoring Appraisal Web Application (https://las-credit-appraisal.vercel.app/). (Internal company project — showing initial templates only).',
-        'VAT & Inventory Dashboard — Architected fullstack inventory management and automated VAT calculation system (https://vat-inventory.vercel.app/dashboard). (Internal company project — showing initial templates only).'
       ]
     },
     {
