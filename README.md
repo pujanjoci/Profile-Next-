@@ -1,139 +1,61 @@
-# Personal Portfolio - Next.js & Tailwind CSS
+ Pujan Joshi 
 
-A modern, responsive personal portfolio website built with **Next.js 14**, **Tailwind CSS**, and **Framer Motion**. Features a dynamic typing effect, dark mode support, and a clean, professional design to showcase your work, skills, and contact information.
+Web Developer | UI/UX Designer | Software Developer
 
-![Portfolio Preview](public/preview.png) <!-- Replace with actual screenshot -->
+Welcome to my portfolio repository. This repository contains the source code and resources for my personal portfolio website, where I showcase my projects, technical skills, and design work.
 
-## ✨ Features
+Portfolio: https://pujan-joshi.com.np
 
-- **Dynamic Typing Effect** – Cycles through roles like "Web Designer", "Web Developer", etc.
-- **Fully Responsive** – Optimized for all devices (mobile, tablet, desktop).
-- **Dark / Light Mode** – Automatically respects user preference with a toggle option.
-- **Smooth Animations** – Powered by Framer Motion for engaging transitions.
-- **Optimized Images** – Uses Next.js Image component for automatic optimization.
-- **SEO Friendly** – Built-in meta tags and semantic HTML.
-- **Contact Section** – Integrated with a form or links to social profiles.
-- **Project Showcase** – Grid layout to display your work with live/preview links.
+About 
 
-## 🛠️ Tech Stack
+I'm Pujan Joshi, a developer from Nepal with a passion for building modern, user-friendly applications and websites.
 
-- [Next.js 14](https://nextjs.org/) (App Router)
-- [Tailwind CSS](https://tailwindcss.com/) – Utility-first styling
-- [Framer Motion](https://www.framer.com/motion/) – Animations
-- [TypeScript](https://www.typescriptlang.org/) (optional, but recommended)
-- [Lucide Icons](https://lucide.dev/) – Clean, consistent icons
+My background combines software development with design, allowing me to create products that are both functional and visually appealing. I enjoy learning new technologies and continuously improving my skills through personal projects and experimentation.
 
-## 🚀 Getting Started
+Skills Programming Languages HTML CSS JavaScript TypeScript Python Frameworks & Libraries React Next.js Design UI/UX Design Responsive Web Design Graphic Design Motion Graphics Video Editing Tools Git GitHub Visual Studio Code Figma Featured Projects 
 
-### Prerequisites
+Projects featured in this portfolio include:
 
-- Node.js 18+ and npm/yarn/pnpm installed
+Web applications Desktop applications UI/UX case studies Design concepts Personal experiments 
 
-### Installation
+Each project includes an overview, technologies used, and links to source code or live demos where available.
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/portfolio.git
-   cd portfolio
-   Install dependencies:
-   ```
+Development Philosophy 
 
-bash
-npm install
+I strive to build software that is:
 
-# or
+Clean and maintainable User-focused Responsive across devices Accessible Easy to understand Built using modern development practices Repository Structure . ├── public/ ├── src/ ├── components/ ├── assets/ ├── README.md ├── AI_CONTEXT.md └── package.json 
 
-yarn install
+The exact structure may change as the portfolio evolves.
 
-# or
+Running Locally 
 
-pnpm install
-Run the development server:
+Clone the repository:
 
-bash
-npm run dev
-Open http://localhost:3000 in your browser.
+git clone https://github.com/pujanjoci/<repository-name>.git 
 
-📁 Project Structure
-text
-├── public/ # Static assets (images, favicon, etc.)
-├── src/
-│ ├── app/ # Next.js App Router pages
-│ │ ├── layout.tsx # Root layout (includes metadata, fonts)
-│ │ ├── page.tsx # Home page (Hero, About, Projects, Contact)
-│ │ └── globals.css # Global Tailwind imports
-│ ├── components/ # Reusable components
-│ │ ├── Hero.tsx # Hero section with typing effect
-│ │ ├── About.tsx # About me section
-│ │ ├── Projects.tsx # Project cards grid
-│ │ ├── Contact.tsx # Contact form / links
-│ │ └── ThemeToggle.tsx # Dark mode toggle
-│ └── styles/ # Additional CSS (if needed)
-├── tailwind.config.ts # Tailwind configuration
-├── next.config.js # Next.js configuration
-├── tsconfig.json # TypeScript config
-└── package.json
-🎨 Customization
+Install dependencies:
 
-1. Update Personal Information
-   Edit the data files or directly in components:
+npm install 
 
-Hero: Change name, roles, and profile picture in components/Hero.tsx.
+Start the development server:
 
-About: Write your bio and add skills in components/About.tsx.
+npm run dev 
 
-Projects: Modify the projects array in components/Projects.tsx with your own project details (title, description, image, links).
 
-Contact: Update social links and email in components/Contact.tsx.
+Contact 
 
-2. Colors & Styling
-   Primary color (orange) is used throughout. You can change it in tailwind.config.ts under theme.extend.colors.
+Portfolio: https://pujan-joshi.com.np
 
-Dark mode colors are handled via Tailwind’s dark: variant.
+GitHub: https://github.com/pujanjoci
 
-3. Typing Effect
-   The typing effect cycles through a list of roles. To modify them, locate the roles array inside Hero.tsx:
+LinkedIn: linkedin.com/in/pujan-joshi-np
 
-tsx
-const roles = ['Web Designer', 'Web Developer', 'Graphic Designer', 'Gamer']
-Adjust the list to your preference.
+Email: contact@pujan-joshi.com.np
 
-4. Add More Sections
-   You can easily add new sections (e.g., Blog, Resume) by creating a new component and importing it into src/app/page.tsx.
+License 
 
-📦 Build for Production
-bash
-npm run build
-npm start
-The static export can be generated with next build && next export (if configured).
+This repository is available for viewing as part of my portfolio.
 
-🌐 Deployment
-Deploy on Vercel (Recommended)
-The easiest way to deploy your Next.js app is to use the Vercel Platform.
+Unless otherwise stated, the code and design should not be copied or redistributed without permission.
 
-Push your code to a GitHub repository.
-
-Import the project into Vercel.
-
-It will automatically detect Next.js and deploy.
-
-Other Platforms
-Netlify: Use npm run build as the build command and set publish directory to out (if using static export).
-
-GitHub Pages: Configure next.config.js with basePath and export static files.
-
-📄 License
-This project is open-source and available under the MIT License.
-
-🙌 Acknowledgements
-Next.js Documentation
-
-Tailwind CSS Documentation
-
-Framer Motion Examples
-
-Icons by Lucide
-
-Made with ❤️ by Pujan
-
-This README is comprehensive and can be adapted to your actual project details. Make sure to replace placeholders like `yourusername`, `Your Name`, and add a real screenshot. If your project uses specific features or a different structure, modify accordingly.
