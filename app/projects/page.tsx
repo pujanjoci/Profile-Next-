@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   ArrowLeft,
   ExternalLink,
-  Github,
   Search,
   Sparkles,
   X,
@@ -19,6 +18,7 @@ import {
 import Image from 'next/image'
 import Link from 'next/link'
 import { projects } from '../data/projects'
+import { getProjectSlug } from '../utils/slug'
 import ThemeToggle from '../components/ThemeToggle'
 
 const CATEGORIES = ['All', 'Company Websites', 'Web Apps', 'Games', 'UI/UX', 'Designs'] as const
@@ -227,11 +227,7 @@ export default function ProjectsPage() {
         >
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project, index) => {
-              let slug = project.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
-              if (project.title === 'Modern E-Commerce') slug = 'ecommerce-website'
-              if (project.title === 'Personal Portfolio') slug = 'terminal-portfolio'
-              if (project.title === 'Windows 11 Simulation') slug = 'windows-portfolio'
-              if (project.title === 'House Locator') slug = 'house-locator'
+              const slug = getProjectSlug(project)
 
               return (
                 <motion.div

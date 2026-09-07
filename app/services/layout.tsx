@@ -1,9 +1,9 @@
 import { createPageMetadata } from '../seo'
 
 export const metadata = createPageMetadata({
-  title: 'Services | Pujan Joshi - Web Design & Development',
+  title: 'Services - Web Design & Development',
   description:
-    'Web design and development services by Pujan Joshi, including portfolio websites, business websites, landing pages, e-commerce interfaces, UI/UX design, React development, and Next.js development.',
+    'Web design and development services by Pujan Joshi, including fullstack web applications, UI/UX design systems, e-commerce storefronts, and performance optimization.',
   path: '/services',
 })
 

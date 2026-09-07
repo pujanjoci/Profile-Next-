@@ -63,10 +63,7 @@ export default function Hero() {
           </span>
         </motion.div>
 
-        {/* Semantic H1 for SEO */}
-        <h1 className="sr-only">Pujan Joshi — Web Designer & Developer</h1>
-
-        <motion.div
+        <motion.h1
           className="text-center tracking-tight text-neutral-900 dark:text-neutral-50 drop-shadow-sm md:drop-shadow-none"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -77,14 +74,9 @@ export default function Hero() {
           </span>
           <span className="block text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-neutral-800 dark:text-neutral-200 bangers-regular">
             {displayText}
-            <span className="animate-pulse">|</span> {/* Blinking cursor */}
+            <span className="animate-pulse" aria-hidden="true">|</span>
           </span>
-        </motion.div>
-
-        {/* SEO-friendly intro paragraph */}
-        <p className="sr-only">
-          I’m Pujan Joshi, a web designer and developer from Nepal. I create responsive websites, portfolio sites, e-commerce interfaces, and modern web applications using Next.js, React, Tailwind CSS, and JavaScript.
-        </p>
+        </motion.h1>
       </div>
 
       {/* Image Container - 10% larger & 5% uplifted */}
@@ -108,7 +100,7 @@ export default function Hero() {
             <div className="relative aspect-[4/5] h-[96%] sm:h-[98%] md:h-[90%] lg:h-[95%] max-w-[760px] w-auto flex-shrink-0">
               <Image
                 src="/Pujan(Profile)-hero.webp"
-                alt="Pujan Profile"
+                alt="Pujan Joshi portrait"
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 750px, 800px"
                 quality={90}

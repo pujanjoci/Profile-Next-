@@ -244,10 +244,16 @@ export default function Header() {
             >
               {navItems.map((item) => {
                 const isActive = isItemActive(item)
+                const resolvedHref = item.isRoute
+                  ? item.href
+                  : isHomePage
+                    ? item.href
+                    : `/${item.href === '#' ? '' : item.href}`
+
                 return (
                   <a
                     key={item.name}
-                    href={item.href}
+                    href={resolvedHref}
                     onClick={(e) => handleNavClick(e, item.href, item.isRoute, item.isExternal)}
                     target={item.isExternal ? "_blank" : undefined}
                     rel={item.isExternal ? "noopener noreferrer" : undefined}
@@ -346,10 +352,16 @@ export default function Header() {
             <ul className="flex flex-col items-center space-y-6">
               {navItems.map((item) => {
                 const isActive = isItemActive(item)
+                const resolvedHref = item.isRoute
+                  ? item.href
+                  : isHomePage
+                    ? item.href
+                    : `/${item.href === '#' ? '' : item.href}`
+
                 return (
                   <motion.li key={item.name} variants={itemVariants}>
                     <a
-                      href={item.href}
+                      href={resolvedHref}
                       onClick={(e) => handleNavClick(e, item.href, item.isRoute, item.isExternal)}
                       target={item.isExternal ? "_blank" : undefined}
                       rel={item.isExternal ? "noopener noreferrer" : undefined}

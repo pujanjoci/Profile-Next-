@@ -202,7 +202,13 @@ function Field({
 /* ─────────────────────────────────────────────────────────────
    Main Section Component
 ───────────────────────────────────────────────────────────── */
-export default function ContactSection({ id = 'contact' }: { id?: string }) {
+export default function ContactSection({
+  id = 'contact',
+  headingLevel = 'h2',
+}: {
+  id?: string
+  headingLevel?: 'h1' | 'h2'
+}) {
   /* Form state */
   const [fields, setFields] = useState<FormFields>({
     name: '',
@@ -277,9 +283,15 @@ export default function ContactSection({ id = 'contact' }: { id?: string }) {
           <span className="inline-block text-orange-500 text-xs font-bold uppercase tracking-widest mb-2">
             Get In Touch
           </span>
-          <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-950 dark:text-white mb-4">
-            Contact <span className="text-orange-500">Me</span>
-          </h2>
+          {headingLevel === 'h1' ? (
+            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-950 dark:text-white mb-4">
+              Contact <span className="text-orange-500">Me</span>
+            </h1>
+          ) : (
+            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-950 dark:text-white mb-4">
+              Contact <span className="text-orange-500">Me</span>
+            </h2>
+          )}
           <div className="w-20 h-1 bg-orange-500 mx-auto rounded-none" />
         </motion.div>
 

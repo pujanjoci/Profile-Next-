@@ -5,7 +5,6 @@ import Footer from '../components/Footer'
 import {
   Download,
   Code2,
-  ArrowLeft,
   Mail,
   Globe,
   Phone,
@@ -18,6 +17,7 @@ import {
   CheckSquare
 } from 'lucide-react'
 import Link from 'next/link'
+import { siteConfig } from '../seo'
 
 export default function ResumePage() {
   const skillCategories = [
@@ -134,8 +134,31 @@ export default function ResumePage() {
     }
   ]
 
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: siteConfig.url,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Resume',
+        item: `${siteConfig.url}/resume`,
+      },
+    ],
+  }
+
   return (
     <main className="min-h-screen bg-slate-100 text-slate-950 dark:bg-neutral-950 dark:text-white transition-colors duration-300 print:bg-white print:text-black">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
       {/* Header hidden on print */}
       <div className="print:hidden">
         <Header />
@@ -144,6 +167,20 @@ export default function ResumePage() {
       {/* Top Header Section */}
       <section className="relative pt-28 pb-6 px-6 text-center overflow-hidden print:hidden">
         <div className="relative z-10 max-w-4xl mx-auto">
+          {/* Accessible Breadcrumb */}
+          <nav aria-label="Breadcrumb" className="mb-4 flex justify-center">
+            <ol className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+              <li>
+                <Link href="/" className="hover:text-orange-500 transition-colors">
+                  Home
+                </Link>
+              </li>
+              <li aria-hidden="true" className="text-slate-400">/</li>
+              <li aria-current="page" className="text-orange-500 font-bold">
+                Resume
+              </li>
+            </ol>
+          </nav>
           <h1 className="text-4xl sm:text-5xl font-black tracking-tight mb-4 uppercase">
             Resume
           </h1>
@@ -187,7 +224,7 @@ export default function ResumePage() {
                 <Phone size={14} className="text-orange-500 shrink-0" />
                 <span>+977 9860928584</span>
               </a>
-              <a href="https://www.pujan-joshi.com.np" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-orange-500 transition-colors">
+              <a href="https://pujan-joshi.com.np" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-orange-500 transition-colors">
                 <Globe size={14} className="text-orange-500 shrink-0" />
                 <span>pujan-joshi.com.np</span>
               </a>

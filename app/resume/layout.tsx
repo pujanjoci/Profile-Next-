@@ -1,9 +1,9 @@
 import { createPageMetadata } from '../seo'
 
 export const metadata = createPageMetadata({
-  title: 'Resume | Pujan Joshi - Web Designer & Developer',
+  title: 'Professional Resume & Experience',
   description:
-    'View the professional resume of Pujan Joshi, a web designer and developer from Nepal skilled in React, Next.js, Tailwind CSS, JavaScript, UI/UX design, and modern web development.',
+    'View the professional resume, development experience, and technical competencies of Pujan Joshi, web designer and full-stack developer based in Nepal.',
   path: '/resume',
 })
 

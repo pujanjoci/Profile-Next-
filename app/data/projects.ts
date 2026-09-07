@@ -10,6 +10,7 @@ export type Project = {
   color: string
   glowColor: string
   category: 'Web Apps' | 'Games' | 'UI/UX' | 'Designs' | 'Company Websites'
+  updatedAt?: string
 }
 
 export const projects = projectsData as Project[]

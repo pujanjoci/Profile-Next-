@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo, useRef, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { motion, type PanInfo } from 'framer-motion'
 import {
   ArrowUpRight,
   ChevronLeft,
@@ -11,7 +11,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { projects } from '../data/projects'
-import type { Project } from '../data/projects'
+import { getProjectSlug } from '../utils/slug'
 
 export default function Projects({ id = 'projects' }: { id?: string }) {
   const categories = ['All', 'Company Websites', 'Web Apps', 'Games', 'UI/UX', 'Designs'] as const
@@ -43,10 +43,12 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
   }, [])
 
   // Reset index when category changes
-  useEffect(() => {
+  const [prevCategory, setPrevCategory] = useState(selectedCategory)
+  if (prevCategory !== selectedCategory) {
+    setPrevCategory(selectedCategory)
     setActiveIndex(0)
     setDisableTransition(true)
-  }, [selectedCategory])
+  }
 
   // Filter projects by category
   const filteredProjects = useMemo(() => {
@@ -133,7 +135,7 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
   }, [disableTransition])
 
   // Magnetic snap logic on drag release
-  const handleDragEnd = (event: any, info: any) => {
+  const handleDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (!isLoopNeeded || disableTransition) return
 
     const offset = info.offset.x
@@ -151,15 +153,7 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
     }
   }
 
-  // Resolve project case study slug
-  const getProjectSlug = (project: Project) => {
-    let slug = project.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
-    if (project.title === 'Modern E-Commerce') slug = 'ecommerce-website'
-    if (project.title === 'Personal Portfolio') slug = 'terminal-portfolio'
-    if (project.title === 'Windows 11 Simulation') slug = 'windows-portfolio'
-    if (project.title === 'House Locator') slug = 'house-locator'
-    return slug
-  }
+
 
   return (
     <section
@@ -324,9 +318,12 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
                         <div className="h-2 w-2 rounded-full bg-red-400" />
                         <div className="h-2 w-2 rounded-full bg-yellow-400" />
                         <div className="h-2 w-2 rounded-full bg-green-400" />
-                        <div className="mx-auto w-[65%] h-4 rounded bg-white/70 flex items-center justify-center text-[8px] font-mono text-slate-400 truncate dark:bg-neutral-950/70 dark:text-neutral-500">
-                          pujan-joshi.com.np/{projectSlug}
-                        </div>
+                        <Link
+                          href={`/projects/${projectSlug}`}
+                          className="mx-auto w-[65%] h-4 rounded bg-white/70 flex items-center justify-center text-[8px] font-mono text-slate-500 hover:text-orange-500 truncate dark:bg-neutral-950/70 dark:text-neutral-400 transition-colors cursor-pointer"
+                        >
+                          pujan-joshi.com.np/projects/{projectSlug}
+                        </Link>
                       </div>
 
                       {/* Screenshot */}
@@ -355,9 +352,11 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
                         
                         {/* Title */}
                         <h3 className="text-xl font-extrabold tracking-tight text-slate-950 dark:text-white">
-                          <span className={`bg-gradient-to-r ${project.color} bg-clip-text text-transparent`}>
-                            {project.title}
-                          </span>
+                          <Link href={`/projects/${projectSlug}`} className="hover:opacity-85 transition-opacity cursor-pointer">
+                            <span className={`bg-gradient-to-r ${project.color} bg-clip-text text-transparent`}>
+                              {project.title}
+                            </span>
+                          </Link>
                         </h3>
 
                         {/* Snippet */}
@@ -385,29 +384,39 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
                         </div>
 
                         {/* Action Links */}
-                        <div className="flex items-center justify-between gap-2 border-t border-slate-100/80 pt-4 dark:border-neutral-800/80">
-                          <a
-                            href={project.repoUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex h-9 items-center justify-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 text-[11px] font-bold text-slate-800 transition hover:bg-slate-100 hover:border-slate-300 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
+                        <div className="flex items-center justify-between gap-1.5 border-t border-slate-100/80 pt-4 dark:border-neutral-800/80">
+                          <Link
+                            href={`/projects/${projectSlug}`}
+                            className="inline-flex h-9 items-center justify-center gap-1 rounded-full border border-orange-500/30 bg-orange-500/10 px-3 text-[11px] font-bold text-orange-600 dark:text-orange-400 transition hover:bg-orange-500 hover:text-white active:scale-95 cursor-pointer"
                           >
-                            <Github size={12} />
-                            <span>GitHub</span>
-                          </a>
-                          <a
-                            href={project.liveUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex h-9 items-center justify-center gap-1.5 rounded-full px-4 text-[11px] font-bold text-white transition shadow-md active:scale-95 cursor-pointer glimmer-btn"
-                            style={{ 
-                              backgroundColor: project.glowColor,
-                              boxShadow: `0 4px 10px ${project.glowColor}30`
-                            }}
-                          >
-                            <ExternalLink size={12} />
-                            <span>{project.category === 'Designs' ? 'View Designs' : 'Live Demo'}</span>
-                          </a>
+                            <span>Case Study</span>
+                          </Link>
+                          <div className="flex items-center gap-1.5">
+                            <a
+                              href={project.repoUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex h-9 items-center justify-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-2.5 text-[11px] font-bold text-slate-800 transition hover:bg-slate-100 hover:border-slate-300 active:scale-95 cursor-pointer dark:border-white/10 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
+                              title="View GitHub Repository"
+                            >
+                              <Github size={12} />
+                              <span className="hidden xs:inline">Code</span>
+                            </a>
+                            <a
+                              href={project.liveUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex h-9 items-center justify-center gap-1 rounded-full px-3 text-[11px] font-bold text-white transition shadow-md active:scale-95 cursor-pointer glimmer-btn"
+                              style={{ 
+                                backgroundColor: project.glowColor,
+                                boxShadow: `0 4px 10px ${project.glowColor}30`
+                              }}
+                              title="Launch Live Project"
+                            >
+                              <ExternalLink size={12} />
+                              <span>Demo</span>
+                            </a>
+                          </div>
                         </div>
                       </div>
                     </div>

@@ -4,10 +4,22 @@ export const siteConfig = {
   name: 'Pujan Joshi',
   title: 'Pujan Joshi | Web Designer & Developer in Nepal',
   description:
-    'Official portfolio of Pujan Joshi, a web designer and developer from Nepal specializing in modern websites, UI/UX design, React, Next.js, Tailwind CSS, e-commerce projects, and creative web experiences.',
+    'Official portfolio of Pujan Joshi, a web designer and developer from Nepal specializing in modern web applications, UI/UX design, React, Next.js, and clean digital experiences.',
   url: 'https://pujan-joshi.com.np',
-  profileImage: '/og-image.png',
+  defaultOgImage: '/og-image.png',
   creator: 'Pujan Joshi',
+  locale: 'en_US',
+  email: 'contact@pujan-joshi.com.np',
+  location: {
+    city: 'Bhaktapur',
+    country: 'Nepal',
+  },
+  socials: {
+    github: 'https://github.com/pujanjoci',
+    linkedin: 'https://www.linkedin.com/in/pujan-joshi-np/',
+    twitter: 'https://x.com/pujanjoshi3',
+    twitterHandle: '@pujanjoshi3',
+  },
   keywords: [
     'Pujan Joshi',
     'Pujan Joshi portfolio',
@@ -28,12 +40,24 @@ export function createPageMetadata({
   title,
   description,
   path = '/',
+  image = siteConfig.defaultOgImage,
+  imageAlt,
+  type = 'website',
+  noIndex = false,
 }: {
   title: string
   description: string
   path?: string
+  image?: string
+  imageAlt?: string
+  type?: 'website' | 'article'
+  noIndex?: boolean
 }): Metadata {
-  const absoluteUrl = `${siteConfig.url}${path === '/' ? '' : path}`
+  const cleanPath = path === '/' ? '' : `/${path.replace(/^\/+|\/+$/g, '')}`
+  const absoluteUrl = `${siteConfig.url}${cleanPath}`
+  const absoluteImageUrl = image.startsWith('http')
+    ? image
+    : `${siteConfig.url}${image.startsWith('/') ? image : `/${image}`}`
 
   return {
     title,
@@ -41,6 +65,22 @@ export function createPageMetadata({
     alternates: {
       canonical: absoluteUrl,
     },
+    robots: noIndex
+      ? {
+          index: false,
+          follow: false,
+        }
+      : {
+          index: true,
+          follow: true,
+          googleBot: {
+            index: true,
+            follow: true,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+            'max-video-preview': -1,
+          },
+        },
     openGraph: {
       title,
       description,
@@ -48,21 +88,21 @@ export function createPageMetadata({
       siteName: siteConfig.name,
       images: [
         {
-          url: '/og-image.png',
+          url: absoluteImageUrl,
           width: 1200,
           height: 630,
-          alt: 'Pujan Joshi | Web Designer & Developer in Nepal',
+          alt: imageAlt || title,
         },
       ],
-      locale: 'en_US',
-      type: 'website',
+      locale: siteConfig.locale,
+      type,
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      creator: '@pujanjoshi3',
-      images: ['/og-image.png'],
+      creator: siteConfig.socials.twitterHandle,
+      images: [absoluteImageUrl],
     },
   }
 }

@@ -1,12 +1,16 @@
 'use client'
 
 import Link from 'next/link'
-import { Home, ArrowLeft } from 'lucide-react'
+import { Home, ArrowLeft, FolderGit2 } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 export default function NotFound() {
   return (
     <main className="min-h-screen w-full relative flex items-center justify-center bg-white text-gray-900 overflow-hidden transition-colors duration-300 dark:bg-neutral-950 dark:text-gray-100 font-sans">
+      <head>
+        <title>404: Page Not Found | Pujan Joshi</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </head>
       
       {/* Sleek decorative premium background gradients */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
@@ -62,6 +66,13 @@ export default function NotFound() {
           >
             <Home className="w-4 h-4" />
             <span>Go to Homepage</span>
+          </Link>
+          <Link
+            href="/projects"
+            className="flex items-center justify-center gap-2 px-6 py-3 w-full sm:w-auto text-sm font-semibold rounded-xl border border-orange-500/30 bg-orange-500/10 text-orange-600 dark:text-orange-400 hover:bg-orange-500 hover:text-white transition-all duration-300 active:scale-95 cursor-pointer"
+          >
+            <FolderGit2 className="w-4 h-4" />
+            <span>Browse Projects</span>
           </Link>
           <button
             onClick={() => window.history.back()}

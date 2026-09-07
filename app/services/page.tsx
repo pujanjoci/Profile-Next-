@@ -5,6 +5,7 @@ import Footer from '../components/Footer'
 import { Layout, Code2, ShoppingBag, Terminal, Search, Gauge, ArrowRight, ArrowLeft } from 'lucide-react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import { siteConfig } from '../seo'
 
 export default function ServicesPage() {
   const serviceDetails = [
@@ -15,6 +16,7 @@ export default function ServicesPage() {
       description:
         'I create beautiful, intuitive web layouts and comprehensive design systems using Figma. Every visual aspect—from typography selections to layout spacing and micro-animations—is purposefully chosen to match your brand and engage target users.',
       deliverables: ['Custom Figma files', 'Design System tokens', 'Interactive prototypes', 'Responsive layout grids'],
+      exampleProjectSlug: 'school-ui-ux-template',
     },
     {
       icon: Code2,
@@ -23,6 +25,7 @@ export default function ServicesPage() {
       description:
         'I build clean, accessible, and fast web applications using React, Next.js (App Router), TypeScript, and Tailwind CSS. Specializing in semantic markup and optimized server-side and static page generation for search engine visibility.',
       deliverables: ['Next.js App Router setup', 'TypeScript component architecture', 'Accessible (WCAG) markup', 'Framer Motion animations'],
+      exampleProjectSlug: 'novel-editor',
     },
     {
       icon: ShoppingBag,
@@ -31,6 +34,7 @@ export default function ServicesPage() {
       description:
         'I develop online storefronts built to scale. From customized catalog navigation and advanced search filters to secure payment gateway integrations (Stripe, etc.) and custom checkout systems, I ensure your shop loads instantly.',
       deliverables: ['Shopping cart systems', 'Stripe checkout flow', 'Database integration (Prisma/PostgreSQL)', 'Product management panels'],
+      exampleProjectSlug: 'ecommerce-website',
     },
     {
       icon: Terminal,
@@ -39,6 +43,7 @@ export default function ServicesPage() {
       description:
         'I design and implement custom interactive experiences, including browser-based operating system simulations and terminal-themed retro command line portfolios. These unique designs boost user session duration and build solid viral potential.',
       deliverables: ['Custom CLI engines', 'Multi-Window layout managers', 'Real-time sync (Socket.io)', 'Tailwind custom layouts'],
+      exampleProjectSlug: 'windows-portfolio',
     },
     {
       icon: Search,
@@ -47,6 +52,7 @@ export default function ServicesPage() {
       description:
         'I apply high-impact technical SEO to websites. By configuring semantic layouts, setting canonical tags, generating sitemaps/robots files, building structured JSON-LD schemes, and improving page metadata, I help your brand rank higher.',
       deliverables: ['Sitemap & Robots setups', 'Structured JSON-LD schemas', 'Canonical URL setup', 'Meta tags configuration'],
+      exampleProjectSlug: 'developer-blog',
     },
     {
       icon: Gauge,
@@ -55,11 +61,50 @@ export default function ServicesPage() {
       description:
         'I audit and fix performance bottlenecks on slow-loading websites. By optimizing font rendering, lazy-loading non-critical assets, and reducing layout shifts (CLS), I guarantee a higher PageSpeed score and a smoother user experience.',
       deliverables: ['Lighthouse performance optimization', 'Lazy loading asset setup', 'Image optimization configuration', 'CLS & FID bug-fixes'],
+      exampleProjectSlug: 'archio-designs',
     },
   ]
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: siteConfig.url,
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Services',
+            item: `${siteConfig.url}/services`,
+          },
+        ],
+      },
+      ...serviceDetails.map((service) => ({
+        '@type': 'Service',
+        name: service.title,
+        description: service.description,
+        provider: {
+          '@type': 'Person',
+          name: siteConfig.name,
+          url: siteConfig.url,
+        },
+        areaServed: 'Worldwide',
+      })),
+    ],
+  }
+
   return (
     <main className="min-h-screen bg-slate-50 text-slate-950 dark:bg-neutral-950 dark:text-white transition-colors duration-300">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header />
 
       {/* Hero section */}
@@ -71,6 +116,21 @@ export default function ServicesPage() {
         </div>
 
         <div className="relative z-10 max-w-4xl mx-auto">
+          {/* Accessible Semantic Breadcrumb */}
+          <nav aria-label="Breadcrumb" className="mb-6 flex justify-center">
+            <ol className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+              <li>
+                <Link href="/" className="hover:text-orange-500 transition-colors">
+                  Home
+                </Link>
+              </li>
+              <li aria-hidden="true" className="text-slate-400">/</li>
+              <li aria-current="page" className="text-orange-500 font-bold">
+                Services
+              </li>
+            </ol>
+          </nav>
+
           <Link
             href="/"
             className="inline-flex items-center gap-2 text-xs font-bold text-orange-500 hover:text-orange-600 transition-colors uppercase tracking-[0.2em] mb-6 group cursor-pointer"
@@ -137,14 +197,22 @@ export default function ServicesPage() {
                   </div>
                 </div>
 
-                <div className="mt-8 pt-4 border-t border-slate-100 dark:border-white/5">
+                <div className="mt-8 pt-4 border-t border-slate-100 dark:border-white/5 flex items-center justify-between gap-2">
                   <Link
                     href="/contact"
                     className="inline-flex items-center gap-1 text-xs font-bold text-orange-500 hover:text-orange-600 dark:hover:text-orange-400 transition-colors uppercase tracking-wider cursor-pointer"
                   >
-                    <span>Inquire for project</span>
+                    <span>Inquire</span>
                     <ArrowRight size={12} className="transform group-hover:translate-x-0.5 transition-transform" />
                   </Link>
+                  {service.exampleProjectSlug && (
+                    <Link
+                      href={`/projects/${service.exampleProjectSlug}`}
+                      className="text-[11px] font-medium text-slate-500 hover:text-orange-500 dark:text-slate-400 dark:hover:text-orange-400 transition-colors"
+                    >
+                      Case Study &rarr;
+                    </Link>
+                  )}
                 </div>
               </motion.div>
             )

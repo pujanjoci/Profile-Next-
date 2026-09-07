@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter, Poppins, Bangers } from 'next/font/google'
-import { createPageMetadata, siteConfig } from './seo'
+import { siteConfig } from './seo'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
@@ -44,21 +44,21 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     images: [
       {
-        url: '/og-image.png',
+        url: `${siteConfig.url}/og-image.png`,
         width: 1200,
         height: 630,
-        alt: 'Pujan Joshi | Web Designer & Developer in Nepal',
+        alt: siteConfig.title,
       },
     ],
-    locale: 'en_US',
+    locale: siteConfig.locale,
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: siteConfig.title,
     description: siteConfig.description,
-    creator: '@pujanjoshi3',
-    images: ['/og-image.png'],
+    creator: siteConfig.socials.twitterHandle,
+    images: [`${siteConfig.url}/og-image.png`],
   },
   icons: {
     icon: [
@@ -78,6 +78,13 @@ export const metadata: Metadata = {
       'max-video-preview': -1,
     },
   },
+  ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+    ? {
+        verification: {
+          google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+        },
+      }
+    : {}),
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

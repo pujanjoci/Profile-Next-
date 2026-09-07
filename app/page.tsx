@@ -2,64 +2,67 @@ import Header from './components/Header'
 import Hero from './components/Hero'
 import LazyHomeSections from './components/LazyHomeSections'
 import ScrollToTop from './components/ScrollToTop'
+import { siteConfig } from './seo'
 
 export default function Home() {
   const jsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [
+    '@context': 'https://schema.org',
+    '@graph': [
       {
-        "@type": "Person",
-        "@id": "https://pujan-joshi.com.np/#person",
-        "name": "Pujan Joshi",
-        "url": "https://pujan-joshi.com.np",
-        "jobTitle": "Web Designer and Developer",
-        "address": {
-          "@type": "PostalAddress",
-          "addressCountry": "Nepal"
+        '@type': 'Person',
+        '@id': `${siteConfig.url}/#person`,
+        name: siteConfig.name,
+        url: siteConfig.url,
+        image: `${siteConfig.url}/og-image.png`,
+        jobTitle: 'Web Designer & Full-Stack Developer',
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: siteConfig.location.city,
+          addressCountry: siteConfig.location.country,
         },
-        "email": "contact@pujan-joshi.com.np",
-        "sameAs": [
-          "https://github.com/pujanjoci",
-          "https://www.linkedin.com/in/pujan-joshi-np/",
-          "https://x.com/pujanjoshi3"
+        email: siteConfig.email,
+        sameAs: [
+          siteConfig.socials.github,
+          siteConfig.socials.linkedin,
+          siteConfig.socials.twitter,
         ],
-        "knowsAbout": [
-          "Web Design",
-          "Web Development",
-          "UI/UX Design",
-          "React",
-          "Next.js",
-          "Tailwind CSS",
-          "JavaScript",
-          "HTML",
-          "CSS",
-          "E-commerce Websites",
-          "Portfolio Websites"
-        ]
+        knowsAbout: [
+          'Web Design',
+          'Frontend Engineering',
+          'Full-Stack Web Development',
+          'UI/UX Design',
+          'React',
+          'Next.js',
+          'Tailwind CSS',
+          'TypeScript',
+          'JavaScript',
+        ],
       },
       {
-        "@type": "WebSite",
-        "@id": "https://pujan-joshi.com.np/#website",
-        "url": "https://pujan-joshi.com.np",
-        "name": "Pujan Joshi Portfolio",
-        "alternateName": "Pujan Joshi",
-        "publisher": {
-          "@id": "https://pujan-joshi.com.np/#person"
+        '@type': 'WebSite',
+        '@id': `${siteConfig.url}/#website`,
+        url: siteConfig.url,
+        name: `${siteConfig.name} Portfolio`,
+        alternateName: siteConfig.name,
+        description: siteConfig.description,
+        publisher: {
+          '@id': `${siteConfig.url}/#person`,
         },
-        "author": {
-          "@id": "https://pujan-joshi.com.np/#person"
-        }
+        author: {
+          '@id': `${siteConfig.url}/#person`,
+        },
       },
       {
-        "@type": "ProfilePage",
-        "@id": "https://pujan-joshi.com.np/#profilepage",
-        "url": "https://pujan-joshi.com.np",
-        "name": "Pujan Joshi Portfolio | Official Profile Page",
-        "mainEntity": {
-          "@id": "https://pujan-joshi.com.np/#person"
-        }
-      }
-    ]
+        '@type': 'ProfilePage',
+        '@id': `${siteConfig.url}/#profilepage`,
+        url: siteConfig.url,
+        name: siteConfig.title,
+        description: siteConfig.description,
+        mainEntity: {
+          '@id': `${siteConfig.url}/#person`,
+        },
+      },
+    ],
   }
 
   return (

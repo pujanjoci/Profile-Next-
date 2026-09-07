@@ -123,7 +123,6 @@ export function useFooterReveal(
 
       const rect = container.getBoundingClientRect()
       const windowHeight = window.innerHeight
-      const triggerDistance = windowHeight * 0.9
 
       // Progress calculation bounded strictly between 0 and 1
       const totalScrollable = rect.height - windowHeight
@@ -231,6 +230,6 @@ export function useFooterReveal(
   ])
 
   return {
-    isAnimating: isAnimating.current,
+    isAnimatingRef: isAnimating,
   }
 }

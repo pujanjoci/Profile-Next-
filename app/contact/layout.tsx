@@ -1,9 +1,9 @@
 import { createPageMetadata } from '../seo'
 
 export const metadata = createPageMetadata({
-  title: 'Contact Pujan Joshi - Portfolio',
+  title: 'Contact & Inquiries',
   description:
-    'Contact Pujan Joshi for freelance projects, web development collaborations, design work, and professional inquiries.',
+    'Contact Pujan Joshi for web design collaborations, full-stack React and Next.js development projects, and technical consulting.',
   path: '/contact',
 })
 

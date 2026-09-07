@@ -1,7 +1,10 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 import Header from '../components/Header'
+import Footer from '../components/Footer'
+import { siteConfig } from '../seo'
 import styles from './book.module.css'
 
 function BookFlip() {
@@ -10,7 +13,7 @@ function BookFlip() {
     '/projects/Ecommerce.webp',
     '/projects/imposter.webp',
     '/projects/novel.webp',
-    '/projects/SewaYatra.webp'
+    '/projects/SewaYatra.webp',
   ]
 
   const style = {
@@ -57,8 +60,31 @@ function BookFlip() {
 }
 
 export default function GalleryPage() {
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: siteConfig.url,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Gallery',
+        item: `${siteConfig.url}/gallery`,
+      },
+    ],
+  }
+
   return (
     <main className="min-h-screen bg-slate-50 text-slate-950 overflow-x-hidden transition-colors duration-300 dark:bg-neutral-950 dark:text-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
       <Header />
 
       {/* Hero */}
@@ -67,6 +93,22 @@ export default function GalleryPage() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-3xl" />
           <div className="absolute top-10 right-0 w-[300px] h-[300px] bg-orange-500/5 rounded-full blur-3xl" />
         </div>
+
+        {/* Accessible Breadcrumb */}
+        <nav aria-label="Breadcrumb" className="mb-6 flex justify-center relative z-10">
+          <ol className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+            <li>
+              <Link href="/" className="hover:text-orange-500 transition-colors">
+                Home
+              </Link>
+            </li>
+            <li aria-hidden="true" className="text-slate-400">/</li>
+            <li aria-current="page" className="text-orange-500 font-bold">
+              Gallery
+            </li>
+          </ol>
+        </nav>
+
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -76,7 +118,9 @@ export default function GalleryPage() {
           <span className="inline-block text-orange-500 text-sm font-semibold uppercase tracking-widest mb-3">
             Creative Lab
           </span>
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-4 text-slate-950 dark:text-white">Gallery</h1>
+          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-4 text-slate-950 dark:text-white">
+            Gallery
+          </h1>
           <div className="w-24 h-1 bg-orange-500 mx-auto rounded-full mb-6" />
           <p className="text-lg text-slate-600 dark:text-slate-400 max-w-xl mx-auto">
             A space for interactive experiments, animations, and visual ideas.
@@ -94,7 +138,7 @@ export default function GalleryPage() {
           className="max-w-4xl mx-auto"
         >
           <div className="rounded-3xl border border-slate-200 bg-white/80 backdrop-blur-sm overflow-hidden shadow-2xl shadow-slate-200/60 dark:border-white/10 dark:bg-white/5 dark:shadow-2xl">
-            {/* Animation area — no label, no title */}
+            {/* Animation area */}
             <div className="relative py-10 px-4 bg-gradient-to-br from-slate-100 to-white dark:from-neutral-900 dark:to-neutral-950 min-h-[560px] flex items-center justify-center">
               <BookFlip />
             </div>
@@ -111,9 +155,11 @@ export default function GalleryPage() {
           transition={{ duration: 0.8 }}
         >
           <p className="text-slate-600 text-sm uppercase tracking-widest mb-3">More experiments</p>
-          <p className="text-2xl font-bold text-slate-700">Coming soon…</p>
+          <p className="text-2xl font-bold text-slate-700 dark:text-slate-300">Coming soon…</p>
         </motion.div>
       </section>
+
+      <Footer />
     </main>
   )
 }

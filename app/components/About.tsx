@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image, { type StaticImageData } from 'next/image';
 import { motion } from 'framer-motion';
 import { FileText, Star } from 'lucide-react';
 import Link from 'next/link';
@@ -9,15 +9,16 @@ export interface AboutProps {
   name?: string;
   bio?: string;
   skills?: string[];
-  profileImage?: any;
+  profileImage?: string | StaticImageData;
+  headingLevel?: 'h1' | 'h2';
 }
 
 export default function About({
   id = "about",
-  name = "Pujan",
   bio,
   skills = [],
   profileImage = defaultProfileImage,
+  headingLevel = 'h2',
 }: AboutProps) {
   const defaultSkills = skills.length > 0 ? skills : [
     'React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'HTML', 'CSS', 'JS',
@@ -93,7 +94,7 @@ export default function About({
               <div className="relative w-full h-full rounded-2xl overflow-hidden bg-slate-50 dark:bg-neutral-900 border border-slate-200 dark:border-white/10">
                 <Image
                   src={profileImage}
-                  alt="Pujan Joshi web designer and developer portfolio"
+                  alt="Pujan Joshi portrait photograph"
                   fill
                   sizes="(max-width: 640px) 100vw, 380px"
                   className="object-cover object-top transition duration-500 group-hover:scale-[1.03]"
@@ -145,9 +146,15 @@ export default function About({
               <span className="text-xs font-bold uppercase tracking-[0.2em] text-orange-500 block mb-2">
                 01 / ABOUT ME
               </span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950 dark:text-white font-sans">
-                My Journey
-              </h2>
+              {headingLevel === 'h1' ? (
+                <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950 dark:text-white font-sans">
+                  My Journey
+                </h1>
+              ) : (
+                <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950 dark:text-white font-sans">
+                  My Journey
+                </h2>
+              )}
               <div className="h-1 w-20 bg-orange-500 mt-4 rounded-full" />
             </motion.div>
 

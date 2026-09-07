@@ -1,9 +1,9 @@
 import { createPageMetadata } from '../seo'
 
 export const metadata = createPageMetadata({
-  title: 'Gallery - Pujan Joshi Portfolio',
+  title: 'Creative Lab & Visual Gallery',
   description:
-    'Explore Pujan Joshi creative experiments, animations, interactive visuals, and portfolio gallery work.',
+    'Explore interactive experiments, web animation concepts, dynamic visuals, and creative frontend demos crafted by Pujan Joshi.',
   path: '/gallery',
 })
 
