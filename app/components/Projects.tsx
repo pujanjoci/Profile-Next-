@@ -58,22 +58,14 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
 
   // Determine if infinite loop is needed (only if content overflows the visible viewport)
   const isLoopNeeded = filteredProjects.length > visibleCards
-  const cloneCount = isLoopNeeded ? 5 * filteredProjects.length : 0
+  const cloneCount = isLoopNeeded ? filteredProjects.length : 0
 
-  // Construct extended projects array with 5 stacks to the left and 5 stacks to the right for seamless infinite scrolling
+  // Construct extended projects array with 1 stack left, 1 main center, 1 stack right for smooth infinite scrolling
   const extendedProjects = useMemo(() => {
     if (!isLoopNeeded) return filteredProjects
     return [
       ...filteredProjects,
-      ...filteredProjects,
-      ...filteredProjects,
-      ...filteredProjects,
-      ...filteredProjects,
-      ...filteredProjects, // Main center set (starts at index 5 * N)
-      ...filteredProjects,
-      ...filteredProjects,
-      ...filteredProjects,
-      ...filteredProjects,
+      ...filteredProjects, // Main center set (starts at index 1 * N)
       ...filteredProjects
     ]
   }, [filteredProjects, isLoopNeeded])
@@ -269,8 +261,8 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
               dragConstraints={
                 isLoopNeeded
                   ? {
-                      left: activeTranslation - cardStep * 5 * filteredProjects.length,
-                      right: activeTranslation + cardStep * 5 * filteredProjects.length
+                      left: activeTranslation - cardStep * filteredProjects.length,
+                      right: activeTranslation + cardStep * filteredProjects.length
                     }
                   : undefined
               }
@@ -331,6 +323,8 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
                         <img
                           src={project.image}
                           alt={project.title}
+                          loading="lazy"
+                          decoding="async"
                           className="w-full h-full object-cover object-top select-none pointer-events-none transition-transform duration-700 ease-out group-hover:scale-105"
                         />
                         {/* Dark Overlay with Swipe helper */}

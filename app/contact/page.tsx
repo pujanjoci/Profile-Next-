@@ -1,6 +1,7 @@
 'use client'
 
 import ContactSection from '../components/ContactSection'
+import Footer from '../components/Footer'
 import Header from '../components/Header'
 import Link from 'next/link'
 import { siteConfig } from '../seo'
@@ -64,6 +65,7 @@ export default function ContactPage() {
         </nav>
         <ContactSection headingLevel="h1" />
       </div>
+      <Footer />
     </main>
   )
 }

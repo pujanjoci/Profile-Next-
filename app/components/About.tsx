@@ -98,7 +98,7 @@ export default function About({
                   fill
                   sizes="(max-width: 640px) 100vw, 380px"
                   className="object-cover object-top transition duration-500 group-hover:scale-[1.03]"
-                  priority
+                  loading="lazy"
                 />
               </div>
 

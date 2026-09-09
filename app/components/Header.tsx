@@ -28,63 +28,59 @@ export default function Header() {
   const isHomePage = pathname === '/'
   const [activeSection, setActiveSection] = useState('home')
 
-  // Absolute pageY section position calculation engine
+  // Efficient active section detection using requestAnimationFrame
   useEffect(() => {
     if (!isHomePage) return
 
-    const getElementPageY = (el: HTMLElement) => {
-      let y = 0
-      let current: HTMLElement | null = el
-      while (current) {
-        y += current.offsetTop
-        current = current.offsetParent as HTMLElement | null
-      }
-      return y
-    }
-
     const sectionMap = [
-      { id: 'about', name: 'about' },
-      { id: 'projects', name: 'projects' },
-      { id: 'services', name: 'projects' },
-      { id: 'experiences', name: 'experiences' },
-      { id: 'testimonials', name: 'testimonials' },
       { id: 'contact', name: 'contact' },
+      { id: 'testimonials', name: 'testimonials' },
+      { id: 'experiences', name: 'experiences' },
+      { id: 'services', name: 'projects' },
+      { id: 'projects', name: 'projects' },
+      { id: 'about', name: 'about' },
     ]
 
+    let isTicking = false
+
     const handleScroll = () => {
-      const scrollY = window.scrollY
-      const viewportHeight = window.innerHeight
-      const documentHeight = document.documentElement.scrollHeight
+      if (isTicking) return
+      isTicking = true
 
-      // 1. Top of page threshold (Hero section)
-      if (scrollY < 150) {
-        setActiveSection('home')
-        return
-      }
+      window.requestAnimationFrame(() => {
+        const scrollY = window.scrollY
+        const viewportHeight = window.innerHeight
+        const documentHeight = document.documentElement.scrollHeight
 
-      // 2. Bottom of document threshold (Footer / Contact)
-      if (viewportHeight + scrollY >= documentHeight - 80) {
-        setActiveSection('contact')
-        return
-      }
+        if (scrollY < 150) {
+          setActiveSection('home')
+          isTicking = false
+          return
+        }
 
-      // 3. Focal point 35% down the screen
-      const focusY = scrollY + viewportHeight * 0.35
-      let matchedName = 'home'
+        if (viewportHeight + scrollY >= documentHeight - 80) {
+          setActiveSection('contact')
+          isTicking = false
+          return
+        }
 
-      for (const section of sectionMap) {
-        const elements = Array.from(document.querySelectorAll<HTMLElement>(`#${section.id}`))
-        const visibleEl = elements.find((el) => el.offsetWidth > 0 && el.offsetHeight > 0)
+        const threshold = viewportHeight * 0.4
+        let matched = 'home'
 
-        if (visibleEl) {
-          const pageY = getElementPageY(visibleEl)
-          if (focusY >= pageY) {
-            matchedName = section.name
+        for (const section of sectionMap) {
+          const el = document.getElementById(section.id)
+          if (el) {
+            const rect = el.getBoundingClientRect()
+            if (rect.top <= threshold && rect.bottom >= 0) {
+              matched = section.name
+              break
+            }
           }
         }
-      }
 
-      setActiveSection(matchedName)
+        setActiveSection(matched)
+        isTicking = false
+      })
     }
 
     handleScroll()
@@ -257,7 +253,7 @@ export default function Header() {
                     onClick={(e) => handleNavClick(e, item.href, item.isRoute, item.isExternal)}
                     target={item.isExternal ? "_blank" : undefined}
                     rel={item.isExternal ? "noopener noreferrer" : undefined}
-                    className={`relative px-4 py-2 text-xs sm:text-sm font-bold tracking-tight transition-colors flex items-center justify-center min-w-[72px] cursor-pointer rounded-full ${
+                    className={`relative px-2.5 sm:px-3.5 lg:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-bold tracking-tight transition-colors flex items-center justify-center min-w-[56px] sm:min-w-[64px] lg:min-w-[72px] cursor-pointer rounded-full ${
                       isActive 
                         ? 'text-orange-500 dark:text-orange-400 font-extrabold' 
                         : 'text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white'

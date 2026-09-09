@@ -1,11 +1,27 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import About from './About'
-import Projects from './Projects'
-import ServicesSection from './ServicesSection'
-import PortfolioExperiences from './PortfolioExperiences'
-import Testimonials from './Testimonials'
-import DepthFooterWrapper from './DepthFooterWrapper'
+
+const Projects = dynamic(() => import('./Projects'), {
+  ssr: true,
+})
+
+const ServicesSection = dynamic(() => import('./ServicesSection'), {
+  ssr: true,
+})
+
+const PortfolioExperiences = dynamic(() => import('./PortfolioExperiences'), {
+  ssr: true,
+})
+
+const Testimonials = dynamic(() => import('./Testimonials'), {
+  ssr: true,
+})
+
+const DepthFooterWrapper = dynamic(() => import('./DepthFooterWrapper'), {
+  ssr: true,
+})
 
 export default function LazyHomeSections() {
   return (

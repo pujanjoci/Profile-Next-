@@ -262,7 +262,7 @@ export default function ContactSection({
   }
 
   return (
-    <section id={id} className="relative w-full min-h-screen flex flex-col justify-center bg-slate-50 pt-16 pb-32 transition-colors duration-300 dark:bg-neutral-950 md:pt-24 md:pb-[32%] overflow-hidden">
+    <section id={id} className="relative w-full min-h-screen flex flex-col justify-center bg-slate-50 py-16 sm:py-20 md:py-24 transition-colors duration-300 dark:bg-neutral-950 overflow-hidden">
       
       {/* ── Background subtle geometric accent lines ── */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-30 dark:opacity-20" aria-hidden>

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useInView } from 'framer-motion'
 import { Terminal, Monitor, Laptop, ExternalLink, X, Maximize2, Loader2, Sparkles, AlertCircle, ChevronRight } from 'lucide-react'
 
 interface Experience {
@@ -19,15 +19,22 @@ interface Experience {
 }
 
 export default function PortfolioExperiences({ id = 'experiences' }: { id?: string }) {
+  const sectionRef = useRef<HTMLElement>(null)
+  const isInView = useInView(sectionRef, { once: false, margin: '100px' })
+
   const [activeIframeUrl, setActiveIframeUrl] = useState<string | null>(null)
   const [iframeTitle, setIframeTitle] = useState('')
   const [iframeLoading, setIframeLoading] = useState(true)
 
-  // 1. CLI Terminal Animation Simulation State
-  const [terminalLines, setTerminalLines] = useState<string[]>([])
-  const terminalIntervalRef = useRef<NodeJS.Timeout | null>(null)
+  // 1. CLI Terminal Animation Simulation State (initial static state)
+  const [terminalLines, setTerminalLines] = useState<string[]>([
+    'pujan@portfolio:~$ cat pujan.json',
+    '{\n  "name": "Pujan Joshi",\n  "status": "building_cool_stuff"\n}'
+  ])
 
   useEffect(() => {
+    if (!isInView) return
+
     const scripts = [
       { type: 'input', text: 'cat pujan.json' },
       { type: 'output', text: '{\n  "name": "Pujan Joshi",\n  "status": "building_cool_stuff",\n  "city": "Kathmandu, NP"\n}' },
@@ -41,6 +48,7 @@ export default function PortfolioExperiences({ id = 'experiences' }: { id?: stri
     let scriptIndex = 0
     let charIndex = 0
     let currentInput = ''
+    let timeoutId: NodeJS.Timeout | null = null
 
     const runTerminalSimulation = () => {
       if (scriptIndex >= scripts.length) {
@@ -51,7 +59,7 @@ export default function PortfolioExperiences({ id = 'experiences' }: { id?: stri
       if (currentStep.type === 'clear') {
         setTerminalLines([])
         scriptIndex++
-        setTimeout(runTerminalSimulation, 500)
+        timeoutId = setTimeout(runTerminalSimulation, 500)
         return
       }
 
@@ -68,28 +76,27 @@ export default function PortfolioExperiences({ id = 'experiences' }: { id?: stri
             return list
           })
           charIndex++
-          setTimeout(runTerminalSimulation, 70)
+          timeoutId = setTimeout(runTerminalSimulation, 80)
         } else {
-          // Finished typing input, pause then show output
           charIndex = 0
           currentInput = ''
           scriptIndex++
-          setTimeout(runTerminalSimulation, 400)
+          timeoutId = setTimeout(runTerminalSimulation, 600)
         }
       } else if (currentStep.type === 'output') {
         const outputLines = currentStep.text.split('\n')
         setTerminalLines(prev => [...prev, ...outputLines])
         scriptIndex++
-        setTimeout(runTerminalSimulation, 1500)
+        timeoutId = setTimeout(runTerminalSimulation, 1800)
       }
     }
 
-    runTerminalSimulation()
+    timeoutId = setTimeout(runTerminalSimulation, 800)
 
     return () => {
-      if (terminalIntervalRef.current) clearInterval(terminalIntervalRef.current)
+      if (timeoutId) clearTimeout(timeoutId)
     }
-  }, [])
+  }, [isInView])
 
   // Lock scroll when modal is active
   useEffect(() => {
@@ -163,7 +170,7 @@ export default function PortfolioExperiences({ id = 'experiences' }: { id?: stri
   }
 
   return (
-    <section id={id} className="relative w-full overflow-hidden bg-slate-50 py-20 text-slate-900 transition-colors duration-300 dark:bg-neutral-950 dark:text-slate-100 md:py-28 border-t border-slate-100 dark:border-white/5">
+    <section ref={sectionRef} id={id} className="relative w-full overflow-hidden bg-slate-50 py-20 text-slate-900 transition-colors duration-300 dark:bg-neutral-950 dark:text-slate-100 md:py-28 border-t border-slate-100 dark:border-white/5">
       {/* Decorative Blur Background Elements */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full bg-orange-500/5 blur-3xl opacity-50 dark:opacity-30" />

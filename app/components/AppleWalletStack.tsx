@@ -40,10 +40,10 @@ export default function AppleWalletStack({ testimonials }: AppleWalletStackProps
 
   const activeCardRef = useRef<HTMLDivElement>(null)
 
-  // Screen size check for mobile stacked view
+  // Screen size check for mobile/tablet stacked view
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
+      setIsMobile(window.innerWidth < 1024)
     }
     checkMobile()
     window.addEventListener('resize', checkMobile)
