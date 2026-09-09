@@ -63,22 +63,12 @@ body {
 }
 
 /* Add premium glimmer sheen to selected CTA buttons */
-.glimmer-btn,
-button[class*="bg-orange-500"],
-a[class*="bg-orange-500"],
-button[class*="bg-gradient-to-r"],
-a[class*="bg-gradient-to-r"],
-.joyful-button {
+.glimmer-btn {
   position: relative !important;
   overflow: hidden !important;
 }
 
-.glimmer-btn::after,
-button[class*="bg-orange-500"]::after,
-a[class*="bg-orange-500"]::after,
-button[class*="bg-gradient-to-r"]::after,
-a[class*="bg-gradient-to-r"]::after,
-.joyful-button::after {
+.glimmer-btn::after {
   content: '' !important;
   position: absolute !important;
   top: -50% !important;

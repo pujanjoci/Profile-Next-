@@ -10,6 +10,7 @@ import {
   Github
 } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { projects } from '../data/projects'
 import { getProjectSlug } from '../utils/slug'
 
@@ -320,12 +321,13 @@ export default function Projects({ id = 'projects' }: { id?: string }) {
 
                       {/* Screenshot */}
                       <div className="relative w-full h-[calc(100%-1.75rem)] overflow-hidden bg-slate-50 dark:bg-neutral-900">
-                        <img
+                        <Image
                           src={project.image}
                           alt={project.title}
-                          loading="lazy"
-                          decoding="async"
-                          className="w-full h-full object-cover object-top select-none pointer-events-none transition-transform duration-700 ease-out group-hover:scale-105"
+                          fill
+                          sizes="(max-width: 640px) 290px, (max-width: 1024px) 360px, 380px"
+                          quality={75}
+                          className="object-cover object-top select-none pointer-events-none transition-transform duration-700 ease-out group-hover:scale-105"
                         />
                         {/* Dark Overlay with Swipe helper */}
                         <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">

@@ -80,8 +80,8 @@ export default function Hero() {
                 alt="Pujan Joshi portrait"
                 fill
                 sizes="(max-width: 640px) 90vw, (max-width: 1024px) 600px, 760px"
-                quality={85}
-                className="object-contain object-bottom drop-shadow-[0_20px_35px_rgba(0,0,0,0.35)]"
+                quality={80}
+                className="object-contain object-bottom drop-shadow-2xl"
                 priority
                 fetchPriority="high"
               />
