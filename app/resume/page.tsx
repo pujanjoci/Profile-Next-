@@ -246,7 +246,7 @@ export default function ResumePage() {
               Executive Summary
             </h3>
             <p className="text-slate-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed font-normal print:text-slate-900">
-              Passionate, performance-focused Web Designer and Developer with over 5 years of hands-on coding experience. Specialized in architecting fast, mobile-first, and search-optimized web platforms utilizing React, Next.js (App Router), TypeScript, and Tailwind CSS. Proven track record of transforming client visions into high-resolution visual layouts, interactive web simulations, and robust full-stack applications.
+              I'm a passionate, performance-focused Web Designer and Developer with over 1+ years of hands-on coding experience. Specialized in architecting fast, mobile-first, and search-optimized web platforms utilizing React, Next.js (App Router), TypeScript, and Tailwind CSS. Proven track record of transforming client visions into high-resolution visual layouts, interactive web simulations, and robust full-stack applications.
             </p>
           </div>
 
