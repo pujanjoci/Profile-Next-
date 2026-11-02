@@ -220,7 +220,10 @@ export default function ResumePage() {
               </ol>
             </nav>
             <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[var(--ed-text)]">
-              Resume.
+              {' '}
+              <span className="font-serif-accent italic font-normal text-orange-500">
+                Resume.
+              </span>
             </h1>
           </div>
 
@@ -299,7 +302,6 @@ export default function ResumePage() {
             </div>
           </div>
 
-<<<<<<< HEAD
           {/* 01 / Executive Summary */}
           <div className="py-8 border-b border-[var(--ed-border)] grid grid-cols-1 lg:grid-cols-12 gap-6 print:border-slate-300">
             <div className="lg:col-span-3">
@@ -312,17 +314,6 @@ export default function ResumePage() {
                 Passionate, performance-focused Web Designer and Developer with over 5 years of hands-on coding experience. Specialized in architecting fast, mobile-first, and search-optimized web platforms utilizing React, Next.js (App Router), TypeScript, and Tailwind CSS. Proven track record of transforming client visions into high-resolution visual layouts, interactive web simulations, and robust full-stack applications.
               </p>
             </div>
-=======
-          {/* Professional Summary */}
-          <div className="py-8 border-b border-slate-200 dark:border-white/10 print:border-slate-300">
-            <h3 className="text-xs font-extrabold uppercase tracking-[0.25em] text-orange-500 dark:text-orange-400 mb-3 flex items-center gap-2">
-              <Layers size={14} />
-              Executive Summary
-            </h3>
-            <p className="text-slate-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed font-normal print:text-slate-900">
-              I'm a passionate, performance-focused Web Designer and Developer with over 1+ years of hands-on coding experience. Specialized in architecting fast, mobile-first, and search-optimized web platforms utilizing React, Next.js (App Router), TypeScript, and Tailwind CSS. Proven track record of transforming client visions into high-resolution visual layouts, interactive web simulations, and robust full-stack applications.
-            </p>
->>>>>>> f9bba000ebc6d07732497b6fde1a887ba039c8f6
           </div>
 
           {/* 02 / Professional Work History */}
