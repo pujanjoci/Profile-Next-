@@ -81,32 +81,32 @@ export default function Hero() {
                 fill
                 sizes="(max-width: 640px) 90vw, (max-width: 1024px) 600px, 760px"
                 quality={80}
-                className="object-contain object-bottom drop-shadow-2xl -translate-y-2.5 md:translate-y-0"
+                className="z-20 md:z-auto object-contain object-bottom drop-shadow-2xl -translate-y-2.5 md:translate-y-0"
                 priority
                 fetchPriority="high"
               />
 
-              {/* Mobile Floating Quote - positioned above the portrait with dotted line coming from top of image */}
+              {/* Mobile Floating Quote - positioned above the portrait with dotted line coming from behind top of image */}
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
-                className="absolute z-40 md:hidden -top-0.5 sm:-top-2 left-1/2 -translate-x-1/2 w-56 sm:w-64 flex flex-col items-center pointer-events-none"
+                className="absolute z-10 md:hidden -top-0.5 sm:-top-2 left-1/2 -translate-x-1/2 w-56 sm:w-64 flex flex-col items-center pointer-events-none"
               >
-                <div className="bg-white/30 dark:bg-neutral-900/40 backdrop-blur-md px-3.5 py-2.5 rounded-xl shadow-xl border border-white/20 dark:border-white/10 transform -rotate-1 w-full">
+                <div className="relative z-20 bg-white/30 dark:bg-neutral-900/40 backdrop-blur-md px-3.5 py-2.5 rounded-xl shadow-xl border border-white/20 dark:border-white/10 transform -rotate-1 w-full">
                   <Quote className="text-orange-500 mb-1 fill-orange-500" size={14} />
                   <p className="text-[11px] xs:text-xs text-gray-700 dark:text-gray-200 leading-snug font-medium">
                     Mom, look I&apos;m on the internet!
                   </p>
                 </div>
-                {/* Dotted line coming from the top of the image up to the quote card */}
+                {/* Dotted line coming from behind the top of the image up to the quote card */}
                 <svg
-                  className="text-orange-400 w-7 h-7 xs:w-8 xs:h-8 -mt-0.5 pointer-events-none"
-                  viewBox="0 0 40 40"
+                  className="relative z-10 text-orange-400 w-8 h-12 xs:w-9 xs:h-14 -mt-0.5 pointer-events-none"
+                  viewBox="0 0 40 56"
                   aria-hidden="true"
                 >
                   <path
-                    d="M20 38 Q 27 19 20 2"
+                    d="M20 54 Q 28 28 20 2"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2"
