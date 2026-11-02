@@ -73,7 +73,7 @@ export default function Home() {
       />
       <ScrollToTop />
       <Header />
-      <main>
+      <main className="relative">
         <Hero />
         <LazyHomeSections />
       </main>

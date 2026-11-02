@@ -33,11 +33,84 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Editorial Design System Tokens — Reusing Existing Crisp Light Theme */
+  --ed-bg: #ffffff;
+  --ed-surface: #f8fafc;
+  --ed-card: #ffffff;
+  --ed-text: #0f172a;
+  --ed-muted: #64748b;
+  --ed-subtle: #94a3b8;
+  --ed-border: #e2e8f0;
+  --ed-border-strong: #cbd5e1;
 }
 
 .dark {
   --background: #0a0a0a;
   --foreground: #ededed;
+
+  /* Editorial Design System Tokens — Reusing Existing Neutral-950 Dark Theme */
+  --ed-bg: #0a0a0a;
+  --ed-surface: #111111;
+  --ed-card: #141414;
+  --ed-text: #f8fafc;
+  --ed-muted: #94a3b8;
+  --ed-subtle: #64748b;
+  --ed-border: rgba(255, 255, 255, 0.09);
+  --ed-border-strong: rgba(255, 255, 255, 0.18);
+}
+
+/* Editorial Typography & Surface Utilities */
+.editorial-section {
+  background-color: var(--ed-bg);
+  color: var(--ed-text);
+  font-family: var(--font-dm-sans), system-ui, -apple-system, sans-serif;
+}
+
+.editorial-surface {
+  background-color: var(--ed-surface);
+  color: var(--ed-text);
+  font-family: var(--font-dm-sans), system-ui, -apple-system, sans-serif;
+}
+
+.editorial-card {
+  background-color: var(--ed-card);
+  border-color: var(--ed-border);
+}
+
+.font-display {
+  font-family: var(--font-manrope), system-ui, -apple-system, sans-serif;
+}
+
+.font-editorial {
+  font-family: var(--font-dm-sans), system-ui, -apple-system, sans-serif;
+}
+
+.font-serif-accent {
+  font-family: var(--font-instrument-serif), Georgia, serif;
+}
+
+.editorial-container {
+  width: 100%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .editorial-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .editorial-container {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
 }
 
 body {

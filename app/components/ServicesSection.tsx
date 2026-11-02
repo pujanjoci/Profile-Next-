@@ -1,174 +1,275 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { Layout, Code2, ShoppingBag, Terminal, ArrowRight } from 'lucide-react'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ArrowUpRight, Plus, Minus } from 'lucide-react'
 import Link from 'next/link'
+import {
+  EditorialReveal,
+  EditorialSectionHeader,
+  MagneticWrapper,
+} from './editorial/EditorialMotion'
 
 export interface ServicesProps {
   id?: string
 }
 
+const SERVICES = [
+  {
+    number: '01',
+    title: 'UI/UX & Web Design',
+    summary:
+      'Crafting editorial user interfaces, high-fidelity mockups, and structured design systems in Figma.',
+    details:
+      'Focused on typographic hierarchy, asymmetric grid layouts, accessible color contrast, and purposeful micro-interactions. Every interface is designed from first principles rather than generic templates.',
+    deliverables: [
+      'Figma Design Systems & Component Tokens',
+      'Interactive Wireframes & High-Fidelity Prototypes',
+      'Responsive Multi-Breakpoint Grid Architecture',
+      'Brand Visual Direction & Typography Pairing',
+    ],
+    caseStudySlug: 'archio-designs',
+    caseStudyLabel: 'Archio Designs Case Study',
+    anchor: '/services#ui-ux',
+  },
+  {
+    number: '02',
+    title: 'Custom Web Development',
+    summary:
+      'Building fast, production-ready web applications using React, Next.js (App Router), TypeScript, and Tailwind CSS.',
+    details:
+      'Engineered with clean, modular, and semantic code structures. Combining Server Components, static generation, and fluid client-side transitions for strong Core Web Vitals and search visibility.',
+    deliverables: [
+      'Next.js App Router & TypeScript Architecture',
+      'Semantic HTML5, WCAG Accessibility & Technical SEO',
+      'Real-Time WebSockets (Socket.io) & API Integrations',
+      'Performance Auditing & Core Web Vitals Optimization',
+    ],
+    caseStudySlug: 'novel-editor',
+    caseStudyLabel: 'Novel Editor Case Study',
+    anchor: '/services#architecture',
+  },
+  {
+    number: '03',
+    title: 'E-Commerce Solutions',
+    summary:
+      'Developing high-performance, secure online storefronts with dynamic carts, catalog filtering, and streamlined checkout flows.',
+    details:
+      'Built to eliminate checkout friction and sluggish catalog loads. Combines server-rendered product directories with responsive cart drawers and structured inventory views.',
+    deliverables: [
+      'Dynamic Cart State & Multi-Layer Catalog Filters',
+      'Streamlined Checkout & Order Workflows',
+      'Database Schema & Inventory Modeling',
+      'Custom Product & Order Management Views',
+    ],
+    caseStudySlug: 'ecommerce-website',
+    caseStudyLabel: 'Modern E-Commerce Case Study',
+    anchor: '/services#web-apps',
+  },
+  {
+    number: '04',
+    title: 'Interactive Experiences',
+    summary:
+      'Designing bespoke web simulations and creative concepts—such as browser OS environments and CLI portfolios.',
+    details:
+      'Captivating digital experiences that stand out from standard static websites. Built with custom window managers, command-line parsers, and smooth interactive physics.',
+    deliverables: [
+      'Multi-Window Desktop OS Simulations (Zustand)',
+      'Custom Retro CLI Terminal Engines & Parsers',
+      'Choreographed Scroll & Gesture Interactions',
+      'Multiplayer Browser Game Loops',
+    ],
+    caseStudySlug: 'windows-portfolio',
+    caseStudyLabel: 'Windows 11 Simulation Case Study',
+    anchor: '/services#performance',
+  },
+]
+
 export default function ServicesSection({ id = 'services' }: ServicesProps) {
-  const services = [
-    {
-      icon: Layout,
-      title: 'UI/UX & Web Design',
-      description:
-        'Crafting premium user interfaces, high-fidelity mockups, and interactive design systems in Figma. Focus on micro-animations, typography, and intuitive visual hierarchies.',
-      color: 'from-orange-500 to-amber-400',
-      glow: 'rgba(249, 115, 22, 0.15)',
-    },
-    {
-      icon: Code2,
-      title: 'Custom Web Development',
-      description:
-        'Building lightning-fast, production-ready web applications using React, Next.js (App Router), TypeScript, and Tailwind CSS with clean, modular, and semantic code structure.',
-      color: 'from-blue-600 to-cyan-400',
-      glow: 'rgba(59, 130, 246, 0.15)',
-    },
-    {
-      icon: ShoppingBag,
-      title: 'E-Commerce Solutions',
-      description:
-        'Developing high-performance, secure online storefronts featuring dynamic carts, Stripe payment gateway integrations, catalog filters, and customized management panels.',
-      color: 'from-purple-600 to-pink-500',
-      glow: 'rgba(168, 85, 247, 0.15)',
-    },
-    {
-      icon: Terminal,
-      title: 'Interactive Experiences',
-      description:
-        'Designing bespoke web simulations and creative concepts (such as Windows OS simulators and retro command-line portfolios) that captivate visitors and rank higher.',
-      color: 'from-emerald-500 to-teal-400',
-      glow: 'rgba(16, 185, 129, 0.15)',
-    },
-  ]
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(0)
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15 },
-    },
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
-    },
+  const toggleService = (index: number) => {
+    setExpandedIndex((prev) => (prev === index ? null : index))
   }
 
   return (
     <section
       id={id}
-      className="relative w-full overflow-hidden bg-white py-20 text-slate-900 transition-colors duration-300 dark:bg-neutral-950 dark:text-slate-100 md:py-28 border-t border-slate-100 dark:border-white/5"
+      className="editorial-surface relative w-full py-24 md:py-32 border-t border-[var(--ed-border)] transition-colors duration-300"
     >
-      {/* Decorative premium background light effect */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[300px] rounded-full bg-gradient-to-t from-orange-500/5 to-transparent blur-3xl opacity-50" />
-      </div>
-
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
-        <motion.div
-          className="mb-16 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <span className="mb-3 inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-orange-500">
-            What I Offer
-          </span>
-          <h2 className="mb-4 text-4xl font-extrabold text-slate-950 dark:text-white md:text-5xl tracking-tight">
-            Professional Services
-          </h2>
-          <p className="mx-auto max-w-2xl text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed">
-            I deliver high-fidelity digital interfaces and optimized fullstack web systems that combine creative design aesthetics with modern frontend technologies.
-          </p>
-          <div className="mx-auto mt-6 h-1 w-24 rounded-full bg-orange-500" />
-        </motion.div>
-
-        {/* Services Grid */}
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-50px' }}
-        >
-          {services.map((service, index) => {
-            const Icon = service.icon
-            return (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                className="group relative flex flex-col justify-between rounded-sm border border-slate-200 bg-white p-8 dark:border-white/10 dark:bg-neutral-900 shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden hover:-translate-y-1"
+      <div className="editorial-container">
+        <EditorialSectionHeader
+          index="05"
+          label="What I Offer"
+          title="Professional"
+          accentWord="services."
+          subtitle="High-fidelity digital interfaces and full-stack web systems tailored for ambitious brands, startups, and corporate partners."
+          rightContent={
+            <MagneticWrapper>
+              <Link
+                href="/services"
+                className="group inline-flex items-center gap-2 px-5 py-3 border border-[var(--ed-border-strong)] bg-[var(--ed-bg)] text-xs font-mono uppercase tracking-[0.18em] text-[var(--ed-text)] hover:border-orange-500 hover:text-orange-500 transition-colors"
               >
-                {/* Glow Background effect */}
-                <div
-                  className="absolute -right-24 -top-24 h-48 w-48 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                  style={{ backgroundColor: service.glow }}
+                <span>Detailed Service Specifications</span>
+                <ArrowUpRight
+                  size={14}
+                  className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                 />
+              </Link>
+            </MagneticWrapper>
+          }
+        />
 
-                <div className="space-y-4">
-                  {/* Icon Block */}
-                  <div className="flex items-center justify-center w-12 h-12 rounded-sm bg-slate-50 border border-slate-200 dark:bg-white/5 dark:border-white/10 text-slate-800 dark:text-white transition-colors duration-350">
-                    <Icon className="w-6 h-6 text-orange-500" />
-                  </div>
+        {/* Numbered Editorial Accordion List */}
+        <div className="divide-y divide-[var(--ed-border)] border-t border-b border-[var(--ed-border)]">
+          {SERVICES.map((service, index) => {
+            const isExpanded = expandedIndex === index
 
-                  {/* Title & Description */}
-                  <h3 className="text-xl font-extrabold tracking-tight text-slate-950 dark:text-white">
-                    <span className="text-orange-500">
-                      {service.title}
-                    </span>
-                  </h3>
-                  <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed font-normal">
-                    {service.description}
-                  </p>
+            return (
+              <EditorialReveal key={service.number} delay={index * 0.05}>
+                <div className="group transition-colors duration-200">
+                  {/* Clickable Row Header */}
+                  <button
+                    type="button"
+                    onClick={() => toggleService(index)}
+                    aria-expanded={isExpanded}
+                    className="w-full py-8 md:py-10 text-left grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-baseline cursor-pointer focus:outline-none"
+                  >
+                    {/* Service Number */}
+                    <div className="md:col-span-2 flex items-center gap-3">
+                      <span className="font-mono text-sm font-bold text-orange-500">
+                        /{service.number}
+                      </span>
+                      <span className="h-px w-6 bg-[var(--ed-border-strong)] group-hover:w-10 group-hover:bg-orange-500 transition-all duration-300" />
+                    </div>
+
+                    {/* Service Title */}
+                    <div className="md:col-span-4">
+                      <h3 className="font-display text-2xl sm:text-3xl font-bold text-[var(--ed-text)] group-hover:text-orange-500 transition-colors tracking-tight">
+                        {service.title}
+                      </h3>
+                    </div>
+
+                    {/* Short Description */}
+                    <div className="md:col-span-5">
+                      <p className="text-sm sm:text-base text-[var(--ed-muted)] leading-relaxed">
+                        {service.summary}
+                      </p>
+                    </div>
+
+                    {/* Expand / Collapse Indicator */}
+                    <div className="md:col-span-1 flex md:justify-end items-center">
+                      <span
+                        className={`inline-flex h-9 w-9 items-center justify-center border transition-colors duration-200 ${
+                          isExpanded
+                            ? 'border-orange-500 bg-orange-500 text-white'
+                            : 'border-[var(--ed-border-strong)] text-[var(--ed-text)] group-hover:border-orange-500 group-hover:text-orange-500'
+                        }`}
+                      >
+                        {isExpanded ? <Minus size={15} /> : <Plus size={15} />}
+                      </span>
+                    </div>
+                  </button>
+
+                  {/* Expandable Editorial Specification Panel */}
+                  <AnimatePresence initial={false}>
+                    {isExpanded && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                        className="overflow-hidden"
+                      >
+                        <div className="pb-10 pt-2 grid grid-cols-1 md:grid-cols-12 gap-8 border-t border-[var(--ed-border)]/60">
+                          <div className="hidden md:block md:col-span-2" />
+
+                          {/* Extended Narrative */}
+                          <div className="md:col-span-4 space-y-5">
+                            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--ed-subtle)] block">
+                              Approach & Methodology
+                            </span>
+                            <p className="text-sm text-[var(--ed-muted)] leading-relaxed">
+                              {service.details}
+                            </p>
+                            <div className="pt-2 flex flex-wrap items-center gap-5 text-xs font-mono uppercase tracking-wider">
+                              <Link
+                                href={service.anchor}
+                                className="inline-flex items-center gap-1.5 font-semibold text-orange-500 hover:underline"
+                              >
+                                <span>Service Specification</span>
+                                <ArrowUpRight size={13} />
+                              </Link>
+                              <Link
+                                href={`/projects/${service.caseStudySlug}`}
+                                className="inline-flex items-center gap-1.5 text-[var(--ed-text)] hover:text-orange-500 transition-colors"
+                              >
+                                <span>{service.caseStudyLabel}</span>
+                                <ArrowUpRight size={13} />
+                              </Link>
+                            </div>
+                          </div>
+
+                          {/* Deliverables Matrix */}
+                          <div className="md:col-span-6 space-y-3">
+                            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--ed-subtle)] block">
+                              Key Deliverables
+                            </span>
+                            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                              {service.deliverables.map((item, i) => (
+                                <li
+                                  key={item}
+                                  className="p-3.5 border border-[var(--ed-border)] bg-[var(--ed-bg)] flex items-start gap-3 text-xs sm:text-sm text-[var(--ed-text)]"
+                                >
+                                  <span className="font-mono text-[11px] text-orange-500 font-bold mt-0.5">
+                                    0{i + 1}
+                                  </span>
+                                  <span>{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
-
-                {/* Bottom link */}
-                <div className="mt-8 pt-4 border-t border-slate-100 dark:border-white/5 flex items-center justify-between">
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider group-hover:text-orange-500 transition-colors duration-200">
-                    Learn more
-                  </span>
-                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-orange-500 transform group-hover:translate-x-1 transition-all duration-200" />
-                </div>
-              </motion.div>
+              </EditorialReveal>
             )
           })}
-        </motion.div>
+        </div>
 
-        {/* CTA Banners */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-16 text-center"
-        >
-          <p className="text-slate-600 dark:text-slate-400 text-sm mb-6">
-            Looking for custom feature design, performance tuning, or search ranking boost?
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-sm shadow-lg shadow-orange-500/20 transition-all duration-300 active:scale-95 cursor-pointer text-sm"
-            >
-              Get in touch
-            </Link>
-            <Link
-              href="/services"
-              className="inline-flex items-center justify-center px-6 py-3 border border-slate-200 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-white/5 rounded-sm font-semibold text-slate-800 dark:text-slate-300 transition-colors text-sm cursor-pointer"
-            >
-              View detailed services
-            </Link>
+        {/* Bottom Consultation Strip */}
+        <EditorialReveal delay={0.15}>
+          <div className="mt-14 pt-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+            <div className="space-y-1">
+              <p className="font-display text-lg font-bold text-[var(--ed-text)]">
+                Need a custom feature architecture, performance audit, or search ranking boost?
+              </p>
+              <p className="text-sm text-[var(--ed-muted)]">
+                Available for freelance engagements, technical consulting, and end-to-end product builds.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-4 shrink-0">
+              <Link
+                href="/contact"
+                className="group inline-flex items-center gap-2 px-6 py-3.5 bg-orange-500 hover:bg-orange-600 text-white text-xs font-mono uppercase tracking-[0.18em] font-semibold transition-colors"
+              >
+                <span>Commission a Project</span>
+                <ArrowUpRight
+                  size={14}
+                  className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                />
+              </Link>
+              <Link
+                href="/services"
+                className="inline-flex items-center gap-2 px-6 py-3.5 border border-[var(--ed-border-strong)] bg-[var(--ed-bg)] text-xs font-mono uppercase tracking-[0.18em] text-[var(--ed-text)] hover:border-orange-500 hover:text-orange-500 transition-colors"
+              >
+                <span>All 6 Service Domains</span>
+              </Link>
+            </div>
           </div>
-        </motion.div>
+        </EditorialReveal>
       </div>
     </section>
   )

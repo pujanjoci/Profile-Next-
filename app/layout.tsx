@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter, Poppins, Bangers } from 'next/font/google'
+import { Inter, Poppins, Bangers, Manrope, DM_Sans, Instrument_Serif } from 'next/font/google'
 import { siteConfig } from './seo'
 import './globals.css'
 
@@ -16,6 +16,28 @@ const bangers = Bangers({
   subsets: ['latin'],
   weight: '400',
   variable: '--font-bangers',
+  display: 'swap',
+})
+
+const manrope = Manrope({
+  subsets: ['latin'],
+  variable: '--font-manrope',
+  weight: ['400', '500', '600', '700', '800'],
+  display: 'swap',
+})
+
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  variable: '--font-dm-sans',
+  weight: ['400', '500', '600', '700'],
+  display: 'swap',
+})
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ['latin'],
+  variable: '--font-instrument-serif',
+  weight: '400',
+  style: ['normal', 'italic'],
   display: 'swap',
 })
 
@@ -92,7 +114,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.variable} ${poppins.variable} ${bangers.variable} scroll-smooth`}
+      className={`${inter.variable} ${poppins.variable} ${bangers.variable} ${manrope.variable} ${dmSans.variable} ${instrumentSerif.variable} scroll-smooth`}
     >
       <head>
         <script

@@ -42,29 +42,28 @@ export default function ContactPage() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-950 overflow-x-hidden transition-colors duration-300 dark:bg-neutral-950 dark:text-white">
+    <main className="min-h-screen editorial-section overflow-x-hidden transition-colors duration-300">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Header />
-      <div className="pt-24">
-        {/* Accessible Breadcrumb */}
-        <nav aria-label="Breadcrumb" className="max-w-6xl mx-auto px-6 mb-2">
-          <ol className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+      <div className="pt-28 pb-2 editorial-container">
+        <nav aria-label="Breadcrumb">
+          <ol className="flex items-center gap-2 text-xs font-mono uppercase tracking-[0.2em] text-[var(--ed-muted)]">
             <li>
               <Link href="/" className="hover:text-orange-500 transition-colors">
                 Home
               </Link>
             </li>
-            <li aria-hidden="true" className="text-slate-400">/</li>
-            <li aria-current="page" className="text-orange-500 font-bold">
+            <li aria-hidden="true">/</li>
+            <li aria-current="page" className="text-orange-500 font-semibold">
               Contact
             </li>
           </ol>
         </nav>
-        <ContactSection headingLevel="h1" />
       </div>
+      <ContactSection headingLevel="h1" />
       <Footer />
     </main>
   )

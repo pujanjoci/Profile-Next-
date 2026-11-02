@@ -6,82 +6,63 @@ import { motion } from 'framer-motion'
 
 export default function NotFound() {
   return (
-    <main className="min-h-screen w-full relative flex items-center justify-center bg-white text-gray-900 overflow-hidden transition-colors duration-300 dark:bg-neutral-950 dark:text-gray-100 font-sans">
+    <main className="min-h-screen w-full relative flex items-center justify-center editorial-section overflow-hidden transition-colors duration-300">
       <head>
         <title>404: Page Not Found | Pujan Joshi</title>
         <meta name="robots" content="noindex, nofollow" />
       </head>
-      
-      {/* Sleek decorative premium background gradients */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full bg-gradient-to-tr from-orange-500/10 to-amber-500/5 blur-3xl opacity-80 animate-pulse" style={{ animationDuration: '6s' }} />
-        <div className="absolute -bottom-20 -left-20 w-[400px] h-[400px] rounded-full bg-blue-500/5 blur-3xl opacity-40 animate-pulse" style={{ animationDuration: '8s' }} />
-      </div>
 
-      <div className="relative z-10 max-w-lg w-full px-6 flex flex-col items-center text-center">
-        
-        {/* Animated large 404 */}
+      <div className="relative z-10 max-w-xl w-full px-6 py-16 border border-[var(--ed-border-strong)] bg-[var(--ed-surface)] flex flex-col items-center text-center mx-4">
+        <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-orange-500 mb-3">
+          ERROR 404 / DOCUMENT NOT FOUND
+        </span>
+
         <motion.div
-          initial={{ opacity: 0, y: -25 }}
+          initial={{ opacity: 0, y: -15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="relative select-none"
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="select-none"
         >
-          <span className="text-[120px] sm:text-[150px] font-black tracking-tighter leading-none text-orange-500 filter drop-shadow-sm">
+          <span className="font-display text-7xl sm:text-8xl font-extrabold tracking-tighter leading-none text-[var(--ed-text)]">
             404
           </span>
-          <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-neutral-950 to-transparent opacity-10 pointer-events-none" />
         </motion.div>
 
-        {/* Heading */}
-        <motion.h1
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="text-2xl sm:text-3xl font-extrabold tracking-tight mt-6 text-gray-900 dark:text-white"
-        >
-          Page Not Found
-        </motion.h1>
+        <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight mt-4 text-[var(--ed-text)]">
+          Page Not{' '}
+          <span className="font-serif-accent italic font-normal text-orange-500">
+            Located.
+          </span>
+        </h1>
 
-        {/* Description */}
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mt-3 leading-relaxed max-w-sm"
-        >
-          The page you are looking for might have been removed, had its name changed, or is temporarily unavailable. Let&apos;s get you back on track.
-        </motion.p>
+        <p className="text-sm sm:text-base text-[var(--ed-muted)] mt-3 leading-relaxed max-w-md">
+          The requested route may have been moved, renamed, or is temporarily unavailable. Use the index links below to continue exploring.
+        </p>
 
-        {/* Interactive Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="flex flex-col sm:flex-row gap-3 w-full mt-10 justify-center items-center"
-        >
+        <div className="flex flex-col sm:flex-row gap-3 w-full mt-8 justify-center items-center">
           <Link
             href="/"
-            className="flex items-center justify-center gap-2 px-6 py-3 w-full sm:w-auto text-sm font-semibold rounded-xl text-white bg-gradient-to-r from-orange-500 to-amber-500 hover:opacity-95 shadow-md shadow-orange-500/10 transition-all duration-300 active:scale-95 cursor-pointer"
+            className="flex items-center justify-center gap-2 px-5 py-3 w-full sm:w-auto text-xs font-mono uppercase tracking-[0.16em] font-semibold text-white bg-orange-500 hover:bg-orange-600 transition-colors cursor-pointer"
           >
-            <Home className="w-4 h-4" />
-            <span>Go to Homepage</span>
+            <Home className="w-3.5 h-3.5" />
+            <span>Homepage</span>
           </Link>
           <Link
             href="/projects"
-            className="flex items-center justify-center gap-2 px-6 py-3 w-full sm:w-auto text-sm font-semibold rounded-xl border border-orange-500/30 bg-orange-500/10 text-orange-600 dark:text-orange-400 hover:bg-orange-500 hover:text-white transition-all duration-300 active:scale-95 cursor-pointer"
+            className="flex items-center justify-center gap-2 px-5 py-3 w-full sm:w-auto text-xs font-mono uppercase tracking-[0.16em] font-semibold border border-[var(--ed-border-strong)] bg-[var(--ed-bg)] text-[var(--ed-text)] hover:border-orange-500 hover:text-orange-500 transition-colors cursor-pointer"
           >
-            <FolderGit2 className="w-4 h-4" />
-            <span>Browse Projects</span>
+            <FolderGit2 className="w-3.5 h-3.5" />
+            <span>Project Archive</span>
           </Link>
           <button
+            type="button"
             onClick={() => window.history.back()}
-            className="flex items-center justify-center gap-2 px-6 py-3 w-full sm:w-auto text-sm font-semibold rounded-xl border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-neutral-900 transition-all duration-300 active:scale-95 cursor-pointer"
+            className="flex items-center justify-center gap-2 px-5 py-3 w-full sm:w-auto text-xs font-mono uppercase tracking-[0.16em] font-semibold border border-[var(--ed-border)] text-[var(--ed-muted)] hover:text-[var(--ed-text)] transition-colors cursor-pointer"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-3.5 h-3.5" />
             <span>Go Back</span>
           </button>
-        </motion.div>
+        </div>
       </div>
     </main>
   )

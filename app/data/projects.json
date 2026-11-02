@@ -96,9 +96,7 @@
       "Next.js",
       "React",
       "Tailwind CSS",
-      "Stripe API",
-      "Prisma",
-      "PostgreSQL"
+      "TypeScript"
     ],
     "liveUrl": "https://e-commerce-phi-rust-72.vercel.app/",
     "repoUrl": "https://github.com/pujanjoci/E-Commerce",
